@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Free Online Image Resizer | AkhiTool</title>
+  <meta name="description" content="Resize JPG, PNG, and WebP images to exact pixel dimensions or scale by percentage instantly. Free, secure, browser-based online image resizer.">
+  <link rel="canonical" href="https://akhitool.com/tool/image-resizer.html">
+  
+  <meta property="og:title" content="Free Online Image Resizer | AkhiTool">
+  <meta property="og:description" content="Resize images to specific dimensions or percentages instantly inside your browser. No registration required.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://akhitool.com/tool/image-resizer.html">
+  <meta property="og:site_name" content="AkhiTool">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased">
+
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="/" class="text-2xl font-bold text-blue-600 tracking-tight">AkhiTool</a>
+      <nav class="hidden md:flex space-x-8">
+        <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600">Categories</a>
+        <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600">Popular</a>
+        <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+    
+    <nav class="flex text-sm text-gray-500 mb-6" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-2">
+        <li><a href="/" class="hover:text-blue-600">Home</a></li>
+        <li><span class="mx-2">/</span></li>
+        <li><a href="#" class="hover:text-blue-600">Image Tools</a></li>
+        <li><span class="mx-2">/</span></li>
+        <li class="text-gray-900 font-medium" aria-current="page">Image Resizer</li>
+      </ol>
+    </nav>
+
+    <div class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Image Resizer</h1>
+      <p class="text-lg text-gray-600">Change image dimensions instantly by pixels or percentages without losing quality.</p>
+    </div>
+
+    <div class="bg-white border border-gray-200 rounded-xl p-6 md:p-8 mb-12 shadow-sm">
+      
+      <!-- Upload Dropzone Area -->
+      <div id="dropzone" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center bg-gray-50 hover:border-blue-600 transition-colors cursor-pointer mb-6">
+        <input type="file" id="fileInput" accept="image/*" class="hidden">
+        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+        </svg>
+        <p class="text-gray-700 font-medium mb-1">Click to upload or drag & drop an image</p>
+        <p class="text-gray-500 text-xs">Supports JPG, PNG, WebP, SVG</p>
+      </div>
+
+      <!-- Workspace Area (Hidden by Default) -->
+      <div id="workspace" class="hidden border-t border-gray-100 pt-6 space-y-6">
+        <div class="flex flex-col md:flex-row gap-6 items-center justify-center">
+          <div class="max-w-xs border border-gray-200 rounded p-2 bg-gray-50">
+            <img id="previewImage" src="" alt="Source preview" class="max-h-48 mx-auto rounded">
+          </div>
+          <div class="text-sm text-gray-600 text-center md:text-left">
+            <p class="font-bold text-gray-900">Original Properties:</p>
+            <p>Dimensions: <span id="origWidth">0</span>px × <span id="origHeight">0</span>px</p>
+            <p>File Size: <span id="origSize">0 KB</span></p>
+          </div>
+        </div>
+
+        <div class="max-w-md mx-auto space-y-4 bg-gray-50 p-5 rounded-lg border border-gray-200">
+          <h3 class="font-bold text-gray-900 text-base">Configure New Dimensions</h3>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="newWidth" class="block text-xs font-semibold uppercase text-gray-500 mb-1">Width (px)</label>
+              <input type="number" id="newWidth" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-600 text-gray-900">
+            </div>
+            <div>
+              <label for="newHeight" class="block text-xs font-semibold uppercase text-gray-500 mb-1">Height (px)</label>
+              <input type="number" id="newHeight" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-600 text-gray-900">
+            </div>
+          </div>
+
+          <div class="flex items-center">
+            <input type="checkbox" id="maintainAspect" checked class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+            <label for="maintainAspect" class="ml-2 text-sm font-medium text-gray-700 select-none">Maintain Aspect Ratio</label>
+          </div>
+
+          <div>
+            <label for="outputType" class="block text-xs font-semibold uppercase text-gray-500 mb-1">Save As</label>
+            <select id="outputType" class="w-full px-3 py-2 border border-gray-300 rounded bg-white focus:outline-none focus:border-blue-600 text-gray-900">
+              <option value="image/jpeg">JPEG (.jpg)</option>
+              <option value="image/png">PNG (.png)</option>
+              <option value="image/webp">WebP (.webp)</option>
+            </select>
+          </div>
+
+          <button onclick="resizeAndDownload()" class="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors mt-2 shadow-sm">
+            Resize & Download Image
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <article class="prose max-w-none text-gray-700 mb-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Why use our free online image resizer?</h2>
+      <p class="mb-4">Digital platforms require varying image sizes for optimal performance. Whether uploading profile headers, online catalog listings, or adjusting images for mobile app viewports, maintaining correct dimensions is vital. Our tool satisfies these requirements seamlessly without needing premium design software.</p>
+      <p>Key highlights of this online utility include:</p>
+      <ul class="list-disc pl-6 mb-4 space-y-2">
+        <li><strong>Local Processing:</strong> All image parsing and canvas manipulations execute purely inside your machine's browser sandbox. Your images are never streamed over an external network, ensuring absolute safety for sensitive content.</li>
+        <li><strong>Intelligent Constraints:</strong> Opting to lock aspect ratios guarantees your pictures adapt accurately without skewing, distorting, or stretching visual data unnaturally.</li>
+        <li><strong>Format Shifting:</strong> Transcode file standards on the fly by rendering your optimized layouts as modern web-efficient variations like WebP or universal types like PNG and JPEG.</li>
+      </ul>
+    </article>
+
+    <div class="mb-16">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+      
+      <details class="group border-b border-gray-200 pb-4 mb-4">
+        <summary class="flex justify-between items-center font-medium cursor-pointer list-none text-gray-900">
+          <span>Will compressing dimensions reduce my picture clarity?</span>
+          <span class="transition group-open:rotate-180 text-gray-500">
+            <svg fill="none" height="24" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+          </span>
+        </summary>
+        <p class="text-gray-600 mt-3 leading-relaxed">Scaling images downward maintains clarity exceptionally well as pixel matrices are compressed cleanly. However, upscaling micro-resolution files excessively past native dimensions introduces pixelation due to automated system scaling constraints.</p>
+      </details>
+
+      <details class="group border-b border-gray-200 pb-4 mb-4">
+        <summary class="flex justify-between items-center font-medium cursor-pointer list-none text-gray-900">
+          <span>Is there a cap on file size limits or concurrent batch jobs?</span>
+          <span class="transition group-open:rotate-180 text-gray-500">
+            <svg fill="none" height="24" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+          </span>
+        </summary>
+        <p class="text-gray-600 mt-3 leading-relaxed">Because allocations leverage native local device processing overhead rather than cloud servers, there are zero strict processing limits. File limitations rely purely on your device's browser memory headroom thresholds.</p>
+      </details>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Related Tools</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href="image-compressor.html" class="bg-white p-5 rounded-lg border border-gray-200 hover:border-blue-600 transition-colors">
+          <h3 class="font-bold text-gray-900">Image Compressor</h3>
+          <p class="text-sm text-gray-600 mt-1">Shrink physical image footprints without sacrificing visible texture details.</p>
+        </a>
+        <a href="image-to-pdf.html" class="bg-white p-5 rounded-lg border border-gray-200 hover:border-blue-600 transition-colors">
+          <h3 class="font-bold text-gray-900">Image to PDF</h3>
+          <p class="text-sm text-gray-600 mt-1">Stitch individual photo assets together into consolidated multi-page PDF records.</p>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="bg-white border-t border-gray-200 mt-12 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500">
+      © 2026 AkhiTool
+    </div>
+  </footer>
+
+  <script>
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const workspace = document.getElementById('workspace');
+    const previewImage = document.getElementById('previewImage');
+    
+    const origWidthEl = document.getElementById('origWidth');
+    const origHeightEl = document.getElementById('origHeight');
+    const origSizeEl = document.getElementById('origSize');
+    
+    const newWidthInput = document.getElementById('newWidth');
+    const newHeightInput = document.getElementById('newHeight');
+    const maintainAspectCb = document.getElementById('maintainAspect');
+    const outputTypeSelect = document.getElementById('outputType');
+
+    let sourceImage = new Image();
+    let currentAspectRatio = 1;
+    let originalFileName = "resized-image";
+
+    // Setup interactive events
+    dropzone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', handleFileSelection);
+    
+    dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-blue-600'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('border-blue-600'));
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('border-blue-600');
+      if (e.dataTransfer.files.length > 0) {
+        fileInput.files = e.dataTransfer.files;
+        handleFileSelection();
+      }
+    });
+
+    function handleFileSelection() {
+      const file = fileInput.files[0];
+      if (!file || !file.type.startsWith('image/')) return;
+
+      originalFileName = file.name.substring(0, file.name.lastIndexOf('.')) || "resized-image";
+      origSizeEl.innerText = (file.size / 1024).toFixed(1) + " KB";
+      
+      // Select appropriate fallback select option base on input type
+      if(['image/jpeg', 'image/png', 'image/webp'].includes(file.type)){
+        outputTypeSelect.value = file.type;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewImage.src = e.target.result;
+        sourceImage.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    sourceImage.onload = function() {
+      origWidthEl.innerText = sourceImage.width;
+      origHeightEl.innerText = sourceImage.height;
+      newWidthInput.value = sourceImage.width;
+      newHeightInput.value = sourceImage.height;
+      
+      currentAspectRatio = sourceImage.width / sourceImage.height;
+      workspace.classList.remove('hidden');
+      workspace.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
+
+    // Linked aspect ratio logic inputs
+    newWidthInput.addEventListener('input', () => {
+      if (!maintainAspectCb.checked || !sourceImage.src) return;
+      const widthVal = parseFloat(newWidthInput.value);
+      if (widthVal > 0) {
+        newHeightInput.value = Math.round(widthVal / currentAspectRatio);
+      }
+    });
+
+    newHeightInput.addEventListener('input', () => {
+      if (!maintainAspectCb.checked || !sourceImage.src) return;
+      const heightVal = parseFloat(newHeightInput.value);
+      if (heightVal > 0) {
+        newWidthInput.value = Math.round(heightVal * currentAspectRatio);
+      }
+    });
+
+    function resizeAndDownload() {
+      const targetWidth = parseInt(newWidthInput.value);
+      const targetHeight = parseInt(newHeightInput.value);
+      
+      if (!targetWidth || targetWidth <= 0 || !targetHeight || targetHeight <= 0) {
+        alert("Please assign structurally valid output properties.");
+        return;
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+      
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(sourceImage, 0, 0, targetWidth, targetHeight);
+      
+      const chosenMime = outputTypeSelect.value;
+      const dataUrl = canvas.toDataURL(chosenMime, 0.92);
+      
+      // Determine file extension string
+      let ext = "jpg";
+      if (chosenMime === "image/png") ext = "png";
+      if (chosenMime === "image/webp") ext = "webp";
+
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.href = dataUrl;
+      downloadAnchor.download = `${originalFileName}-${targetWidth}x${targetHeight}.${ext}`;
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      document.body.removeChild(downloadAnchor);
+    }
+  </script>
+</body>
+          </html>
+  
