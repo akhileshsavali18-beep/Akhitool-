@@ -7,25 +7,23 @@
   <meta name="description" content="Discover hundreds of free online tools including PDF editors, image compressors, SEO utilities, and AI generators.">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Clean, un-animated hover states */
     .hover-card:hover { border-color: #2563eb; }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans antialiased">
 
-  <!-- Header -->
   <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <a href="/" class="text-2xl font-bold text-blue-600 tracking-tight">AkhiTool</a>
       <nav class="hidden md:flex space-x-8">
         <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600">Categories</a>
         <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600">Popular</a>
+        <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600">New Tools</a>
         <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600">About</a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero & Search -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
     <div class="text-center max-w-3xl mx-auto mb-12">
       <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
@@ -33,12 +31,11 @@
       </h1>
       <p class="text-lg text-gray-600 mb-8">Fast, free, and secure online tools to boost your productivity.</p>
       
-      <!-- Search Bar -->
       <div class="relative max-w-2xl mx-auto">
         <input 
           type="text" 
           id="searchInput" 
-          placeholder="Search 800+ free tools..." 
+          placeholder="Search all available tools..." 
           class="w-full pl-12 pr-4 py-4 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-lg shadow-sm"
         >
         <svg class="w-6 h-6 text-gray-400 absolute left-4 top-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,123 +44,181 @@
       </div>
     </div>
 
-    <!-- Category Grid -->
-    <div id="categoriesSection" class="mb-16">
-      <h2 class="text-xl font-bold text-gray-900 mb-6">Categories</h2>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
-          <span class="font-semibold text-gray-800">PDF Tools</span>
-        </a>
-        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
-          <span class="font-semibold text-gray-800">Image Tools</span>
-        </a>
-        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
-          <span class="font-semibold text-gray-800">Calculators</span>
-        </a>
-        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
-          <span class="font-semibold text-gray-800">AI Generators</span>
-        </a>
-        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
-          <span class="font-semibold text-gray-800">Text Tools</span>
-        </a>
-        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
-          <span class="font-semibold text-gray-800">Developer Tools</span>
-        </a>
-        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
-          <span class="font-semibold text-gray-800">SEO Tools</span>
-        </a>
-        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
-          <span class="font-semibold text-gray-800">Converters</span>
-        </a>
+    <!-- Default View (Visible when not searching) -->
+    <div id="defaultView">
+      
+      <!-- Categories Section -->
+      <div class="mb-16">
+        <h2 class="text-xl font-bold text-gray-900 mb-6">Categories</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+            <span class="font-semibold text-gray-800">PDF Tools</span>
+          </a>
+          <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+            <span class="font-semibold text-gray-800">Image Tools</span>
+          </a>
+          <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+            <span class="font-semibold text-gray-800">Calculators</span>
+          </a>
+          <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+            <span class="font-semibold text-gray-800">AI Generators</span>
+          </a>
+          <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+            <span class="font-semibold text-gray-800">Text Tools</span>
+          </a>
+          <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+            <span class="font-semibold text-gray-800">Developer Tools</span>
+          </a>
+          <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+            <span class="font-semibold text-gray-800">SEO Tools</span>
+          </a>
+          <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+            <span class="font-semibold text-gray-800">Converters</span>
+          </a>
+        </div>
       </div>
+
+      <!-- Popular Tools Section -->
+      <div class="mb-16">
+        <h2 class="text-xl font-bold text-gray-900 mb-6">Popular Tools</h2>
+        <div id="popularGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+
+      <!-- Recently Added Tools Section -->
+      <div class="mb-16">
+        <h2 class="text-xl font-bold text-gray-900 mb-6">Recently Added Tools</h2>
+        <div id="recentGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+
     </div>
 
-    <!-- Instant Search Results / Popular Tools -->
-    <div>
-      <h2 id="toolsGridTitle" class="text-xl font-bold text-gray-900 mb-6">Popular Tools</h2>
-      <div id="toolsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Search Results View (Hidden by default) -->
+    <div id="searchView" class="hidden mb-16">
+      <h2 class="text-xl font-bold text-gray-900 mb-6">Search Results</h2>
+      <div id="searchGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Injected via JavaScript -->
       </div>
-      <p id="noResults" class="hidden text-gray-500 text-center py-8">No tools found matching your search.</p>
+      <p id="noResults" class="hidden text-gray-500 text-center py-12 text-lg">No tools found matching your search.</p>
     </div>
+
   </main>
 
-  <!-- Footer -->
   <footer class="bg-white border-t border-gray-200 mt-12 py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center md:text-left md:flex justify-between items-center">
-      <p class="text-gray-500 text-sm">© 2026 AkhiTool. All rights reserved.</p>
-      <div class="mt-4 md:mt-0 space-x-6 text-sm">
-        <a href="#" class="text-gray-500 hover:text-blue-600">Privacy Policy</a>
-        <a href="#" class="text-gray-500 hover:text-blue-600">Terms of Service</a>
-        <a href="#" class="text-gray-500 hover:text-blue-600">Contact</a>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Tools</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-sm text-gray-500 hover:text-blue-600">PDF Tools</a></li>
+            <li><a href="#" class="text-sm text-gray-500 hover:text-blue-600">Image Tools</a></li>
+            <li><a href="#" class="text-sm text-gray-500 hover:text-blue-600">Calculators</a></li>
+            <li><a href="#" class="text-sm text-gray-500 hover:text-blue-600">Generators</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Company</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-sm text-gray-500 hover:text-blue-600">About Us</a></li>
+            <li><a href="#" class="text-sm text-gray-500 hover:text-blue-600">Contact</a></li>
+            <li><a href="#" class="text-sm text-gray-500 hover:text-blue-600">Blog</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Legal</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-sm text-gray-500 hover:text-blue-600">Privacy Policy</a></li>
+            <li><a href="#" class="text-sm text-gray-500 hover:text-blue-600">Terms of Service</a></li>
+            <li><a href="#" class="text-sm text-gray-500 hover:text-blue-600">Cookie Policy</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Connect</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-sm text-gray-500 hover:text-blue-600">Twitter</a></li>
+            <li><a href="#" class="text-sm text-gray-500 hover:text-blue-600">LinkedIn</a></li>
+            <li><a href="#" class="text-sm text-gray-500 hover:text-blue-600">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-500 text-sm mb-4 md:mb-0">© 2026 AkhiTool. All rights reserved.</p>
+        <p class="text-gray-400 text-sm">Crafted for speed and productivity.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Instant Search Script -->
   <script>
-    const tools = [
+    const popularTools = [
       { name: "Image Compressor", desc: "Compress JPG, PNG, WebP without losing quality.", url: "image-compressor.html" },
       { name: "Age Calculator", desc: "Calculate exact age in years, months, and days.", url: "age-calculator.html" },
       { name: "EMI Calculator", desc: "Calculate your monthly loan payments easily.", url: "emi-calculator.html" },
       { name: "GST Calculator", desc: "Determine GST inclusive and exclusive prices instantly.", url: "gst-calculator.html" },
-      { name: "Percentage Calculator", desc: "Solve complex percentage problems in seconds.", url: "percentage-calculator.html" },
-      { name: "Image Resizer", desc: "Resize images to specific dimensions instantly.", url: "image-resizer.html" },
-      { name: "QR Code Generator", desc: "Generate custom QR codes instantly for URLs, text, and emails.", url: "qr-code-generator.html" },
-      { name: "Password Generator", desc: "Create strong, secure, and random passwords instantly.", url: "password-generator.html" },
-      { name: "Business Name Generator", desc: "Generate catchy, creative, and brandable business names.", url: "business-name-generator.html" },
-      { name: "Username Generator", desc: "Generate cool, aesthetic, and unique usernames.", url: "username-generator.html" }
+      { name: "PDF to Word", desc: "Convert PDF documents to editable Word files.", url: "pdf-to-word.html" },
+      { name: "Image Resizer", desc: "Resize images to specific dimensions instantly.", url: "image-resizer.html" }
     ];
 
+    const recentTools = [
+      { name: "Word to PDF", desc: "Convert Word documents to secure PDF files.", url: "word-to-pdf.html" },
+      { name: "Merge PDF", desc: "Combine multiple PDFs into a single document.", url: "merge-pdf.html" },
+      { name: "Split PDF", desc: "Extract pages or split a PDF into multiple files.", url: "split-pdf.html" },
+      { name: "JPG to PDF", desc: "Convert multiple images into a single PDF document.", url: "jpg-to-pdf.html" }
+    ];
+
+    const allTools = [...popularTools, ...recentTools];
+
     const searchInput = document.getElementById('searchInput');
-    const toolsGrid = document.getElementById('toolsGrid');
-    const toolsGridTitle = document.getElementById('toolsGridTitle');
+    const defaultView = document.getElementById('defaultView');
+    const searchView = document.getElementById('searchView');
+    const searchGrid = document.getElementById('searchGrid');
+    const popularGrid = document.getElementById('popularGrid');
+    const recentGrid = document.getElementById('recentGrid');
     const noResults = document.getElementById('noResults');
-    const categoriesSection = document.getElementById('categoriesSection');
 
-    function renderTools(filterText = "") {
-      const filtered = tools.filter(tool => 
-        tool.name.toLowerCase().includes(filterText.toLowerCase()) || 
-        tool.desc.toLowerCase().includes(filterText.toLowerCase())
-      );
-
-      toolsGrid.innerHTML = "";
-      
-      if (filtered.length === 0) {
-        toolsGrid.classList.add('hidden');
-        noResults.classList.remove('hidden');
-      } else {
-        toolsGrid.classList.remove('hidden');
-        noResults.classList.add('hidden');
-        
-        filtered.forEach(tool => {
-          toolsGrid.innerHTML += `
-            <a href="${tool.url}" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors block">
-              <h3 class="text-lg font-bold text-gray-900 mb-2">${tool.name}</h3>
-              <p class="text-gray-600 text-sm leading-relaxed">${tool.desc}</p>
-            </a>
-          `;
-        });
-      }
-
-      // Hide categories when searching to focus on results
-      if (filterText.length > 0) {
-        categoriesSection.classList.add('hidden');
-        toolsGridTitle.innerText = "Search Results";
-      } else {
-        categoriesSection.classList.remove('hidden');
-        toolsGridTitle.innerText = "Popular Tools";
-      }
+    function createCard(tool) {
+      return `
+        <a href="${tool.url}" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors block">
+          <h3 class="text-lg font-bold text-gray-900 mb-2">${tool.name}</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">${tool.desc}</p>
+        </a>
+      `;
     }
 
-    // Initial render
-    renderTools();
+    // Initialize default grids
+    popularGrid.innerHTML = popularTools.map(createCard).join('');
+    recentGrid.innerHTML = recentTools.map(createCard).join('');
 
-    // Listen for typing (instant filter)
+    // Instant Search Logic
     searchInput.addEventListener('input', (e) => {
-      renderTools(e.target.value);
+      const filterText = e.target.value.toLowerCase().trim();
+      
+      if (filterText.length > 0) {
+        defaultView.classList.add('hidden');
+        searchView.classList.remove('hidden');
+        
+        const filtered = allTools.filter(tool => 
+          tool.name.toLowerCase().includes(filterText) || 
+          tool.desc.toLowerCase().includes(filterText)
+        );
+        
+        if (filtered.length === 0) {
+          searchGrid.classList.add('hidden');
+          noResults.classList.remove('hidden');
+        } else {
+          searchGrid.classList.remove('hidden');
+          noResults.classList.add('hidden');
+          searchGrid.innerHTML = filtered.map(createCard).join('');
+        }
+      } else {
+        defaultView.classList.remove('hidden');
+        searchView.classList.add('hidden');
+      }
     });
   </script>
-</body 
-</html>
+</body>
+                                                                     </html>
+  
    
