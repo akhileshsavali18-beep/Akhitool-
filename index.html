@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AkhiTool - 800+ Free Online Tools</title>
   <meta name="description" content="Discover hundreds of free online tools including PDF editors, image compressors, SEO utilities, and AI generators.">
-  <!-- Tailwind CSS (Use PostCSS in production) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* Clean, un-animated hover states */
@@ -52,7 +51,6 @@
     <div id="categoriesSection" class="mb-16">
       <h2 class="text-xl font-bold text-gray-900 mb-6">Categories</h2>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <!-- Category Cards -->
         <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
           <span class="font-semibold text-gray-800">PDF Tools</span>
         </a>
@@ -105,12 +103,16 @@
   <!-- Instant Search Script -->
   <script>
     const tools = [
-      { name: "Image Compressor", desc: "Compress JPG, PNG, WebP without losing quality.", url: "/tool/image-compressor" },
-      { name: "Age Calculator", desc: "Calculate exact age in years, months, and days.", url: "/tool/age-calculator" },
-      { name: "Business Name Generator", desc: "Generate catchy names for your next startup.", url: "/tool/business-name-generator" },
-      { name: "PDF to Word", desc: "Convert PDF documents to editable Word files.", url: "/tool/pdf-to-word" },
-      { name: "JSON Formatter", desc: "Format, validate, and minify JSON data safely.", url: "/tool/json-formatter" },
-      { name: "Word Counter", desc: "Count words, characters, and reading time.", url: "/tool/word-counter" }
+      { name: "Image Compressor", desc: "Compress JPG, PNG, WebP without losing quality.", url: "image-compressor.html" },
+      { name: "Age Calculator", desc: "Calculate exact age in years, months, and days.", url: "age-calculator.html" },
+      { name: "EMI Calculator", desc: "Calculate your monthly loan payments easily.", url: "emi-calculator.html" },
+      { name: "GST Calculator", desc: "Determine GST inclusive and exclusive prices instantly.", url: "gst-calculator.html" },
+      { name: "Percentage Calculator", desc: "Solve complex percentage problems in seconds.", url: "percentage-calculator.html" },
+      { name: "Image Resizer", desc: "Resize images to specific dimensions instantly.", url: "image-resizer.html" },
+      { name: "QR Code Generator", desc: "Generate custom QR codes instantly for URLs, text, and emails.", url: "qr-code-generator.html" },
+      { name: "Password Generator", desc: "Create strong, secure, and random passwords instantly.", url: "password-generator.html" },
+      { name: "Business Name Generator", desc: "Generate catchy, creative, and brandable business names.", url: "business-name-generator.html" },
+      { name: "Username Generator", desc: "Generate cool, aesthetic, and unique usernames.", url: "username-generator.html" }
     ];
 
     const searchInput = document.getElementById('searchInput');
@@ -162,6 +164,6 @@
       renderTools(e.target.value);
     });
   </script>
-</body>
-          </html>
-  
+</body 
+</html>
+   
