@@ -49,10 +49,12 @@
     <!-- Navigation -->
     <header class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-lg border-b border-gray-100 transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16 md:h-20">
+            <!-- Increased navbar height to comfortably fit the larger logo -->
+            <div class="flex justify-between items-center h-20 md:h-24">
                 <!-- Logo -->
                 <a href="/" class="flex items-center group pr-4 sm:pr-8 shrink-0">
-                    <img src="logo.png" alt="AkhiTool Logo" width="150" height="48" class="h-10 md:h-12 w-auto object-contain transition-transform group-hover:scale-105">
+                    <!-- Increased logo height: 52px on mobile, 64px on desktop -->
+                    <img src="logo.png" alt="AkhiTool Logo" class="h-[52px] md:h-[64px] w-auto object-contain transition-transform group-hover:scale-105">
                 </a>
                 
                 <!-- Desktop Nav -->
@@ -78,7 +80,8 @@
         </div>
         
         <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-white shadow-xl absolute top-full left-0 w-full transition-all border-b border-gray-100 max-h-[calc(100vh-4rem)] overflow-y-auto">
+        <!-- Adjusted max-h calculation to account for the new 5rem (h-20) header height -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white shadow-xl absolute top-full left-0 w-full transition-all border-b border-gray-100 max-h-[calc(100vh-5rem)] overflow-y-auto">
             <div class="px-4 py-4 space-y-2">
                 <a href="/" class="mobile-nav-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-brand-primary hover:bg-gray-50 transition-colors">Home</a>
                 <a href="#all-tools" class="mobile-nav-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-brand-primary hover:bg-gray-50 transition-colors">All Tools</a>
@@ -90,7 +93,8 @@
         </div>
     </header>
 
-    <main class="flex-grow pt-20 md:pt-28 pb-16">
+    <!-- Increased top padding (pt-24/pt-32) to prevent content from hiding behind the taller fixed navbar -->
+    <main class="flex-grow pt-24 md:pt-32 pb-16">
         <!-- 1. Hero Section -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 text-center">
             <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-brand-text mb-4 sm:mb-6 leading-tight max-w-[100vw] break-words">
@@ -198,10 +202,10 @@
                     <span class="font-medium text-sm text-brand-text w-full break-words leading-tight">Dev Tools</span>
                 </a>
                 <a href="/categories/seo-tools" class="flex flex-col items-center justify-center p-4 sm:p-6 bg-brand-card rounded-2xl border border-gray-100 hover:border-pink-500 hover:shadow-md transition-all gap-3 cursor-pointer group text-center min-h-[120px]">
-                    <div class="w-10 h-10 rounded-full bg-pink-50 flex items-center justify-center text-pink-600 group-hover:scale-110 transition-transform shrink-0">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <div class="w-10 h-10 rounded-full bg-pink-50 flex items-center justify-center text-pink-600 group-hover:scale-110 transition-transfor                                        
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
-                    <span class="font-medium text-sm text-brand-text w-full break
+                    <span class="font-medium text-sm text-brand-text w-full break-words leading-tight">SEO Tools</span>
                 </a>
             </div>
         </section>
@@ -393,9 +397,9 @@
 
                 <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
                     <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
-                        <span class="pr-4">Is my data safe?</span>
+                       <span class="pr-4">Is my data safe?</span>
                         <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </span>
                     </summary>
                     <div class="text-gray-500 px-4 sm:px-6 pb-4 sm:pb-6 text-sm leading-relaxed border-t border-gray-50 pt-3 sm:pt-4">
@@ -438,7 +442,7 @@
                 <!-- Column 1 -->
                 <div class="col-span-1 sm:col-span-2 pr-0 lg:pr-8">
                     <a href="/" class="flex items-center mb-4 sm:mb-6 group inline-block">
-                        <img src="logo.png" alt="AkhiTool Logo" loading="lazy" width="150" height="48" class="h-10 md:h-12 w-auto object-contain transition-transform group-hover:scale-105">
+                        <img src="logo.png" alt="AkhiTool Logo" loading="lazy" class="h-10 md:h-12 w-auto object-contain transition-transform group-hover:scale-105">
                     </a>
                     <p class="text-gray-500 text-sm leading-relaxed mb-6 max-w-sm">
                         Your everyday online toolbox. Free tools for PDF, images, calculators, AI, text, SEO and more—all built for speed and privacy.
@@ -565,4 +569,4 @@
         });
     </script>
 </body>
-</html>                                                                               
+</html>
