@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AkhiTool - 800+ Free Online Tools</title>
+  <meta name="description" content="Discover hundreds of free online tools including PDF editors, image compressors, SEO utilities, and AI generators.">
+  <!-- Tailwind CSS (Use PostCSS in production) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Clean, un-animated hover states */
+    .hover-card:hover { border-color: #2563eb; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="/" class="text-2xl font-bold text-blue-600 tracking-tight">AkhiTool</a>
+      <nav class="hidden md:flex space-x-8">
+        <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600">Categories</a>
+        <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600">Popular</a>
+        <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero & Search -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
+        Every tool you need, <span class="text-blue-600">in one place.</span>
+      </h1>
+      <p class="text-lg text-gray-600 mb-8">Fast, free, and secure online tools to boost your productivity.</p>
+      
+      <!-- Search Bar -->
+      <div class="relative max-w-2xl mx-auto">
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Search 800+ free tools..." 
+          class="w-full pl-12 pr-4 py-4 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-lg shadow-sm"
+        >
+        <svg class="w-6 h-6 text-gray-400 absolute left-4 top-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Category Grid -->
+    <div id="categoriesSection" class="mb-16">
+      <h2 class="text-xl font-bold text-gray-900 mb-6">Categories</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <!-- Category Cards -->
+        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+          <span class="font-semibold text-gray-800">PDF Tools</span>
+        </a>
+        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+          <span class="font-semibold text-gray-800">Image Tools</span>
+        </a>
+        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+          <span class="font-semibold text-gray-800">Calculators</span>
+        </a>
+        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+          <span class="font-semibold text-gray-800">AI Generators</span>
+        </a>
+        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+          <span class="font-semibold text-gray-800">Text Tools</span>
+        </a>
+        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+          <span class="font-semibold text-gray-800">Developer Tools</span>
+        </a>
+        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+          <span class="font-semibold text-gray-800">SEO Tools</span>
+        </a>
+        <a href="#" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors flex flex-col items-center justify-center text-center">
+          <span class="font-semibold text-gray-800">Converters</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Instant Search Results / Popular Tools -->
+    <div>
+      <h2 id="toolsGridTitle" class="text-xl font-bold text-gray-900 mb-6">Popular Tools</h2>
+      <div id="toolsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Injected via JavaScript -->
+      </div>
+      <p id="noResults" class="hidden text-gray-500 text-center py-8">No tools found matching your search.</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-gray-200 mt-12 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center md:text-left md:flex justify-between items-center">
+      <p class="text-gray-500 text-sm">© 2026 AkhiTool. All rights reserved.</p>
+      <div class="mt-4 md:mt-0 space-x-6 text-sm">
+        <a href="#" class="text-gray-500 hover:text-blue-600">Privacy Policy</a>
+        <a href="#" class="text-gray-500 hover:text-blue-600">Terms of Service</a>
+        <a href="#" class="text-gray-500 hover:text-blue-600">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Instant Search Script -->
+  <script>
+    const tools = [
+      { name: "Image Compressor", desc: "Compress JPG, PNG, WebP without losing quality.", url: "/tool/image-compressor" },
+      { name: "Age Calculator", desc: "Calculate exact age in years, months, and days.", url: "/tool/age-calculator" },
+      { name: "Business Name Generator", desc: "Generate catchy names for your next startup.", url: "/tool/business-name-generator" },
+      { name: "PDF to Word", desc: "Convert PDF documents to editable Word files.", url: "/tool/pdf-to-word" },
+      { name: "JSON Formatter", desc: "Format, validate, and minify JSON data safely.", url: "/tool/json-formatter" },
+      { name: "Word Counter", desc: "Count words, characters, and reading time.", url: "/tool/word-counter" }
+    ];
+
+    const searchInput = document.getElementById('searchInput');
+    const toolsGrid = document.getElementById('toolsGrid');
+    const toolsGridTitle = document.getElementById('toolsGridTitle');
+    const noResults = document.getElementById('noResults');
+    const categoriesSection = document.getElementById('categoriesSection');
+
+    function renderTools(filterText = "") {
+      const filtered = tools.filter(tool => 
+        tool.name.toLowerCase().includes(filterText.toLowerCase()) || 
+        tool.desc.toLowerCase().includes(filterText.toLowerCase())
+      );
+
+      toolsGrid.innerHTML = "";
+      
+      if (filtered.length === 0) {
+        toolsGrid.classList.add('hidden');
+        noResults.classList.remove('hidden');
+      } else {
+        toolsGrid.classList.remove('hidden');
+        noResults.classList.add('hidden');
+        
+        filtered.forEach(tool => {
+          toolsGrid.innerHTML += `
+            <a href="${tool.url}" class="bg-white p-6 rounded-lg border border-gray-200 hover-card transition-colors block">
+              <h3 class="text-lg font-bold text-gray-900 mb-2">${tool.name}</h3>
+              <p class="text-gray-600 text-sm leading-relaxed">${tool.desc}</p>
+            </a>
+          `;
+        });
+      }
+
+      // Hide categories when searching to focus on results
+      if (filterText.length > 0) {
+        categoriesSection.classList.add('hidden');
+        toolsGridTitle.innerText = "Search Results";
+      } else {
+        categoriesSection.classList.remove('hidden');
+        toolsGridTitle.innerText = "Popular Tools";
+      }
+    }
+
+    // Initial render
+    renderTools();
+
+    // Listen for typing (instant filter)
+    searchInput.addEventListener('input', (e) => {
+      renderTools(e.target.value);
+    });
+  </script>
+</body>
+          </html>
+  
