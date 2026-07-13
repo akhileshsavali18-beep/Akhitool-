@@ -1,0 +1,13 @@
+<svg width="180" height="40" viewBox="0 0 180 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="icon-grad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#2563EB"/>
+            <stop offset="1" stop-color="#4F46E5"/>
+        </linearGradient>
+    </defs>
+    <!-- Modern Minimalist A Icon -->
+    <path d="M20 2L4 36H11.5L20 17.5L28.5 36H36L20 2Z" fill="url(#icon-grad)"/>
+    <path d="M14 27H26V32H14V27Z" fill="#06B6D4"/>
+    <!-- Clean Typography -->
+    <text x="46" y="29" font-family="system-ui, -apple-system, 'Inter', sans-serif" font-size="24" font-weight="700" letter-spacing="-0.5" fill="#111827">AkhiTool</text>
+</svg>
