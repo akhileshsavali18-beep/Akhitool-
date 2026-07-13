@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Prevent crawling of internal scripts, API endpoints, or private directories if added later
+Disallow: /cgi-bin/
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://akhitool.com/sitemap.xml
+
