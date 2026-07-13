@@ -49,29 +49,41 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
-                <a href="#" class="flex items-center gap-2 group">
+                <a href="/" class="flex items-center gap-2 group">
                     <img src="logo.svg" alt="AkhiTool Logo" class="h-8 w-8 transition-transform group-hover:scale-105">
                     <span class="text-xl font-bold tracking-tight text-brand-text">Akhi<span class="text-brand-primary">Tool</span></span>
                 </a>
                 
                 <!-- Desktop Nav -->
                 <nav class="hidden lg:flex space-x-8 items-center">
-                    <a href="#" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors">Home</a>
+                    <a href="/" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors">Home</a>
                     <a href="#all-tools" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors">All Tools</a>
                     <a href="#categories" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors">Categories</a>
                     <a href="#popular" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors">Popular Tools</a>
-                    <a href="#about" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors">About</a>
-                    <a href="#contact" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors">Contact</a>
+                    <a href="/about" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors">About</a>
+                    <a href="/contact" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors">Contact</a>
                 </nav>
 
                 <!-- Mobile Menu Button (Visible on smaller screens) -->
                 <div class="lg:hidden flex items-center">
-                    <button class="text-gray-600 hover:text-brand-primary focus:outline-none">
+                    <button id="mobile-menu-btn" aria-label="Toggle Menu" class="text-gray-600 hover:text-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary rounded-lg p-1">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-gray-100 shadow-lg absolute w-full transition-all">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="/" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:text-brand-primary hover:bg-gray-50 transition-colors">Home</a>
+                <a href="#all-tools" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:text-brand-primary hover:bg-gray-50 transition-colors">All Tools</a>
+                <a href="#categories" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:text-brand-primary hover:bg-gray-50 transition-colors">Categories</a>
+                <a href="#popular" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:text-brand-primary hover:bg-gray-50 transition-colors">Popular Tools</a>
+                <a href="/about" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:text-brand-primary hover:bg-gray-50 transition-colors">About</a>
+                <a href="/contact" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:text-brand-primary hover:bg-gray-50 transition-colors">Contact</a>
             </div>
         </div>
     </header>
@@ -94,7 +106,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </div>
-                <input type="text" placeholder="Search tools..." class="block w-full pl-14 pr-32 py-4 border border-gray-200 rounded-2xl bg-white placeholder-gray-400 focus:outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 sm:text-lg shadow-sm transition-all text-brand-text">
+                <input type="text" id="search-input" placeholder="Search tools..." autocomplete="off" class="block w-full pl-14 pr-32 py-4 border border-gray-200 rounded-2xl bg-white placeholder-gray-400 focus:outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 sm:text-lg shadow-sm transition-all text-brand-text">
                 <div class="absolute inset-y-0 right-2 flex items-center">
                     <button class="bg-brand-primary text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:bg-brand-secondary transition-colors shadow-sm">Search</button>
                 </div>
@@ -102,7 +114,7 @@
 
             <!-- Action Buttons -->
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#all-tools" class="bg-brand-primary hover:bg-brand-secondary text-white px-8 py-3.5 rounded-full font-medium transition-colors shadow-sm flex items-center justify-center gap-2">
+                <a href="#popular" class="bg-brand-primary hover:bg-brand-secondary text-white px-8 py-3.5 rounded-full font-medium transition-colors shadow-sm flex items-center justify-center gap-2">
                     Explore Tools
                 </a>
                 <a href="#categories" class="bg-white border border-gray-200 text-brand-text hover:border-brand-primary hover:text-brand-primary px-8 py-3.5 rounded-full font-medium transition-colors shadow-sm flex items-center justify-center gap-2">
@@ -119,28 +131,28 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Tool Card -->
-                <a href="#" class="block bg-brand-card rounded-2xl p-6 shadow-soft border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
+                <a href="/tools/image-compressor" data-keywords="image picture photo compress reduce size optimization webp jpg png" class="searchable-tool block bg-brand-card rounded-2xl p-6 shadow-soft border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
                     <div class="w-12 h-12 rounded-xl bg-blue-50 text-brand-primary flex items-center justify-center mb-5 group-hover:bg-brand-primary group-hover:text-white transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                     </div>
                     <h3 class="text-lg font-semibold mb-2 text-brand-text group-hover:text-brand-primary transition-colors">Image Compressor</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">Compress and optimize images without losing quality instantly.</p>
                 </a>
-                <a href="#" class="block bg-brand-card rounded-2xl p-6 shadow-soft border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
+                <a href="/tools/pdf-merger" data-keywords="pdf document merge combine join files" class="searchable-tool block bg-brand-card rounded-2xl p-6 shadow-soft border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
                     <div class="w-12 h-12 rounded-xl bg-indigo-50 text-brand-secondary flex items-center justify-center mb-5 group-hover:bg-brand-secondary group-hover:text-white transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     </div>
                     <h3 class="text-lg font-semibold mb-2 text-brand-text group-hover:text-brand-secondary transition-colors">PDF Merger</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">Combine multiple PDF documents into a single file quickly and securely.</p>
                 </a>
-                <a href="#" class="block bg-brand-card rounded-2xl p-6 shadow-soft border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
+                <a href="/tools/age-calculator" data-keywords="calculator age years months days date math" class="searchable-tool block bg-brand-card rounded-2xl p-6 shadow-soft border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
                     <div class="w-12 h-12 rounded-xl bg-cyan-50 text-brand-accent flex items-center justify-center mb-5 group-hover:bg-brand-accent group-hover:text-white transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                     </div>
                     <h3 class="text-lg font-semibold mb-2 text-brand-text group-hover:text-brand-accent transition-colors">Age Calculator</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">Calculate exact age in years, months, and days perfectly.</p>
                 </a>
-                <a href="#" class="block bg-brand-card rounded-2xl p-6 shadow-soft border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
+                <a href="/tools/seo-analyzer" data-keywords="seo search engine optimization marketing ranking analyzer tool website web" class="searchable-tool block bg-brand-card rounded-2xl p-6 shadow-soft border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
                     <div class="w-12 h-12 rounded-xl bg-gray-50 text-gray-700 flex items-center justify-center mb-5 group-hover:bg-gray-800 group-hover:text-white transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                     </div>
@@ -154,37 +166,37 @@
         <section id="categories" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <h2 class="text-2xl font-bold tracking-tight text-brand-text mb-8">Browse by Category</h2>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                <a href="#" class="flex flex-col items-center justify-center p-6 bg-brand-card rounded-2xl border border-gray-100 hover:border-brand-primary hover:shadow-md transition-all gap-3 cursor-pointer group">
+                <a href="/categories/image-tools" class="flex flex-col items-center justify-center p-6 bg-brand-card rounded-2xl border border-gray-100 hover:border-brand-primary hover:shadow-md transition-all gap-3 cursor-pointer group">
                     <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-brand-primary group-hover:scale-110 transition-transform">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     </div>
                     <span class="font-medium text-sm text-brand-text">Image Tools</span>
                 </a>
-                <a href="#" class="flex flex-col items-center justify-center p-6 bg-brand-card rounded-2xl border border-gray-100 hover:border-brand-secondary hover:shadow-md transition-all gap-3 cursor-pointer group">
+                <a href="/categories/pdf-tools" class="flex flex-col items-center justify-center p-6 bg-brand-card rounded-2xl border border-gray-100 hover:border-brand-secondary hover:shadow-md transition-all gap-3 cursor-pointer group">
                     <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-brand-secondary group-hover:scale-110 transition-transform">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                     </div>
                     <span class="font-medium text-sm text-brand-text">PDF Tools</span>
                 </a>
-                <a href="#" class="flex flex-col items-center justify-center p-6 bg-brand-card rounded-2xl border border-gray-100 hover:border-brand-accent hover:shadow-md transition-all gap-3 cursor-pointer group">
+                <a href="/categories/calculators" class="flex flex-col items-center justify-center p-6 bg-brand-card rounded-2xl border border-gray-100 hover:border-brand-accent hover:shadow-md transition-all gap-3 cursor-pointer group">
                     <div class="w-10 h-10 rounded-full bg-cyan-50 flex items-center justify-center text-brand-accent group-hover:scale-110 transition-transform">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                     </div>
                     <span class="font-medium text-sm text-brand-text">Calculators</span>
                 </a>
-                <a href="#" class="flex flex-col items-center justify-center p-6 bg-brand-card rounded-2xl border border-gray-100 hover:border-purple-500 hover:shadow-md transition-all gap-3 cursor-pointer group">
+                <a href="/categories/ai-tools" class="flex flex-col items-center justify-center p-6 bg-brand-card rounded-2xl border border-gray-100 hover:border-purple-500 hover:shadow-md transition-all gap-3 cursor-pointer group">
                     <div class="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     </div>
                     <span class="font-medium text-sm text-brand-text">AI Tools</span>
                 </a>
-                <a href="#" class="flex flex-col items-center justify-center p-6 bg-brand-card rounded-2xl border border-gray-100 hover:border-green-500 hover:shadow-md transition-all gap-3 cursor-pointer group">
+                <a href="/categories/dev-tools" class="flex flex-col items-center justify-center p-6 bg-brand-card rounded-2xl border border-gray-100 hover:border-green-500 hover:shadow-md transition-all gap-3 cursor-pointer group">
                     <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-600 group-hover:scale-110 transition-transform">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                     </div>
                     <span class="font-medium text-sm text-brand-text">Dev Tools</span>
                 </a>
-                <a href="#" class="flex flex-col items-center justify-center p-6 bg-brand-card rounded-2xl border border-gray-100 hover:border-pink-500 hover:shadow-md transition-all gap-3 cursor-pointer group">
+                <a href="/categories/seo-tools" class="flex flex-col items-center justify-center p-6 bg-brand-card rounded-2xl border border-gray-100 hover:border-pink-500 hover:shadow-md transition-all gap-3 cursor-pointer group">
                     <div class="w-10 h-10 rounded-full bg-pink-50 flex items-center justify-center text-pink-600 group-hover:scale-110 transition-transform">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
@@ -194,7 +206,7 @@
         </section>
 
         <!-- 4. Trending Tools -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <section id="all-tools" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <h2 class="text-2xl font-bold tracking-tight text-brand-text mb-8 flex items-center gap-2">
                 Trending Tools
                 <span class="relative flex h-3 w-3">
@@ -204,24 +216,322 @@
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Trending Cards -->
-                <a href="#" class="block bg-brand-card rounded-2xl p-6 shadow-soft border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
+                <a href="/tools/qr-generator" data-keywords="qr code generator barcode scanner link text creator tool" class="searchable-tool block bg-brand-card rounded-2xl p-6 shadow-soft border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
                     <div class="flex items-center gap-4 mb-4">
                         <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
-                        </div>
-                        <h3 class="text-md font-semibold text-brand-text group-hover:text-orange-600 transition-colors">QR Generator</h3>
-                    </div>
-                    <p class="text-gray-500 text-sm">Create customizable QR codes for links, text, or emails.</p>
-                </a>
-                <a href="#" class="block bg-brand-card rounded-2xl p-6 shadow-soft border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center group-hover:bg-purple-500 group-hover:text-white transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                        </div>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2
+                       </div>
                         <h3 class="text-md font-semibold text-brand-text group-hover:text-purple-600 transition-colors">EMI Calculator</h3>
                     </div>
                     <p class="text-gray-500 text-sm">Calculate your equated monthly installments easily.</p>
                 </a>
-                 <a href="#" class="block bg-brand-card rounded-2xl p-6 shadow-soft border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
+                 <a href="/tools/base64-encode" data-keywords="base64 encode decode string developer tools crypto hash" class="searchable-tool block bg-brand-card rounded-2xl p-6 shadow-soft border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
                     <div class="flex items-center gap-4 mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center group-hover:bg-blue-5
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                        </div>
+                        <h3 class="text-md font-semibold text-brand-text group-hover:text-blue-600 transition-colors">Base64 Encode</h3>
+                    </div>
+                    <p class="text-gray-500 text-sm">Quickly encode or decode strings to and from Base64 format.</p>
+                </a>
+                <a href="/tools/lorem-ipsum" data-keywords="lorem ipsum dummy text generator layout mockups design dev tool" class="searchable-tool block bg-brand-card rounded-2xl p-6 shadow-soft border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-green-50 text-green-500 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                        </div>
+                        <h3 class="text-md font-semibold text-brand-text group-hover:text-green-600 transition-colors">Lorem Ipsum</h3>
+                    </div>
+                    <p class="text-gray-500 text-sm">Generate dummy text for your layouts and mockups instantly.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- 5. Recently Added Tools -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <h2 class="text-2xl font-bold tracking-tight text-brand-text mb-8">Recently Added Tools</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Horizontal Cards -->
+                <a href="/tools/word-counter" data-keywords="word counter text characters letter count reading time typing tool" class="searchable-tool flex items-center bg-brand-card rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all gap-4 cursor-pointer group">
+                    <div class="w-12 h-12 rounded-lg bg-gray-50 text-gray-700 flex items-center justify-center shrink-0 group-hover:bg-brand-primary group-hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-brand-text group-hover:text-brand-primary transition-colors">Word Counter</h3>
+                        <p class="text-xs text-gray-500 mt-1">Count words, characters, and reading time.</p>
+                    </div>
+                </a>
+                <a href="/tools/unit-converter" data-keywords="unit converter length weight temperature convert math calculate metrics tool" class="searchable-tool flex items-center bg-brand-card rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all gap-4 cursor-pointer group">
+                    <div class="w-12 h-12 rounded-lg bg-gray-50 text-gray-700 flex items-center justify-center shrink-0 group-hover:bg-brand-secondary group-hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-brand-text group-hover:text-brand-secondary transition-colors">Unit Converter</h3>
+                        <p class="text-xs text-gray-500 mt-1">Convert length, weight, temperature & more.</p>
+                    </div>
+                </a>
+                <a href="/tools/password-generator" data-keywords="password generator secure strong secret generate privacy safe tool" class="searchable-tool flex items-center bg-brand-card rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all gap-4 cursor-pointer group">
+                    <div class="w-12 h-12 rounded-lg bg-gray-50 text-gray-700 flex items-center justify-center shrink-0 group-hover:bg-brand-accent group-hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-brand-text group-hover:text-brand-accent transition-colors">Password Generator</h3>
+                        <p class="text-xs text-gray-500 mt-1">Create strong, secure random passwords.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 6. Why Choose AkhiTool -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 mt-8 border-t border-gray-100">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold tracking-tight text-brand-text mb-4">Why Choose AkhiTool</h2>
+                <p class="text-gray-500 max-w-xl mx-auto">Built for modern professionals, developers, and creators who value speed and privacy.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                <!-- Card 1 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-yellow-50 text-yellow-500 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-3 text-brand-text">Lightning Fast</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">All tools work instantly in your browser.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-3 text-brand-text">Privacy First</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Your files never leave your device whenever possible.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-3 text-brand-text">Mobile Friendly</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Designed for phones, tablets and desktop.</p>
+                </div>
+                <!-- Card 4 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-green-50 text-green-500 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-3 text-brand-text">100% Free</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">No signup. No hidden charges.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Statistics Section -->
+        <section class="bg-white border-y border-gray-100 py-12 mb-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-0 md:divide-x divide-gray-100">
+                    <div class="flex flex-col items-center justify-center">
+                        <span class="text-3xl md:text-4xl font-extrabold text-brand-primary mb-2">20+</span>
+                        <span class="text-sm font-medium text-gray-500 uppercase tracking-wider">Free Tools</span>
+                    </div>
+                    <div class="flex flex-col items-center justify-center">
+                        <span class="text-3xl md:text-4xl font-extrabold text-brand-primary mb-2">100%</span>
+                        <span class="text-sm font-medium text-gray-500 uppercase tracking-wider">Free</span>
+                    </div>
+                    <div class="flex flex-col items-center justify-center">
+                        <span class="text-3xl md:text-4xl font-extrabold text-brand-primary mb-2">📱</span>
+                        <span class="text-sm font-medium text-gray-500 uppercase tracking-wider">Mobile Friendly</span>
+                    </div>
+                    <div class="flex flex-col items-center justify-center">
+                        <span class="text-3xl md:text-4xl font-extrabold text-brand-primary mb-2">⚡</span>
+                        <span class="text-sm font-medium text-gray-500 uppercase tracking-wider">Fast Performance</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. FAQ -->
+        <section id="faq" class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+            <h2 class="text-2xl font-bold tracking-tight text-brand-text mb-8 text-center">Frequently Asked Questions</h2>
+            <div class="space-y-4">
+                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300" open>
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-brand-text select-none">
+                        <span>What is AkhiTool?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-500 px-6 pb-6 text-sm leading-relaxed border-t border-gray-50 pt-4 mt-2">
+                        AkhiTool is your everyday online toolbox offering a wide collection of utilities for PDFs, images, developers, SEO, and daily calculations, all packed into one fast, easy-to-use platform.
+                    </div>
+                </details>
+                
+                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-brand-text select-none">
+                        <span>Are these tools free?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-500 px-6 pb-6 text-sm leading-relaxed border-t border-gray-50 pt-4 mt-2">
+                        Yes, absolutely! All tools on AkhiTool are 100% free to use. There are no paywalls, hidden charges, or premium subscriptions required.
+                    </div>
+                </details>
+
+                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-brand-text select-none">
+                        <span>Do I need to create an account?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-500 px-6 pb-6 text-sm leading-relaxed border-t border-gray-50 pt-4 mt-2">
+                        No signup or account creation is required. You can start using any tool instantly right from your browser.
+                    </div>
+                </details>
+
+                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-brand-text select-none">
+                        <span>Is my data safe?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-500 px-6 pb-6 text-sm leading-relaxed border-t border-gray-50 pt-4 mt-2">
+                        Privacy is our priority. Most of our tools process your data locally on your device. For tools that require server processing, your files are securely handled and deleted immediately after the process is complete.
+                    </div>
+                </details>
+
+                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-brand-text select-none">
+                        <span>Can I use AkhiTool on mobile?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-500 px-6 pb-6 text-sm leading-relaxed border-t border-gray-50 pt-4 mt-2">
+                        Yes, AkhiTool is fully responsive and designed to work seamlessly across all your devices, including desktop computers, tablets, and mobile phones.
+                    </div>
+                </details>
+
+                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-brand-text select-none">
+                        <span>Will more tools be added?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-500 px-6 pb-6 text-sm leading-relaxed border-t border-gray-50 pt-4 mt-2">
+                        Absolutely. We are constantly developing and adding new, useful tools based on user feedback and modern productivity needs.
+                    </div>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <!-- 9. Modern Footer -->
+    <footer class="bg-white border-t border-gray-100 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+                
+                <!-- Column 1 -->
+                <div class="col-span-1 lg:col-span-2 pr-0 lg:pr-8">
+                    <a href="/" class="flex items-center gap-2 mb-4 group">
+                        <img src="logo.svg" alt="AkhiTool Logo" class="h-7 w-7 transition-transform group-hover:scale-105">
+                        <span class="text-xl font-bold tracking-tight text-brand-text">Akhi<span class="text-brand-primary">Tool</span></span>
+                    </a>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6 max-w-sm">
+                        Your everyday online toolbox. Free tools for PDF, images, calculators, AI, text, SEO and more—all built for speed and privacy.
+                    </p>
+                </div>
+
+                <!-- Column 2 -->
+                <div>
+                    <h4 class="font-semibold text-brand-text mb-4">Popular Tools</h4>
+                    <ul class="space-y-3 text-sm text-gray-500">
+                        <li><a href="/tools/image-compressor" class="hover:text-brand-primary transition-colors">Image Compressor</a></li>
+                        < li><a href="/tools/age-calculator" class="hover:text-brand-primary transition-colors">Age Calculator</a></li>
+                        <li><a href="/tools/emi-calculator" class="hover:text-brand-primary transition-colors">EMI Calculator</a></li>
+                        <li><a href="/tools/password-generator" class="hover:text-brand-primary transition-colors">Password Generator</a></li>
+                        <li><a href="/tools/qr-generator" class="hover:text-brand-primary transition-colors">QR Generator</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3 -->
+                <div>
+                    <h4 class="font-semibold text-brand-text mb-4">Categories</h4>
+                    <ul class="space-y-3 text-sm text-gray-500">
+                        <li><a href="/categories/pdf-tools" class="hover:text-brand-primary transition-colors">PDF Tools</a></li>
+                        <li><a href="/categories/image-tools" class="hover:text-brand-primary transition-colors">Image Tools</a></li>
+                        <li><a href="/categories/calculators" class="hover:text-brand-primary transition-colors">Calculators</a></li>
+                        <li><a href="/categories/ai-tools" class="hover:text-brand-primary transition-colors">AI Tools</a></li>
+                        <li><a href="/categories/dev-tools" class="hover:text-brand-primary transition-colors">Developer Tools</a></li>
+                        <li><a href="/categories/seo-tools" class="hover:text-brand-primary transition-colors">SEO Tools</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4 -->
+                <div>
+                    <h4 class="font-semibold text-brand-text mb-4">Company</h4>
+                    <ul class="space-y-3 text-sm text-gray-500">
+                        <li><a href="/about" class="hover:text-brand-primary transition-colors">About</a></li>
+                        <li><a href="/contact" class="hover:text-brand-primary transition-colors">Contact</a></li>
+                        <li><a href="/privacy-policy" class="hover:text-brand-primary transition-colors">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service" class="hover:text-brand-primary transition-colors">Terms of Service</a></li>
+                        <li><a href="/disclaimer" class="hover:text-brand-primary transition-colors">Disclaimer</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            
+            <!-- Footer Bottom -->
+            <div class="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-gray-400">© 2026 AkhiTool. All Rights Reserved.</p>
+                <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                    </span>
+                    All systems operational
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Menu Toggle functionality
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Instant Search Functionality
+            const searchInput = document.getElementById('search-input');
+            const toolCards = document.querySelectorAll('.searchable-tool');
+
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase().trim();
+
+                    toolCards.forEach(card => {
+                        // Extract searchable text from card content and data attributes
+                        const title = card.querySelector('h3') ? card.querySelector('h3').innerText.toLowerCase() : '';
+                        const desc = card.querySelector('p') ? card.querySelector('p').innerText.toLowerCase() : '';
+                        const keywords = card.getAttribute('data-keywords') ? card.getAttribute('data-keywords').toLowerCase() : '';
+
+                        // Show or hide based on match
+                        if (title.includes(query) || desc.includes(query) || keywords.includes(query)) {
+                            card.style.display = ''; // Fallback to Grid natural flow
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>                                                                            
