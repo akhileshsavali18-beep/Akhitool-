@@ -202,16 +202,16 @@
                     <span class="font-medium text-sm text-brand-text w-full break-words leading-tight">Dev Tools</span>
                 </a>
                 <a href="/categories/seo-tools" class="flex flex-col items-center justify-center p-4 sm:p-6 bg-brand-card rounded-2xl border border-gray-100 hover:border-pink-500 hover:shadow-md transition-all gap-3 cursor-pointer group text-center min-h-[120px]">
-                    <div class="w-10 h-10 rounded-full bg-pink-50 flex items-center justify-center text-pink-600 group-hover:scale-110 transition-transfor                                        
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <div class="w-10 h-10 rounded-full bg-pink-50 flex items-center justify-center text-pink-600 group-hover:scale-110 transition-transforñ
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
                     <span class="font-medium text-sm text-brand-text w-full break-words leading-tight">SEO Tools</span>
                 </a>
             </div>
         </section>
 
-        <!-- 4. Trending Tools -->
-        <section id="all-tools" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        <!-- 4. Trending Tools (Injected by JS) -->
+        <section id="trending" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
             <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-6 sm:mb-8 flex items-center gap-2">
                 Trending Tools
                 <span class="relative flex h-3 w-3 shrink-0">
@@ -219,77 +219,18 @@
                   <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
                 </span>
             </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                <a href="/tools/qr-generator" data-keywords="qr code generator barcode scanner link text creator tool" class="searchable-tool block bg-brand-card rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-full">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white transition-colors shrink-0">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
-                        </div>
-                        <h3 class="text-md sm:text-lg font-semibold text-brand-text group-hover:text-orange-600 transition-colors">QR Generator</h3>
-                    </div>
-                    <p class="text-gray-500 text-sm leading-relaxed">Create customizable QR codes for links, text, or emails.</p>
-                </a>
-                <a href="/tools/emi-calculator" data-keywords="emi calculator finance loan mortgage interest monthly payments" class="searchable-tool block bg-brand-card rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-full">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center group-hover:bg-purple-500 group-hover:text-white transition-colors shrink-0">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                        </div>
-                        <h3 class="text-md sm:text-lg font-semibold text-brand-text group-hover:text-purple-600 transition-colors">EMI Calculator</h3>
-                    </div>
-                    <p class="text-gray-500 text-sm leading-relaxed">Calculate your equated monthly installments easily.</p>
-                </a>
-                 <a href="/tools/base64-encode" data-keywords="base64 encode decode string developer tools crypto hash" class="searchable-tool block bg-brand-card rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-full">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-colors shrink-0">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
-                        </div>
-                        <h3 class="text-md sm:text-lg font-semibold text-brand-text group-hover:text-blue-600 transition-colors">Base64 Encode</h3>
-                    </div>
-                    <p class="text-gray-500 text-sm leading-relaxed">Quickly encode or decode strings to and from Base64 format.</p>
-                </a>
-                <a href="/tools/lorem-ipsum" data-keywords="lorem ipsum dummy text generator layout mockups design dev tool" class="searchable-tool block bg-brand-card rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-full">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-green-50 text-green-500 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-colors shrink-0">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-                        </div>
-                        <h3 class="text-md sm:text-lg font-semibold text-brand-text group-hover:text-green-600 transition-colors">Lorem Ipsum</h3>
-                    </div>
-                    <p class="text-gray-500 text-sm leading-relaxed">Generate dummy text for your layouts and mockups instantly.</p>
-                </a>
+            <!-- Dynamic Container -->
+            <div id="trending-tools-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                 <!-- Data loaded via assets/js/main.js -->
             </div>
         </section>
 
-        <!-- 5. Recently Added Tools -->
+        <!-- 5. Recently Added Tools (Injected by JS) -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-6 sm:mb-8">Recently Added Tools</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                <a href="/tools/word-counter" data-keywords="word counter text characters letter count reading time typing tool" class="searchable-tool flex items-center bg-brand-card rounded-2xl p-4 sm:p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all gap-4 cursor-pointer group w-full">
-                    <div class="w-12 h-12 rounded-lg bg-gray-50 text-gray-700 flex items-center justify-center shrink-0 group-hover:bg-brand-primary group-hover:text-white transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    </div>
-                    <div class="min-w-0">
-                        <h3 class="font-semibold text-brand-text group-hover:text-brand-primary transition-colors truncate">Word Counter</h3>
-                        <p class="text-xs sm:text-sm text-gray-500 mt-1 truncate">Count words, characters, and reading time.</p>
-                    </div>
-                </a>
-                <a href="/tools/unit-converter" data-keywords="unit converter length weight temperature convert math calculate metrics tool" class="searchable-tool flex items-center bg-brand-card rounded-2xl p-4 sm:p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all gap-4 cursor-pointer group w-full">
-                    <div class="w-12 h-12 rounded-lg bg-gray-50 text-gray-700 flex items-center justify-center shrink-0 group-hover:bg-brand-secondary group-hover:text-white transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-                    </div>
-                    <div class="min-w-0">
-                        <h3 class="font-semibold text-brand-text group-hover:text-brand-secondary transition-colors truncate">Unit Converter</h3>
-                        <p class="text-xs sm:text-sm text-gray-500 mt-1 truncate">Convert length, weight, temperature & more.</p>
-                    </div>
-                </a>
-                <a href="/tools/password-generator" data-keywords="password generator secure strong secret generate privacy safe tool" class="searchable-tool flex items-center bg-brand-card rounded-2xl p-4 sm:p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all gap-4 cursor-pointer group w-full">
-                    <div class="w-12 h-12 rounded-lg bg-gray-50 text-gray-700 flex items-center justify-center shrink-0 group-hover:bg-brand-accent group-hover:text-white transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                    </div>
-                    <div class="min-w-0">
-                        <h3 class="font-semibold text-brand-text group-hover:text-brand-accent transition-colors truncate">Password Generator</h3>
-                        <p class="text-xs sm:text-sm text-gray-500 mt-1 truncate">Create strong, secure random passwords.</p>
-                    </div>
-                </a>
+            <!-- Dynamic Container -->
+            <div id="recent-tools-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <!-- Data loaded via assets/js/main.js -->
             </div>
         </section>
 
@@ -329,14 +270,13 @@
                     <p class="text-gray-500 text-sm leading-relaxed flex-grow">No signup. No hidden charges.</p>
                 </div>
             </div>
-        </section>
-
-        <!-- 7. Statistics Section -->
+                                                                                                       </section>
+            <!-- 7. Statistics Section -->
         <section class="bg-white border-y border-gray-100 py-10 sm:py-12 mb-12 sm:mb-16">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center divide-x-0 md:divide-x divide-gray-100">
                     <div class="flex flex-col items-center justify-center">
-                        <span class="text-3xl sm:text-4xl font-extrabold text-brand-primary mb-1 sm:mb-2">20+</span>
+                        <span class="text-3xl sm:text-4xl font-extrabold text-brand-primary mb-1 sm:mb-2">10+</span>
                         <span class="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Free Tools</span>
                     </div>
                     <div class="flex flex-col items-center justify-center">
@@ -397,37 +337,13 @@
 
                 <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
                     <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
-                       <span class="pr-4">Is my data safe?</span>
+                        <span class="pr-4">Is my data safe?</span>
                         <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </span>
                     </summary>
                     <div class="text-gray-500 px-4 sm:px-6 pb-4 sm:pb-6 text-sm leading-relaxed border-t border-gray-50 pt-3 sm:pt-4">
                         Privacy is our priority. Most of our tools process your data locally on your device. For tools that require server processing, your files are securely handled and deleted immediately after the process is complete.
-                    </div>
-                </details>
-
-                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
-                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
-                        <span class="pr-4">Can I use AkhiTool on mobile?</span>
-                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </span>
-                    </summary>
-                    <div class="text-gray-500 px-4 sm:px-6 pb-4 sm:pb-6 text-sm leading-relaxed border-t border-gray-50 pt-3 sm:pt-4">
-                        Yes, AkhiTool is fully responsive and designed to work seamlessly across all your devices, including desktop computers, tablets, and mobile phones.
-                    </div>
-                </details>
-
-                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
-                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
-                        <span class="pr-4">Will more tools be added?</span>
-                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </span>
-                    </summary>
-                    <div class="text-gray-500 px-4 sm:px-6 pb-4 sm:pb-6 text-sm leading-relaxed border-t border-gray-50 pt-3 sm:pt-4">
-                        Absolutely. We are constantly developing and adding new, useful tools based on user feedback and modern productivity needs.
                     </div>
                 </details>
             </div>
@@ -441,7 +357,7 @@
                 
                 <!-- Column 1 -->
                 <div class="col-span-1 sm:col-span-2 pr-0 lg:pr-8">
-                    <a href="/" class="flex items-center mb-4 sm:mb-6 group inline-block">
+                    <a href="index.html" class="flex items-center mb-4 sm:mb-6 group inline-block">
                         <img src="logo.png" alt="AkhiTool Logo" loading="lazy" class="h-10 md:h-12 w-auto object-contain transition-transform group-hover:scale-105">
                     </a>
                     <p class="text-gray-500 text-sm leading-relaxed mb-6 max-w-sm">
@@ -453,11 +369,11 @@
                 <div class="w-full">
                     <h4 class="font-semibold text-brand-text mb-3 sm:mb-4">Popular Tools</h4>
                     <ul class="text-sm text-gray-500 flex flex-col">
-                        <li><a href="/tools/image-compressor" class="block py-1.5 hover:text-brand-primary transition-colors">Image Compressor</a></li>
-                        <li><a href="/tools/age-calculator" class="block py-1.5 hover:text-brand-primary transition-colors">Age Calculator</a></li>
-                        <li><a href="/tools/emi-calculator" class="block py-1.5 hover:text-brand-primary transition-colors">EMI Calculator</a></li>
-                        <li><a href="/tools/password-generator" class="block py-1.5 hover:text-brand-primary transition-colors">Password Generator</a></li>
-                        <li><a href="/tools/qr-generator" class="block py-1.5 hover:text-brand-primary transition-colors">QR Generator</a></li>
+                        <li><a href="image-compressor.html" class="block py-1.5 hover:text-brand-primary transition-colors">Image Compressor</a></li>
+                        <li><a href="age-calculator.html" class="block py-1.5 hover:text-brand-primary transition-colors">Age Calculator</a></li>
+                        <li><a href="emi-calculator.html" class="block py-1.5 hover:text-brand-primary transition-colors">EMI Calculator</a></li>
+                        <li><a href="password-generator.html" class="block py-1.5 hover:text-brand-primary transition-colors">Password Generator</a></li>
+                        <li><a href="qr-code-generator.html" class="block py-1.5 hover:text-brand-primary transition-colors">QR Generator</a></li>
                     </ul>
                 </div>
 
@@ -465,12 +381,12 @@
                 <div class="w-full">
                     <h4 class="font-semibold text-brand-text mb-3 sm:mb-4">Categories</h4>
                     <ul class="text-sm text-gray-500 flex flex-col">
-                        <li><a href="/categories/pdf-tools" class="block py-1.5 hover:text-brand-primary transition-colors">PDF Tools</a></li>
-                        <li><a href="/categories/image-tools" class="block py-1.5 hover:text-brand-primary transition-colors">Image Tools</a></li>
-                        <li><a href="/categories/calculators" class="block py-1.5 hover:text-brand-primary transition-colors">Calculators</a></li>
-                        <li><a href="/categories/ai-tools" class="block py-1.5 hover:text-brand-primary transition-colors">AI Tools</a></li>
-                        <li><a href="/categories/dev-tools" class="block py-1.5 hover:text-brand-primary transition-colors">Developer Tools</a></li>
-                        <li><a href="/categories/seo-tools" class="block py-1.5 hover:text-brand-primary transition-colors">SEO Tools</a></li>
+                        <li><a href="categories/pdf-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">PDF Tools</a></li>
+                        <li><a href="categories/image-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">Image Tools</a></li>
+                        <li><a href="categories/calculators.html" class="block py-1.5 hover:text-brand-primary transition-colors">Calculators</a></li>
+                        <li><a href="categories/ai-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">AI Tools</a></li>
+                        <li><a href="categories/dev-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">Developer Tools</a></li>
+                        <li><a href="categories/seo-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">SEO Tools</a></li>
                     </ul>
                 </div>
 
@@ -478,11 +394,11 @@
                 <div class="w-full">
                     <h4 class="font-semibold text-brand-text mb-3 sm:mb-4">Company</h4>
                     <ul class="text-sm text-gray-500 flex flex-col">
-                        <li><a href="/about" class="block py-1.5 hover:text-brand-primary transition-colors">About</a></li>
-                        <li><a href="/contact" class="block py-1.5 hover:text-brand-primary transition-colors">Contact</a></li>
-                        <li><a href="/privacy-policy" class="block py-1.5 hover:text-brand-primary transition-colors">Privacy Policy</a></li>
-                        <li><a href="/terms-of-service" class="block py-1.5 hover:text-brand-primary transition-colors">Terms of Service</a></li>
-                        <li><a href="/disclaimer" class="block py-1.5 hover:text-brand-primary transition-colors">Disclaimer</a></li>
+                        <li><a href="about.html" class="block py-1.5 hover:text-brand-primary transition-colors">About</a></li>
+                        <li><a href="contact.html" class="block py-1.5 hover:text-brand-primary transition-colors">Contact</a></li>
+                        <li><a href="privacy-policy.html" class="block py-1.5 hover:text-brand-primary transition-colors">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html" class="block py-1.5 hover:text-brand-primary transition-colors">Terms of Service</a></li>
+                        <li><a href="disclaimer.html" class="block py-1.5 hover:text-brand-primary transition-colors">Disclaimer</a></li>
                     </ul>
                 </div>
 
@@ -491,82 +407,13 @@
             <!-- Footer Bottom -->
             <div class="border-t border-gray-100 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
                 <p class="text-sm text-gray-400 w-full sm:w-auto">© 2026 AkhiTool. All Rights Reserved.</p>
-                <div class="flex items-center justify-center sm:justify-end gap-2 text-sm text-gray-400 w-full sm:w-auto">
-                    <span class="relative flex h-2 w-2 shrink-0">
-                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                      <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                    </span>
-                    <span>All systems operational</span>
-                </div>
             </div>
         </div>
     </footer>
 
-    <!-- Interactive Scripts -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Mobile Menu Toggle functionality
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const openIcon = mobileBtn?.querySelector('.menu-open-icon');
-            const closeIcon = mobileBtn?.querySelector('.menu-close-icon');
+    <!-- App Logic Scripts -->
+    <script src="assets/js/tools-data.js"></script>
+    <script src="assets/js/main.js"></script>
 
-            if (mobileBtn && mobileMenu) {
-                const toggleMenu = () => {
-                    const isHidden = mobileMenu.classList.contains('hidden');
-                    mobileMenu.classList.toggle('hidden');
-                    mobileBtn.setAttribute('aria-expanded', !isHidden);
-                    
-                    if (openIcon && closeIcon) {
-                        openIcon.classList.toggle('hidden');
-                        closeIcon.classList.toggle('hidden');
-                    }
-                };
-
-                mobileBtn.addEventListener('click', toggleMenu);
-
-                // Close menu when clicking a link inside the mobile menu
-                const mobileLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
-                mobileLinks.forEach(link => {
-                    link.addEventListener('click', () => {
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            toggleMenu();
-                        }
-                    });
-                });
-
-                // Close menu when clicking outside
-                document.addEventListener('click', (e) => {
-                    if (!mobileMenu.classList.contains('hidden') && !mobileBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
-                        toggleMenu();
-                    }
-                });
-            }
-
-            // Instant Search Functionality
-            const searchInput = document.getElementById('search-input');
-            const toolCards = document.querySelectorAll('.searchable-tool');
-
-            if (searchInput) {
-                searchInput.addEventListener('input', (e) => {
-                    const query = e.target.value.toLowerCase().trim();
-
-                    toolCards.forEach(card => {
-                        // Extract searchable text from card content and data attributes
-                        const title = card.querySelector('h3') ? card.querySelector('h3').innerText.toLowerCase() : '';
-                        const desc = card.querySelector('p') ? card.querySelector('p').innerText.toLowerCase() : '';
-                        const keywords = card.getAttribute('data-keywords') ? card.getAttribute('data-keywords').toLowerCase() : '';
-
-                        // Show or hide based on match
-                        if (title.includes(query) || desc.includes(query) || keywords.includes(query)) {
-                            card.style.display = ''; // Fallback to Grid natural flow
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-                });
-            }
-        });
-    </script>
 </body>
 </html>
