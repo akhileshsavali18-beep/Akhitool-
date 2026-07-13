@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Free Username Generator | AkhiTool</title>
+  <meta name="description" content="Generate cool, aesthetic, and unique usernames for Instagram, TikTok, gaming, and social media instantly. Customize your handle with our free tool.">
+  <link rel="canonical" href="https://akhitool.com/tool/username-generator.html">
+  
+  <meta property="og:title" content="Free Username Generator | AkhiTool">
+  <meta property="og:description" content="Generate unique and cool usernames for gaming, social media, and more. Customize with your name or keywords instantly.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://akhitool.com/tool/username-generator.html">
+  <meta property="og:site_name" content="AkhiTool">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased">
+
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="/" class="text-2xl font-bold text-blue-600 tracking-tight">AkhiTool</a>
+      <nav class="hidden md:flex space-x-8">
+        <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600">Categories</a>
+        <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600">Popular</a>
+        <a href="#" class="text-sm font-medium text-gray-600 hover:text-blue-600">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+    
+    <nav class="flex text-sm text-gray-500 mb-6" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-2">
+        <li><a href="/" class="hover:text-blue-600">Home</a></li>
+        <li><span class="mx-2">/</span></li>
+        <li><a href="#" class="hover:text-blue-600">AI Generators</a></li>
+        <li><span class="mx-2">/</span></li>
+        <li class="text-gray-900 font-medium" aria-current="page">Username Generator</li>
+      </ol>
+    </nav>
+
+    <div class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Username Generator</h1>
+      <p class="text-lg text-gray-600">Generate cool, unique, and aesthetic usernames for social media, gaming, and online forums.</p>
+    </div>
+
+    <div class="bg-white border border-gray-200 rounded-xl p-6 md:p-8 mb-12 shadow-sm">
+      <div class="max-w-2xl mx-auto space-y-6">
+        
+        <div>
+          <label for="seedWord" class="block text-sm font-medium text-gray-700 mb-2">Seed Word or Name (Optional)</label>
+          <input 
+            type="text" 
+            id="seedWord" 
+            placeholder="e.g. Alex, Shadow, Luna"
+            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-lg shadow-sm"
+          >
+          <p class="text-xs text-gray-500 mt-2">Leave blank for completely random usernames.</p>
+        </div>
+
+        <div>
+          <label for="vibe" class="block text-sm font-medium text-gray-700 mb-2">Vibe / Category</label>
+          <select id="vibe" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 bg-white text-gray-700 font-medium shadow-sm">
+            <option value="gaming">Gaming & Esports</option>
+            <option value="aesthetic">Aesthetic & Soft</option>
+            <option value="tech">Tech & Cyberpunk</option>
+            <option value="cute">Cute & Kawaii</option>
+            <option value="random">Completely Random</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+            <input type="checkbox" id="includeNumbers" checked class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-600 accent-blue-600">
+            <span class="ml-3 text-sm text-gray-700 font-medium">Add Numbers</span>
+          </label>
+          <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+            <input type="checkbox" id="includeUnderscores" checked class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-600 accent-blue-600">
+            <span class="ml-3 text-sm text-gray-700 font-medium">Add Underscores (_)</span>
+          </label>
+        </div>
+
+        <button 
+          onclick="generateUsernames()" 
+          class="w-full mt-4 bg-blue-600 text-white px-6 py-4 rounded-lg font-bold hover:bg-blue-700 transition-colors shadow-sm text-lg flex items-center justify-center gap-2"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          Generate Usernames
+        </button>
+      </div>
+
+      <div id="resultsContainer" class="hidden mt-10 pt-8 border-t border-gray-100">
+        <div class="flex justify-between items-end mb-6">
+          <h3 class="text-xl font-bold text-gray-900">Your New Usernames</h3>
+          <p class="text-sm text-gray-500">Click to copy</p>
+        </div>
+        
+        <div id="resultsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <!-- Generated names will be injected here -->
+        </div>
+      </div>
+    </div>
+
+    <article class="prose max-w-none text-gray-700 mb-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">How to pick the perfect username</h2>
+      <p class="mb-4">Your username is your digital identity. Whether you are building a personal brand on Instagram, streaming on Twitch, or participating in forums, a memorable handle helps people recognize and remember you.</p>
+      <p>Our free AI Username Generator takes your seed word (like your first name or a favorite word) and blends it with popular naming conventions, aesthetic prefixes, and suffixes to create highly unique handles. If you're struggling with availability on popular platforms, try generating names with strategic underscores or numbers to find a variation that is unclaimed.</p>
+      
+      <h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">Best Practices for Social Media Handles:</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><strong>Consistency:</strong> Try to use the exact same username across all platforms (Instagram, Twitter, TikTok, etc.) to make yourself easy to find.</li>
+        <li><strong>Readability:</strong> Avoid long strings of random numbers. `Alex_Plays_Games` is much easier to read than `Alex29384729`.</li>
+        <li><strong>Avoid Special Characters:</strong> While underscores are acceptable, try to avoid excessive periods or repeating letters, as they make verbal sharing difficult.</li>
+      </ul>
+    </article>
+
+    <div class="mb-16">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+      
+      <details class="group border-b border-gray-200 pb-4 mb-4">
+        <summary class="flex justify-between items-center font-medium cursor-pointer list-none text-gray-900">
+          <span>Are these usernames guaranteed to be available?</span>
+          <span class="transition group-open:rotate-180 text-gray-500">
+            <svg fill="none" height="24" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+          </span>
+        </summary>
+        <p class="text-gray-600 mt-3 leading-relaxed">No. Because availability varies by platform (Instagram, Twitter, TikTok, Xbox Live, etc.), this tool generates ideas but cannot live-check databases. You will need to type your favorite choices into your desired app to confirm availability.</p>
+      </details>
+
+      <details class="group border-b border-gray-200 pb-4 mb-4">
+        <summary class="flex justify-between items-center font-medium cursor-pointer list-none text-gray-900">
+          <span>What if my desired username is already taken?</span>
+          <span class="transition group-open:rotate-180 text-gray-500">
+            <svg fill="none" height="24" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+          </span>
+        </summary>
+        <p class="text-gray-600 mt-3 leading-relaxed">If your favorite handle is taken, try checking the "Add Numbers" or "Add Underscores" options on our generator. Adding a prefix like "TheReal", "Official", or "Its" is also a common workaround.</p>
+      </details>
+
+      <details class="group border-b border-gray-200 pb-4 mb-4">
+        <summary class="flex justify-between items-center font-medium cursor-pointer list-none text-gray-900">
+          <span>Is this tool safe to use?</span>
+          <span class="transition group-open:rotate-180 text-gray-500">
+            <svg fill="none" height="24" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+          </span>
+        </summary>
+        <p class="text-gray-600 mt-3 leading-relaxed">Yes! The generator runs entirely within your web browser using JavaScript. We do not store, track, or save any of the names you input or generate.</p>
+      </details>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Related Tools</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href="business-name-generator.html" class="bg-white p-5 rounded-lg border border-gray-200 hover:border-blue-600 transition-colors">
+          <h3 class="font-bold text-gray-900">Business Name Generator</h3>
+          <p class="text-sm text-gray-600 mt-1">Generate brandable business and startup names instantly.</p>
+        </a>
+        <a href="password-generator.html" class="bg-white p-5 rounded-lg border border-gray-200 hover:border-blue-600 transition-colors">
+          <h3 class="font-bold text-gray-900">Password Generator</h3>
+          <p class="text-sm text-gray-600 mt-1">Create strong, secure, and random passwords instantly.</p>
+        </a>
+        <a href="uuid-generator.html" class="bg-white p-5 rounded-lg border border-gray-200 hover:border-blue-600 transition-colors">
+          <h3 class="font-bold text-gray-900">UUID Generator</h3>
+          <p class="text-sm text-gray-600 mt-1">Generate version 4 UUIDs (Universally Unique Identifiers).</p>
+        </a>
+        <a href="lorem-ipsum-generator.html" class="bg-white p-5 rounded-lg border border-gray-200 hover:border-blue-600 transition-colors">
+          <h3 class="font-bold text-gray-900">Lorem Ipsum Generator</h3>
+          <p class="text-sm text-gray-600 mt-1">Generate dummy text for your web and design mockups.</p>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="bg-white border-t border-gray-200 mt-12 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500">
+      © 2026 AkhiTool
+    </div>
+  </footer>
+
+  <script>
+    const wordLists = {
+      gaming: ['Sniper', 'Ninja', 'Ghost', 'Dragon', 'Pro', 'Elite', 'Slayer', 'Dark', 'Venom', 'Viper', 'Toxic', 'Void', 'Reaper', 'Shadow', 'Titan', 'Apex', 'Rogue', 'Chaos'],
+      aesthetic: ['Luna', 'Cloud', 'Star', 'Moon', 'Sky', 'Aura', 'Dream', 'Silk', 'Rose', 'Soft', 'Rain', 'Dusk', 'Dawn', 'Peach', 'Glow', 'Angel', 'Oasis', 'Echo'],
+      tech: ['Byte', 'Code', 'Cyber', 'Pixel', 'Tech', 'Dev', 'Logic', 'Synth', 'Data', 'Nexus', 'Bot', 'Wire', 'Matrix', 'Glitch', 'Neon', 'Hack', 'Node', 'Grid'],
+      cute: ['Kitty', 'Bear', 'Bunny', 'Sweet', 'Panda', 'Mochi', 'Berry', 'Fairy', 'Cupcake', 'Sprout', 'Boba', 'Honey', 'Petal', 'Daisy', 'Pixie', 'Fluff'],
+      random: ['Rapid', 'Blue', 'Swift', 'Chill', 'Wild', 'Frost', 'Iron', 'Nova', 'Zen', 'Pulse', 'Epic', 'Spark', 'Dash', 'Vibe', 'Jazz', 'Wave']
+    };
+
+    const actionPrefixes = ['TheReal', 'Its', 'Official', 'Just', 'Daily', 'Play', 'Super'];
+    
+    function getRandomElement(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function getRandomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function shuffle(array) {
+      let currentIndex = array.length, randomIndex;
+      while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+      }
+      return array;
+    }
+
+    function generateUsernames() {
+      const seedInput = document.getElementById('seedWord').value.trim().replace(/\s+/g, '');
+      const vibe = document.getElementById('vibe').value;
+      const includeNumbers = document.getElementById('includeNumbers').checked;
+      const includeUnderscores = document.getElementById('includeUnderscores').checked;
+      
+      const resultsContainer = document.getElementById('resultsContainer');
+      const resultsGrid = document.getElementById('resultsGrid');
+
+      let generatedSet = new Set();
+      const vibeWords = wordLists[vibe];
+      
+      // To ensure enough variety, grab words from other lists if random is selected, else stick to vibe
+      const pool = vibe === 'random' 
+        ? [].concat(wordLists.gaming, wordLists.aesthetic, wordLists.tech, wordLists.cute, wordLists.random)
+        : vibeWords;
+
+      const formats = [];
+
+      for(let i=0; i<50; i++) {
+        let username = "";
+        let structure = getRandomNumber(1, 4);
+
+        let w1 = getRandomElement(pool);
+        let w2 = getRandomElement(pool);
+
+        if (seedInput) {
+          // Patterns involving seed
+          if (structure === 1) username = seedInput + w1;
+          else if (structure === 2) username = w1 + seedInput;
+          else if (structure === 3) username = getRandomElement(actionPrefixes) + seedInput;
+          else username = seedInput;
+        } else {
+          // Patterns without seed
+          if (structure === 1) username = w1 + w2;
+          else if (structure === 2) username = getRandomElement(actionPrefixes) + w1;
+          else username = w1;
+        }
+
+        // Apply formatting (Underscores)
+        if (includeUnderscores && username.length > 3 && Math.random() > 0.4) {
+          // If we concatenated two words, put an underscore between them by splitting capitals or just placing one
+          let formatted = "";
+          if (seedInput && structure === 1) {
+            formatted = seedInput + "_" + w1;
+          } else if (seedInput && structure === 2) {
+            formatted = w1 + "_" + seedInput;
+          } else if (!seedInput && structure === 1) {
+            formatted = w1 + "_" + w2;
+          } else {
+            formatted = username + "_"; 
+          }
+          username = formatted;
+        }
+
+        // Apply formatting (Numbers)
+        if (includeNumbers && Math.random() > 0.3) {
+          const numType = getRandomNumber(1, 3);
+          let num = "";
+          if (numType === 1) num = getRandomNumber(1, 99).toString();
+          else if (numType === 2) num = getRandomNumber(1000, 9999).toString();
+          else {
+            // Common birth years / suffix numbers
+            const commonNums = ["99", "69", "420", "2000", "007", "11"];
+            num = getRandomElement(commonNums);
+          }
+          
+          if (Math.random() > 0.8) {
+             username = num + (includeUnderscores ? "_" : "") + username;
+          } else {
+             username = username + (includeUnderscores && !username.endsWith("_") ? "_" : "") + num;
+          }
+        }
+
+        // Ensure length constraints and clean up
+        username = username.replace(/_+/g, '_'); // Remove double underscores
+        username = username.replace(/_$/, ''); // Remove trailing underscore
+        username = username.toLowerCase(); // Standardize to lowercase for username look
+
+        if (username.length >= 4 && username.length <= 20) {
+          generatedSet.add(username);
+        }
+      }
+
+      // Convert Set to Array and Shuffle
+      let namesArray = Array.from(generatedSet);
+      namesArray = shuffle(namesArray);
+      
+      // Pick top 16 results
+      const finalNames = namesArray.slice(0, 16);
+
+      // Render
+      resultsGrid.innerHTML = '';
+      if(finalNames.length === 0) {
+         resultsGrid.innerHTML = '<p class="text-gray-500 col-span-full text-center py-4">Try adjusting your settings for more results.</p>';
+      } else {
+        finalNames.forEach(name => {
+          const btn = document.createElement('button');
+          btn.className = "bg-white p-3 md:p-4 rounded-lg border border-gray-200 hover:border-blue-600 hover:shadow-md transition-all text-center group relative overflow-hidden focus:outline-none w-full";
+          
+          btn.innerHTML = `
+            <span class="block text-sm md:text-base font-bold text-gray-800 group-hover:text-blue-600 transition-colors truncate">@${name}</span>
+            <div class="absolute inset-0 bg-blue-600 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <svg class="w-4 h-4 mr-1 md:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+              <span class="font-semibold text-xs md:text-sm">Copy</span>
+            </div>
+          `;
+          
+          btn.onclick = () => copyToClipboard(name, btn);
+          resultsGrid.appendChild(btn);
+        });
+      }
+
+      resultsContainer.classList.remove('hidden');
+    }
+
+    function copyToClipboard(text, buttonElement) {
+      navigator.clipboard.writeText(text).then(() => {
+        const overlay = buttonElement.querySelector('div');
+        const span = overlay.querySelector('span');
+        const originalText = span.innerText;
+        
+        overlay.classList.remove('bg-blue-600');
+        overlay.classList.add('bg-green-500');
+        span.innerText = "Copied!";
+        
+        setTimeout(() => {
+          overlay.classList.remove('bg-green-500');
+          overlay.classList.add('bg-blue-600');
+          span.innerText = originalText;
+        }, 1500);
+      });
+    }
+  </script>
+</body>
+</html>
