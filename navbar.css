@@ -1,0 +1,42 @@
+/* Maintains strict 64px navbar height */
+.navbar-container {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Wrapper reserves space in the flow so the absolutely positioned logo doesn't overlap links */
+.logo-wrapper {
+    position: relative;
+    height: 100%;
+    width: 140px; 
+    display: flex;
+    align-items: center;
+}
+
+/* Much larger logo that visually overflows the 64px header while staying perfectly centered */
+.nav-logo-large {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    height: 140px; /* Enlarged logo size */
+    width: auto;
+    max-width: none;
+    transition: transform 0.3s ease;
+}
+
+.logo-wrapper:hover .nav-logo-large {
+    transform: translateY(-50%) scale(1.05); /* Preserves original hover effect */
+}
+
+@media (min-width: 768px) {
+    .logo-wrapper {
+        width: 170px; /* Adjust spacing for larger desktop logo */
+    }
+    .nav-logo-large {
+        height: 170px; /* Even larger on desktop */
+    }
+}
+
