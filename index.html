@@ -55,25 +55,25 @@
 </head>
 <body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-primary selection:text-white flex flex-col min-h-screen overflow-x-hidden">
 
-    <!-- Navigation -->
-    <header class="fixed top-0 w-full z-40 bg-white/90 backdrop-blur-lg border-b border-gray-100 transition-all">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-4">
+        <!-- Navigation -->
+    <header class="fixed top-0 w-full z-40 bg-white/90 backdrop-blur-lg border-b border-gray-100 transition-all h-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="navbar-container">
                 <!-- Logo -->
-                <a href="index.html" class="flex items-center group pr-4 sm:pr-8 shrink-0">
-                    <img src="logo.png" alt="AkhiTool Logo" class="h-[120px] md:h-[140px] lg:h-[160px] w-auto object-contain transition-transform group-hover:scale-105 block">
+                <a href="index.html" class="logo-wrapper shrink-0">
+                    <img src="logo.png" alt="AkhiTool Logo" class="nav-logo-large object-contain block">
                 </a>
                 
                 <!-- Desktop Nav -->
                 <nav class="hidden lg:flex space-x-8 items-center">
                     <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Home</a>
-                    <a href="#popular" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Popular Tools</a>
+                    <a href="index.html#popular" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Popular Tools</a>
                     <a href="about.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">About</a>
                     <a href="contact.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Contact</a>
                 </nav>
 
                 <!-- Mobile Menu Button -->
-                <div class="lg:hidden flex items-center">
+                <div class="lg:hidden flex items-center h-full">
                     <button id="mobile-menu-btn" aria-label="Toggle Menu" class="text-gray-600 hover:text-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary rounded-lg p-2 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -102,6 +102,8 @@
             <a href="disclaimer.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Disclaimer</a>
         </div>
     </div>
+    
+    
 
     <!-- Full-Screen Explore Tools Modal -->
     <div id="explore-modal" class="fixed inset-0 z-[60] bg-brand-bg hidden opacity-0 transition-opacity duration-300 flex-col h-screen overflow-hidden">
