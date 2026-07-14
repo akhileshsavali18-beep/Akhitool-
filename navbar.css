@@ -1,42 +1,64 @@
-/* Maintains strict 64px navbar height */
+/* Core Flexbox Navbar Layout */
 .navbar-container {
-    height: 64px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    height: 64px;
+    max-width: 80rem;
+    margin: 0 auto;
+    
+    /* 12px padding on mobile */
+    padding-left: 12px;
+    padding-right: 12px;
 }
 
-/* Wrapper reserves space in the flow so the absolutely positioned logo doesn't overlap links */
-.logo-wrapper {
+/* 16px padding on desktop */
+@media (min-width: 768px) {
+    .navbar-container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+/* 
+ * Logo Wrapper: 
+ * Takes up physical space in the flex container so links don't overlap.
+ */
+.navbar-logo-wrapper {
     position: relative;
     height: 100%;
-    width: 140px; 
     display: flex;
     align-items: center;
+    width: 140px;
+    flex-shrink: 0;
 }
 
-/* Much larger logo that visually overflows the 64px header while staying perfectly centered */
-.nav-logo-large {
+/* 
+ * Oversized Logo: 
+ * Absolute positioning with top 50% & translateY(-50%) guarantees it is 
+ * perfectly centered vertically with equal top and bottom overflow,
+ * without stretching the 64px navbar height.
+ */
+.navbar-logo {
     position: absolute;
     top: 50%;
     left: 0;
     transform: translateY(-50%);
-    height: 140px; /* Enlarged logo size */
+    height: 140px; /* Size retained */
     width: auto;
     max-width: none;
     transition: transform 0.3s ease;
 }
 
-.logo-wrapper:hover .nav-logo-large {
-    transform: translateY(-50%) scale(1.05); /* Preserves original hover effect */
+.navbar-logo-wrapper:hover .navbar-logo {
+    transform: translateY(-50%) scale(1.05);
 }
 
 @media (min-width: 768px) {
-    .logo-wrapper {
-        width: 170px; /* Adjust spacing for larger desktop logo */
+    .navbar-logo-wrapper {
+        width: 170px;
     }
-    .nav-logo-large {
-        height: 170px; /* Even larger on desktop */
+    .navbar-logo {
+        height: 170px; /* Size retained */
     }
 }
-
