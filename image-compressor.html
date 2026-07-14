@@ -1,110 +1,499 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth overflow-x-hidden">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- Dynamic SEO Tags -->
-  <title>Free Online Image Compressor | AkhiTool</title>
-  <meta name="description" content="Compress JPG, PNG, and WebP images quickly and securely online. Reduce file size without losing quality.">
-  
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50 text-gray-900 font-sans antialiased">
-
-  <!-- Header -->
-  <header class="bg-white border-b border-gray-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center">
-      <a href="/" class="text-2xl font-bold text-blue-600 tracking-tight">AkhiTool</a>
-    </div>
-  </header>
-
-  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Image Compressor - Compress JPG, PNG, WEBP Online | AkhiTool</title>
+    <meta name="description" content="Free online image compressor. Compress JPG, PNG, and WEBP images instantly in your browser without losing quality. No server upload required.">
     
-    <!-- Breadcrumb (SEO friendly) -->
-    <nav class="flex text-sm text-gray-500 mb-6" aria-label="Breadcrumb">
-      <ol class="inline-flex items-center space-x-2">
-        <li><a href="/" class="hover:text-blue-600">Home</a></li>
-        <li><span class="mx-2">/</span></li>
-        <li><a href="/category/image-tools" class="hover:text-blue-600">Image Tools</a></li>
-        <li><span class="mx-2">/</span></li>
-        <li class="text-gray-900 font-medium" aria-current="page">Image Compressor</li>
-      </ol>
-    </nav>
+    <!-- Favicons & App Icons -->
+    <link rel="icon" href="logo-icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="logo-icon.png">
+    <meta name="theme-color" content="#ffffff">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- JSZip for Download All -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
-    <!-- Tool Header -->
-    <div class="mb-8">
-      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Image Compressor</h1>
-      <p class="text-lg text-gray-600">Reduce the file size of your images in seconds without losing quality.</p>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#2563EB',
+                            secondary: '#4F46E5',
+                            accent: '#06B6D4',
+                            bg: '#F8FAFC',
+                            card: '#FFFFFF',
+                            text: '#111827'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(37, 99, 235, 0.05)',
+                        'hover': '0 10px 30px -4px rgba(37, 99, 235, 0.12)',
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-primary selection:text-white flex flex-col min-h-screen overflow-x-hidden">
+
+    <!-- Navigation (Preserved from original design) -->
+    <header class="fixed top-0 w-full z-40 bg-white/90 backdrop-blur-lg border-b border-gray-100 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <a href="index.html" class="flex items-center group pr-4 sm:pr-8 shrink-0">
+                    <img src="logo.png" alt="AkhiTool Logo" class="h-[120px] md:h-[140px] lg:h-[160px] w-auto object-contain transition-transform group-hover:scale-105 block">
+                </a>
+                <nav class="hidden lg:flex space-x-8 items-center">
+                    <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Home</a>
+                    <a href="index.html#popular" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Popular Tools</a>
+                    <a href="about.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">About</a>
+                    <a href="contact.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Contact</a>
+                </nav>
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" aria-label="Toggle Menu" class="text-gray-600 hover:text-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary rounded-lg p-2 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu-overlay" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300 cursor-pointer"></div>
+    <div id="mobile-drawer" class="fixed inset-y-0 right-0 z-50 w-72 sm:w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 overflow-y-auto flex flex-col">
+        <div class="flex items-center justify-between p-4 border-b border-gray-100">
+            <img src="logo.png" alt="AkhiTool" class="h-8 w-auto">
+            <button id="mobile-close-btn" class="text-gray-500 hover:text-brand-primary p-2 focus:outline-none rounded-lg focus:ring-2 focus:ring-brand-primary min-h-[44px] min-w-[44px] flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="px-4 py-6 space-y-1 flex-grow">
+            <a href="index.html" class="drawer-link block px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:text-brand-primary hover:bg-blue-50 transition-colors">Home</a>
+            <a href="about.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">About</a>
+            <a href="contact.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Contact</a>
+            <a href="privacy-policy.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Privacy Policy</a>
+            <a href="terms-of-service.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Terms of Service</a>
+            <a href="disclaimer.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Disclaimer</a>
+        </div>
     </div>
 
-    <!-- The Tool Interface (Workspace) -->
-    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-12 shadow-sm text-center border-dashed border-2">
-      <!-- Tool specific logic goes here -->
-      <div class="py-12">
-        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-        </svg>
-        <p class="text-gray-600 mb-4">Drag and drop your images here, or click to browse.</p>
-        <button class="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
-          Select Images
-        </button>
-      </div>
-    </div>
+    <!-- Main Tool Workspace -->
+    <main class="flex-grow pt-[170px] md:pt-[190px] lg:pt-[210px] pb-16">
+        <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Tool Header -->
+            <div class="text-center mb-10">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-brand-text mb-4">
+                    Image Compressor
+                </h1>
+                <p class="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto">
+                    Compress JPG, PNG, and WEBP files instantly in your browser. No server uploads. 100% private and secure.
+                </p>
+            </div>
 
-    <!-- SEO Content / Description -->
-    <article class="prose max-w-none text-gray-700 mb-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">Why use our Image Compressor?</h2>
-      <p class="mb-4">Large image files can slow down your website and consume unnecessary storage. Our free online image compressor uses smart lossy compression techniques to reduce file sizes by up to 80% while keeping visual quality intact.</p>
-      <p>All processing is handled directly in your browser. This means your private files are never uploaded to our servers, guaranteeing 100% data privacy.</p>
-    </article>
+            <!-- Upload Area -->
+            <div id="drop-zone" class="relative bg-white border-2 border-dashed border-gray-300 hover:border-brand-primary rounded-3xl p-10 sm:p-16 text-center transition-all duration-300 shadow-sm group">
+                <input type="file" id="file-input" multiple accept=".jpg,.jpeg,.png,.webp" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                
+                <div class="pointer-events-none">
+                    <div class="w-20 h-20 mx-auto bg-blue-50 text-brand-primary rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Drag & Drop Images Here</h3>
+                    <p class="text-sm text-gray-500 mb-6">Supported formats: JPG, JPEG, PNG, WEBP</p>
+                    
+                    <button class="bg-brand-primary text-white px-8 py-3.5 rounded-full font-medium shadow-sm pointer-events-auto relative z-20 hover:bg-brand-secondary transition-colors">
+                        Select Images
+                    </button>
+                </div>
+            </div>
 
-    <!-- FAQ Section (Zero JS Accordions) -->
-    <div class="mb-16">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-      
-      <details class="group border-b border-gray-200 pb-4 mb-4">
-        <summary class="flex justify-between items-center font-medium cursor-pointer list-none text-gray-900">
-          <span>Are my images secure?</span>
-          <span class="transition group-open:rotate-180">
-            <svg fill="none" height="24" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
-          </span>
-        </summary>
-        <p class="text-gray-600 mt-3">Yes. Our image compressor works entirely locally in your browser. Your images never leave your device.</p>
-      </details>
+            <!-- Settings & Action Bar (Hidden until images are selected) -->
+            <div id="settings-bar" class="hidden mt-8 bg-white border border-gray-100 shadow-sm rounded-2xl p-5 sm:p-6 transition-all">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                    <!-- Quality Slider -->
+                    <div class="flex-grow max-w-md">
+                        <label for="quality-slider" class="flex justify-between text-sm font-bold text-gray-700 mb-3">
+                            <span>Compression Quality</span>
+                            <span id="quality-val" class="text-brand-primary bg-blue-50 px-2 py-0.5 rounded-md">80%</span>
+                        </label>
+                        <input type="range" id="quality-slider" min="10" max="100" value="80" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-primary">
+                        <p class="text-xs text-gray-400 mt-2">Lower quality = smaller file size</p>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+                        <button id="compress-btn" class="bg-brand-primary hover:bg-brand-secondary text-white px-8 py-3 rounded-xl font-medium transition-colors shadow-sm flex items-center justify-center gap-2 min-w-[180px]">
+                            <svg class="w-5 h-5 hidden animate-spin" id="compress-spinner" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <span id="compress-text">Compress Images</span>
+                        </button>
+                        <button id="download-all-btn" class="hidden bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-medium transition-colors shadow-sm flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            Download All (ZIP)
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-      <details class="group border-b border-gray-200 pb-4 mb-4">
-        <summary class="flex justify-between items-center font-medium cursor-pointer list-none text-gray-900">
-          <span>What formats are supported?</span>
-          <span class="transition group-open:rotate-180">
-            <svg fill="none" height="24" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
-          </span>
-        </summary>
-        <p class="text-gray-600 mt-3">We currently support JPG, PNG, and WebP image formats.</p>
-      </details>
-    </div>
+            <!-- Image Previews Grid -->
+            <div id="preview-grid" class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cards injected by JS -->
+            </div>
 
-    <!-- Related Tools -->
-    <div>
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Related Tools</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <a href="/tool/image-resizer" class="bg-white p-5 rounded-lg border border-gray-200 hover:border-blue-600 transition-colors">
-          <h3 class="font-bold text-gray-900">Image Resizer</h3>
-          <p class="text-sm text-gray-600 mt-1">Resize images to specific dimensions instantly.</p>
-        </a>
-        <a href="/tool/image-to-pdf" class="bg-white p-5 rounded-lg border border-gray-200 hover:border-blue-600 transition-colors">
-          <h3 class="font-bold text-gray-900">Image to PDF</h3>
-          <p class="text-sm text-gray-600 mt-1">Convert multiple images into a single PDF document.</p>
-        </a>
-      </div>
-    </div>
+        </section>
+    </main>
 
-  </main>
+    <!-- Footer (Preserved) -->
+    <footer class="bg-white border-t border-gray-100 pt-12 sm:pt-16 pb-8 w-full mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-10 mb-10 sm:mb-12">
+                <div class="col-span-1 sm:col-span-2 pr-0 lg:pr-8">
+                    <a href="index.html" class="flex items-center mb-4 sm:mb-6 group inline-block">
+                        <img src="logo.png" alt="AkhiTool Logo" loading="lazy" class="h-10 md:h-12 w-auto object-contain transition-transform group-hover:scale-105">
+                    </a>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6 max-w-sm">
+                        Your everyday online toolbox. Free tools for PDF, images, calculators, AI, text, SEO and more—all built for speed and privacy.
+                    </p>
+                </div>
+                <div class="w-full">
+                    <h4 class="font-semibold text-brand-text mb-3 sm:mb-4">Popular Tools</h4>
+                    <ul class="text-sm text-gray-500 flex flex-col">
+                        <li><a href="age-calculator.html" class="block py-1.5 hover:text-brand-primary transition-colors">Age Calculator</a></li>
+                        <li><a href="emi-calculator.html" class="block py-1.5 hover:text-brand-primary transition-colors">EMI Calculator</a></li>
+                        <li><a href="password-generator.html" class="block py-1.5 hover:text-brand-primary transition-colors">Password Generator</a></li>
+                        <li><a href="qr-code-generator.html" class="block py-1.5 hover:text-brand-primary transition-colors">QR Generator</a></li>
+                    </ul>
+                </div>
+                <div class="w-full">
+                    <h4 class="font-semibold text-brand-text mb-3 sm:mb-4">Categories</h4>
+                    <ul class="text-sm text-gray-500 flex flex-col">
+                        <li><a href="categories/pdf-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">PDF Tools</a></li>
+                        <li><a href="categories/image-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">Image Tools</a></li>
+                        <li><a href="categories/calculators.html" class="block py-1.5 hover:text-brand-primary transition-colors">Calculators</a></li>
+                        <li><a href="categories/ai-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">AI Tools</a></li>
+                        <li><a href="categories/dev-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">Developer Tools</a></li>
+                        <li><a href="categories/seo-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">SEO Tools</a></li>
+                    </ul>
+                </div>
+                <div class="w-full">
+                    <h4 class="font-semibold text-brand-text mb-3 sm:mb-4">Company</h4>
+                    <ul class="text-sm text-gray-500 flex flex-col">
+                        <li><a href="about.html" class="block py-1.5 hover:text-brand-primary transition-colors">About</a></li>
+                        <li><a href="contact.html" class="block py-1.5 hover:text-brand-primary transition-colors">Contact</a></li>
+                        <li><a href="privacy-policy.html" class="block py-1.5 hover:text-brand-primary transition-colors">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html" class="block py-1.5 hover:text-brand-primary transition-colors">Terms of Service</a></li>
+                        <li><a href="disclaimer.html" class="block py-1.5 hover:text-brand-primary transition-colors">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-100 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+                <p class="text-sm text-gray-400 w-full sm:w-auto">© 2026 AkhiTool. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-  <footer class="bg-white border-t border-gray-200 py-8 text-center text-sm text-gray-500">
-    © 2026 AkhiTool. All rights reserved.
-  </footer>
+    <!-- App Logic Scripts (Mobile Menu Preserved) -->
+    <script>
+        // Mobile Menu Logic
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        const mobileOverlay = document.getElementById('mobile-menu-overlay');
+        const mobileCloseBtn = document.getElementById('mobile-close-btn');
 
+        function toggleMenu() {
+            const isHidden = mobileDrawer.classList.contains('translate-x-full');
+            if (isHidden) {
+                mobileOverlay.classList.remove('hidden');
+                setTimeout(() => mobileOverlay.classList.remove('opacity-0'), 10);
+                mobileDrawer.classList.remove('translate-x-full');
+            } else {
+                mobileOverlay.classList.add('opacity-0');
+                mobileDrawer.classList.add('translate-x-full');
+                setTimeout(() => mobileOverlay.classList.add('hidden'), 300);
+            }
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        mobileCloseBtn.addEventListener('click', toggleMenu);
+        mobileOverlay.addEventListener('click', toggleMenu);
+    </script>
+
+    <!-- Image Compressor Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const previewGrid = document.getElementById('preview-grid');
+            const settingsBar = document.getElementById('settings-bar');
+            const qualitySlider = document.getElementById('quality-slider');
+            const qualityVal = document.getElementById('quality-val');
+            const compressBtn = document.getElementById('compress-btn');
+            const compressText = document.getElementById('compress-text');
+            const compressSpinner = document.getElementById('compress-spinner');
+            const downloadAllBtn = document.getElementById('download-all-btn');
+
+            let imagesData = []; 
+            const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
+            // Format Bytes
+            function formatBytes(bytes, decimals = 2) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const dm = decimals < 0 ? 0 : decimals;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+            }
+
+            // Calculate Percentage
+            function calcSavings(orig, comp) {
+                if (comp >= orig) return 0;
+                return (((orig - comp) / orig) * 100).toFixed(1);
+            }
+
+            // Drag & Drop Events
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => dropZone.classList.add('border-brand-primary', 'bg-blue-50/50'), false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => dropZone.classList.remove('border-brand-primary', 'bg-blue-50/50'), false);
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                const files = e.dataTransfer.files;
+                handleFiles(files);
+            });
+
+            fileInput.addEventListener('change', function() {
+                handleFiles(this.files);
+                this.value = ''; // reset to allow selecting same files again
+            });
+
+            // Slider update
+            qualitySlider.addEventListener('input', (e) => {
+                qualityVal.textContent = e.target.value + '%';
+            });
+
+            // Handle Files
+            function handleFiles(files) {
+                const newFiles = Array.from(files).filter(file => ALLOWED_TYPES.includes(file.type));
+                
+                if (newFiles.length === 0) {
+                    alert('Please select valid JPG, PNG, or WEBP images.');
+                    return;
+                }
+                settingsBar.classList.remove('hidden');
+                downloadAllBtn.classList.add('hidden'); // hide download all until new compress
+                
+                newFiles.forEach(file => {
+                    const id = Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+                    const reader = new FileReader();
+
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const data = {
+                                id: id,
+                                file: file,
+                                originalSrc: e.target.result,
+                                name: file.name,
+                                type: file.type,
+                                size: file.size,
+                                width: img.width,
+                                height: img.height,
+                                imgElement: img,
+                                compressedBlob: null,
+                                compressedUrl: null
+                            };
+                            imagesData.push(data);
+                            renderCard(data);
+                        };
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            // Render Preview Card
+            function renderCard(data) {
+                const card = document.createElement('div');
+                card.id = `card-${data.id}`;
+                card.className = 'bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col transition-all';
+                
+                card.innerHTML = `
+                    <div class="relative w-full h-40 mb-4 bg-gray-100 rounded-xl overflow-hidden">
+                        <img src="${data.originalSrc}" class="w-full h-full object-cover">
+                        <button onclick="removeImage('${data.id}')" class="absolute top-2 right-2 bg-white/90 text-red-500 hover:text-red-700 p-1.5 rounded-lg shadow-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="text-sm font-bold text-gray-900 truncate mb-1" title="${data.name}">${data.name}</h4>
+                        <div class="text-xs text-gray-500 space-y-1">
+                            <div class="flex justify-between"><span>Original:</span> <span class="font-medium">${formatBytes(data.size)}</span></div>
+                            <div class="flex justify-between"><span>Dimensions:</span> <span>${data.width} × ${data.height} px</span></div>
+                        </div>
+                    </div>
+                    <!-- Results Area (Hidden initially) -->
+                    <div id="results-${data.id}" class="hidden mt-4 pt-4 border-t border-gray-50">
+                        <div class="text-xs space-y-1 mb-3">
+                            <div class="flex justify-between text-gray-700"><span>Compressed:</span> <span id="size-${data.id}" class="font-bold"></span></div>
+                            <div class="flex justify-between text-green-600 font-bold"><span>Saved:</span> <span id="saved-${data.id}"></span></div>
+                        </div>
+                        <a id="download-${data.id}" href="#" download class="w-full block text-center bg-gray-50 hover:bg-gray-100 text-brand-text border border-gray-200 py-2 rounded-lg text-sm font-semibold transition-colors">
+                            Download
+                        </a>
+                    </div>
+                `;
+                previewGrid.appendChild(card);
+            }
+
+            // Remove Image globally
+            window.removeImage = function(id) {
+                imagesData = imagesData.filter(img => img.id !== id);
+                document.getElementById(`card-${id}`).remove();
+                if (imagesData.length === 0) {
+                    settingsBar.classList.add('hidden');
+                }
+            };
+
+            // Compress Images Logic
+            compressBtn.addEventListener('click', async () => {
+                if(imagesData.length === 0) return;
+
+                // UI Loading State
+                compressBtn.disabled = true;
+                compressText.textContent = 'Compressing...';
+                compressSpinner.classList.remove('hidden');
+                
+                const quality = parseInt(qualitySlider.value) / 100;
+
+                for (let i = 0; i < imagesData.length; i++) {
+                    await compressSingleImage(imagesData[i], quality);
+                }
+
+                // Restore UI
+                compressBtn.disabled = false;
+                compressText.textContent = 'Compress Again';
+                compressSpinner.classList.add('hidden');
+                downloadAllBtn.classList.remove('hidden');
+            });
+
+            function compressSingleImage(data, quality) {
+                return new Promise((resolve) => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = data.width;
+                    canvas.height = data.height;
+                    
+                    ctx.drawImage(data.imgElement, 0, 0, canvas.width, canvas.height);
+
+                    // Note: PNG ignores quality in canvas.toBlob. 
+                    // Using original type. If user wants drastic PNG reduction, they'd usually convert to WebP.
+                    // We'll stick to original MIME type as requested.
+                    let outputType = data.type;
+
+                    canvas.toBlob((blob) => {
+                        // If compressed is larger than original, fallback to original
+                        if (blob.size >= data.size) {
+                            data.compressedBlob = data.file;
+                            data.compressedUrl = URL.createObjectURL(data.file);
+                        } else {
+                            data.compressedBlob = blob;
+                            data.compressedUrl = URL.createObjectURL(blob);
+                        }
+
+                        // Update UI Card
+                        const resultsDiv = document.getElementById(`results-${data.id}`);
+                        const sizeSpan = document.getElementById(`size-${data.id}`);
+                        const savedSpan = document.getElementById(`saved-${data.id}`);
+                        const downloadAnchor = document.getElementById(`download-${data.id}`);
+
+                        resultsDiv.classList.remove('hidden');
+                        sizeSpan.textContent = formatBytes(data.compressedBlob.size);
+                        
+                        const savedPercent = calcSavings(data.size, data.compressedBlob.size);
+                        savedSpan.textContent = savedPercent > 0 ? `${savedPercent}%` : '0%';
+                        savedSpan.className = savedPercent > 0 ? 'text-green-600' : 'text-gray-500';
+
+                        // Format filename for download
+                        const extPos = data.name.lastIndexOf('.');
+                        const baseName = data.name.substring(0, extPos);
+                        const ext = data.name.substring(extPos);
+                        
+                        downloadAnchor.href = data.compressedUrl;
+                        downloadAnchor.download = `${baseName}-min${ext}`;
+
+                        resolve();
+                    }, outputType, quality);
+                });
+            }
+
+            // Download All (ZIP)
+            downloadAllBtn.addEventListener('click', async () => {
+                if (imagesData.length === 0 || typeof JSZip === 'undefined') return;
+                
+                const origText = downloadAllBtn.innerHTML;
+                downloadAllBtn.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Zipping...';
+                downloadAllBtn.disabled = true;
+
+                try {
+                    const zip = new JSZip();
+                    
+                    imagesData.forEach(data => {
+                        if(data.compressedBlob) {
+                            const extPos = data.name.lastIndexOf('.');
+                            const baseName = data.name.substring(0, extPos);
+                            const ext = data.name.substring(extPos);
+                            zip.file(`${baseName}-min${ext}`, data.compressedBlob);
+                        }
+                    });
+
+                    const content = await zip.generateAsync({ type: 'blob' });
+                    const zipUrl = URL.createObjectURL(content);
+                    
+                    const a = document.createElement('a');
+                    a.href = zipUrl;
+                    a.download = 'compressed_images.zip';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(zipUrl);
+                } catch (error) {
+                    console.error("ZIP creation failed", error);
+                    alert("Failed to create ZIP file.");
+                } finally {
+                    downloadAllBtn.innerHTML = origText;
+                    downloadAllBtn.disabled = false;
+                }
+            });
+        });
+    </script>
 </body>
 </html>
-  
+     
