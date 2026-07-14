@@ -57,32 +57,35 @@
 </head>
 <body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-primary selection:text-white flex flex-col min-h-screen overflow-x-hidden">
 
-                <!-- Navigation -->
-    <header class="fixed top-0 w-full z-40 bg-white/90 backdrop-blur-lg border-b border-gray-100 transition-all h-[64px]">
-        <div class="navbar-container">
-            
-            <!-- Logo (Left Aligned & Vertically Centered) -->
-            <a href="index.html" class="navbar-logo-wrapper group">
-                <img src="logo.png" alt="AkhiTool Logo" class="navbar-logo">
-            </a>
-            
-            <!-- Desktop Nav -->
-            <nav class="hidden lg:flex space-x-8 items-center">
-                <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Home</a>
-                <a href="index.html#popular" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Popular Tools</a>
-                <a href="about.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">About</a>
-                <a href="contact.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Contact</a>
-            </nav>
+                    <!-- Navigation -->
+    <header class="fixed top-0 w-full z-40 bg-white/90 backdrop-blur-lg border-b border-gray-100 transition-all h-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <!-- Added Tailwind flex classes directly here to fix the layout breaking issue -->
+            <div class="flex justify-between items-center h-full w-full">
+                
+                <!-- Logo: Wrapper reserves space, absolute image centers it vertically and allows it to safely break out of the 64px height without breaking the layout -->
+                <a href="index.html" class="relative h-full w-[140px] md:w-[170px] flex items-center shrink-0 group">
+                    <img src="logo.png" alt="AkhiTool Logo" class="absolute top-1/2 left-0 -translate-y-1/2 h-[140px] md:h-[170px] w-auto max-w-none transition-transform group-hover:scale-105 block">
+                </a>
+                
+                <!-- Desktop Nav -->
+                <nav class="hidden lg:flex space-x-8 items-center">
+                    <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Home</a>
+                    <a href="index.html#popular" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Popular Tools</a>
+                    <a href="about.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">About</a>
+                    <a href="contact.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Contact</a>
+                </nav>
 
-            <!-- Mobile Hamburger Menu (Right Aligned & Vertically Centered) -->
-            <div class="lg:hidden flex items-center shrink-0">
-                <button id="mobile-menu-btn" aria-label="Toggle Menu" class="text-gray-600 hover:text-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary rounded-lg p-2 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors">
-                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
+                <!-- Mobile Menu Button: Forced to the right side -->
+                <div class="lg:hidden flex items-center justify-end h-full">
+                    <button id="mobile-menu-btn" aria-label="Toggle Menu" class="text-gray-600 hover:text-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary rounded-lg p-2 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+
             </div>
-            
         </div>
     </header>
 
@@ -104,6 +107,7 @@
             <a href="disclaimer.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Disclaimer</a>
         </div>
     </div>
+    
     
     <!-- Full-Screen Explore Tools Modal -->
     <div id="explore-modal" class="fixed inset-0 z-[60] bg-brand-bg hidden opacity-0 transition-opacity duration-300 flex-col h-screen overflow-hidden">
