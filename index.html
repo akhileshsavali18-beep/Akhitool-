@@ -91,24 +91,25 @@
     </header>
     
 
-    <!-- Mobile Navigation Drawer -->
+        <!-- Mobile Navigation Drawer -->
     <div id="mobile-menu-overlay" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300 cursor-pointer"></div>
     <div id="mobile-drawer" class="fixed inset-y-0 right-0 z-50 w-72 sm:w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 overflow-y-auto flex flex-col">
-        <div class="flex items-center justify-between p-4 border-b border-gray-100">
-            <img src="logo.png" alt="AkhiTool" class="h-8 w-auto">
+        <!-- Removed logo and pushed the close button to the right side using justify-end -->
+        <div class="flex items-center justify-end p-4 border-b border-gray-100">
             <button id="mobile-close-btn" class="text-gray-500 hover:text-brand-primary p-2 focus:outline-none rounded-lg focus:ring-2 focus:ring-brand-primary min-h-[44px] min-w-[44px] flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
         <div class="px-4 py-6 space-y-1 flex-grow">
-            <a href="index.html" class="drawer-link block px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:text-brand-primary hover:bg-blue-50 transition-colors">Home</a>
-            <a href="about.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">About</a>
-            <a href="contact.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Contact</a>
-            <a href="privacy-policy.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Privacy Policy</a>
-            <a href="terms-of-service.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Terms of Service</a>
-            <a href="disclaimer.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Disclaimer</a>
+            <a href="/" class="drawer-link block px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:text-brand-primary hover:bg-blue-50 transition-colors">Home</a>
+            <a href="/about.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">About</a>
+            <a href="/contact.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Contact</a>
+            <a href="/privacy-policy.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Privacy Policy</a>
+            <a href="/terms-of-service.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Terms of Service</a>
+            <a href="/disclaimer.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Disclaimer</a>
         </div>
     </div>
+    
     
      <!-- Full-Screen Explore Tools Modal -->
     <div id="explore-modal" class="fixed inset-0 z-[60] bg-brand-bg hidden opacity-0 transition-opacity duration-300 flex-col h-screen overflow-hidden">
@@ -365,64 +366,54 @@
     </main>
 
     <!-- 8. Modern Footer -->
+    <!-- Footer -->
     <footer class="bg-white border-t border-gray-100 pt-12 sm:pt-16 pb-8 w-full mt-auto">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-10 mb-10 sm:mb-12">
-                
-                <!-- Column 1 -->
                 <div class="col-span-1 sm:col-span-2 pr-0 lg:pr-8">
-                    <a href="index.html" class="flex items-center mb-4 sm:mb-6 group inline-block">
-                        <img src="logo.png" alt="AkhiTool Logo" loading="lazy" class="h-10 md:h-12 w-auto object-contain transition-transform group-hover:scale-105">
-                    </a>
+                    <!-- Removed Logo and replaced with a clean text heading -->
+                    <h3 class="text-xl font-extrabold text-brand-text mb-4">AkhiTool</h3>
                     <p class="text-gray-500 text-sm leading-relaxed mb-6 max-w-sm">
                         Your everyday online toolbox. Free tools for PDF, images, calculators, AI, text, SEO and more—all built for speed and privacy.
                     </p>
                 </div>
-
-                <!-- Column 2 -->
                 <div class="w-full">
                     <h4 class="font-semibold text-brand-text mb-3 sm:mb-4">Popular Tools</h4>
                     <ul class="text-sm text-gray-500 flex flex-col">
-                        <li><a href="age-calculator.html" class="block py-1.5 hover:text-brand-primary transition-colors">Age Calculator</a></li>
-                        <li><a href="emi-calculator.html" class="block py-1.5 hover:text-brand-primary transition-colors">EMI Calculator</a></li>
-                        <li><a href="password-generator.html" class="block py-1.5 hover:text-brand-primary transition-colors">Password Generator</a></li>
-                        <li><a href="qr-code-generator.html" class="block py-1.5 hover:text-brand-primary transition-colors">QR Generator</a></li>
+                        <li><a href="/age-calculator.html" class="block py-1.5 hover:text-brand-primary transition-colors">Age Calculator</a></li>
+                        <li><a href="/emi-calculator.html" class="block py-1.5 hover:text-brand-primary transition-colors">EMI Calculator</a></li>
+                        <li><a href="/password-generator.html" class="block py-1.5 hover:text-brand-primary transition-colors">Password Generator</a></li>
+                        <li><a href="/qr-code-generator.html" class="block py-1.5 hover:text-brand-primary transition-colors">QR Generator</a></li>
                     </ul>
                 </div>
-
-                <!-- Column 3 -->
                 <div class="w-full">
                     <h4 class="font-semibold text-brand-text mb-3 sm:mb-4">Categories</h4>
                     <ul class="text-sm text-gray-500 flex flex-col">
-                        <li><a href="categories/pdf-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">PDF Tools</a></li>
-                        <li><a href="categories/image-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">Image Tools</a></li>
-                        <li><a href="categories/calculators.html" class="block py-1.5 hover:text-brand-primary transition-colors">Calculators</a></li>
-                        <li><a href="categories/ai-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">AI Tools</a></li>
-                        <li><a href="categories/dev-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">Developer Tools</a></li>
-                        <li><a href="categories/seo-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">SEO Tools</a></li>
+                        <li><a href="/categories/pdf-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">PDF Tools</a></li>
+                        <li><a href="/categories/image-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">Image Tools</a></li>
+                        <li><a href="/categories/calculators.html" class="block py-1.5 hover:text-brand-primary transition-colors">Calculators</a></li>
+                        <li><a href="/categories/ai-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">AI Tools</a></li>
+                        <li><a href="/categories/dev-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">Developer Tools</a></li>
+                        <li><a href="/categories/seo-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">SEO Tools</a></li>
                     </ul>
                 </div>
-
-                <!-- Column 4 -->
                 <div class="w-full">
                     <h4 class="font-semibold text-brand-text mb-3 sm:mb-4">Company</h4>
                     <ul class="text-sm text-gray-500 flex flex-col">
-                        <li><a href="about.html" class="block py-1.5 hover:text-brand-primary transition-colors">About</a></li>
-                        <li><a href="contact.html" class="block py-1.5 hover:text-brand-primary transition-colors">Contact</a></li>
-                        <li><a href="privacy-policy.html" class="block py-1.5 hover:text-brand-primary transition-colors">Privacy Policy</a></li>
-                        <li><a href="terms-of-service.html" class="block py-1.5 hover:text-brand-primary transition-colors">Terms of Service</a></li>
-                        <li><a href="disclaimer.html" class="block py-1.5 hover:text-brand-primary transition-colors">Disclaimer</a></li>
+                        <li><a href="/about.html" class="block py-1.5 hover:text-brand-primary transition-colors">About</a></li>
+                        <li><a href="/contact.html" class="block py-1.5 hover:text-brand-primary transition-colors">Contact</a></li>
+                        <li><a href="/privacy-policy.html" class="block py-1.5 hover:text-brand-primary transition-colors">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service.html" class="block py-1.5 hover:text-brand-primary transition-colors">Terms of Service</a></li>
+                        <li><a href="/disclaimer.html" class="block py-1.5 hover:text-brand-primary transition-colors">Disclaimer</a></li>
                     </ul>
                 </div>
-
             </div>
-            
-            <!-- Footer Bottom -->
             <div class="border-t border-gray-100 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
                 <p class="text-sm text-gray-400 w-full sm:w-auto">© 2026 AkhiTool. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
+    
     
     <!-- App Logic Scripts -->
     <script src="assets/js/tools-data.js"></script>
