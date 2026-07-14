@@ -57,13 +57,15 @@
 </head>
 <body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-primary selection:text-white flex flex-col min-h-screen overflow-x-hidden">
 
-        <!-- Navigation -->
+            <!-- Navigation -->
     <header class="fixed top-0 w-full z-40 bg-white/90 backdrop-blur-lg border-b border-gray-100 transition-all h-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-            <div class="navbar-container">
-                <!-- Logo -->
-                <a href="index.html" class="logo-wrapper shrink-0">
-                    <img src="logo.png" alt="AkhiTool Logo" class="nav-logo-large object-contain block">
+            <!-- Added Tailwind flex classes directly here to fix the layout breaking issue -->
+            <div class="flex justify-between items-center h-full w-full">
+                
+                <!-- Logo: Wrapper reserves space, absolute image centers it vertically and allows it to safely break out of the 64px height without breaking the layout -->
+                <a href="index.html" class="relative h-full w-[140px] md:w-[170px] flex items-center shrink-0 group">
+                    <img src="logo.png" alt="AkhiTool Logo" class="absolute top-1/2 left-0 -translate-y-1/2 h-[140px] md:h-[170px] w-auto max-w-none transition-transform group-hover:scale-105 block">
                 </a>
                 
                 <!-- Desktop Nav -->
@@ -74,17 +76,38 @@
                     <a href="contact.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Contact</a>
                 </nav>
 
-                <!-- Mobile Menu Button -->
-                <div class="lg:hidden flex items-center h-full">
+                <!-- Mobile Menu Button: Forced to the right side -->
+                <div class="lg:hidden flex items-center justify-end h-full">
                     <button id="mobile-menu-btn" aria-label="Toggle Menu" class="text-gray-600 hover:text-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary rounded-lg p-2 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
                 </div>
+
             </div>
         </div>
     </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu-overlay" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300 cursor-pointer"></div>
+    <div id="mobile-drawer" class="fixed inset-y-0 right-0 z-50 w-72 sm:w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 overflow-y-auto flex flex-col">
+        <div class="flex items-center justify-between p-4 border-b border-gray-100">
+            <img src="logo.png" alt="AkhiTool" class="h-8 w-auto">
+            <button id="mobile-close-btn" class="text-gray-500 hover:text-brand-primary p-2 focus:outline-none rounded-lg focus:ring-2 focus:ring-brand-primary min-h-[44px] min-w-[44px] flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="px-4 py-6 space-y-1 flex-grow">
+            <a href="index.html" class="drawer-link block px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:text-brand-primary hover:bg-blue-50 transition-colors">Home</a>
+            <a href="about.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">About</a>
+            <a href="contact.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Contact</a>
+            <a href="privacy-policy.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Privacy Policy</a>
+            <a href="terms-of-service.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Terms of Service</a>
+            <a href="disclaimer.html" class="drawer-link block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Disclaimer</a>
+        </div>
+    </div>
+    
 
     <!-- Mobile Navigation Drawer -->
     <div id="mobile-menu-overlay" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300 cursor-pointer"></div>
