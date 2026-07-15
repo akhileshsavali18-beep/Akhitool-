@@ -57,11 +57,12 @@
 </head>
 <body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-primary selection:text-white flex flex-col min-h-screen overflow-x-hidden">
 
-                       <!-- Navigation -->
-    <header class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-lg border-b border-gray-100 transition-all h-[64px]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-            <!-- Flex Container: Keeps Logo Left, Menu Right, Vertically Centered -->
-            <div class="flex justify-between items-center h-full w-full">
+<!-- Navbar -->
+<header class="fixed top-0 w-full bg-white border-b z-40 h-16 flex items-center px-4 justify-between">
+    <a href="/" class="text-xl font-bold">AkhiTool</a>
+    <!-- ಮೆನು ಬಟನ್ ಐಡಿ mobile-menu-btn ಇರಲಿ -->
+    <button id="mobile-menu-btn" class="p-2 border rounded-lg">☰</button>
+</header>
                 
                 <!-- Logo Wrapper: -ml-2 moves it closer to the left edge -->
                 <a href="index.html" class="relative flex items-center shrink-0 h-full w-[110px] md:w-[130px] group -ml-2">
@@ -89,13 +90,16 @@
             </div>
         </div>
     </header>
-<!-- Mobile Drawer (ಇದನ್ನು ನಿಮ್ಮ html ನಲ್ಲಿ ಇಟ್ಟುಕೊಳ್ಳಿ) -->
-<div id="mobile-menu-overlay" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300"></div>
-<div id="mobile-drawer" class="fixed inset-y-0 right-0 z-50 w-72 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col h-full overflow-y-auto">
-    <div class="flex items-center justify-between p-4 border-b border-gray-100">
-        <span class="font-bold text-lg">Menu</span>
-        <button id="mobile-close-btn" class="text-gray-500 p-2">✕</button>
+<!-- Mobile Menu (Drawer) -->
+<div id="mobile-drawer" class="fixed inset-y-0 right-0 z-50 w-72 bg-white shadow-2xl transform translate-x-full transition-transform duration-300">
+    <div class="p-4 border-b flex justify-between">
+        <span class="font-bold">Menu</span>
+        <button id="mobile-close-btn" class="p-2">✕</button>
     </div>
+    <div id="mobile-menu-container" class="p-4">
+        <!-- ಮೆನು ಇಲ್ಲಿ ಲೋಡ್ ಆಗುತ್ತದೆ -->
+    </div>
+</div>
     <script type="module">
   // Firebase Imports (ಅಗತ್ಯವಿರುವಂತದ್ದು)
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -600,17 +604,47 @@
             });
         }
 
-        // Mobile Menu Toggles
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            document.getElementById('mobile-drawer').classList.remove('translate-x-full');
-            document.getElementById('mobile-menu-overlay').classList.remove('hidden');
-        });
-        document.getElementById('mobile-close-btn').addEventListener('click', () => {
-            document.getElementById('mobile-drawer').classList.add('translate-x-full');
-            document.getElementById('mobile-menu-overlay').classList.add('hidden');
-        });
+        <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        init();
-    </script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
+        authDomain: "akhitool.firebaseapp.com",
+        projectId: "akhitool",
+        storageBucket: "akhitool.firebasestorage.app",
+        messagingSenderId: "892498311198",
+        appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // ಮೆನು ಓಪನ್/ಕ್ಲೋಸ್ ಲಾಜಿಕ್ (ಇದು ಮೊದಲು ರನ್ ಆಗಲಿ)
+    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+        document.getElementById('mobile-drawer').classList.remove('translate-x-full');
+    });
+    document.getElementById('mobile-close-btn').addEventListener('click', () => {
+        document.getElementById('mobile-drawer').classList.add('translate-x-full');
+    });
+
+    // ಡೇಟಾ ಲೋಡ್ ಮಾಡುವುದು
+    async function loadData() {
+        try {
+            const container = document.getElementById("mobile-menu-container");
+            const snap = await getDocs(collection(db, "tools"));
+            
+            // ಡೇಟಾ ಸಿಕ್ಕರೆ ಮಾತ್ರ ಲೂಪ್ ಮಾಡು
+            if(!snap.empty) {
+                container.innerHTML = `<a href="/" class="block py-2">Home</a>`;
+                // ಮೆನು ಬಿಲ್ಡ್ ಲಾಜಿಕ್ ಇಲ್ಲಿ ಹಾಕಿ...
+            }
+        } catch (e) {
+            console.log("Error loading:", e);
+        }
+    }
+    loadData();
+</script>
+    
 </body>
 </html>
