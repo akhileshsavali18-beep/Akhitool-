@@ -132,15 +132,113 @@
 
     <!-- Modal for Add/Edit Tool (Hidden by default) -->
     <!-- (UI structure prepared for JS to toggle) -->
+        <!-- Modal for Add Tool -->
     <div id="tool-modal" class="fixed inset-0 bg-gray-900/50 z-50 hidden flex items-center justify-center p-4">
-        <!-- Kept minimal for now, handled via JS logic in tools.js -->
+        <div class="bg-white rounded-2xl w-full max-w-lg overflow-hidden shadow-xl">
+            <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                <h3 class="text-lg font-bold text-gray-800">Add New Tool</h3>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-red-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <form id="add-tool-form" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tool Name</label>
+                    <input type="text" id="tool-name" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-brand-primary/20 focus:border-brand-primary" placeholder="e.g. Image Compressor" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <input type="text" id="tool-desc" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-brand-primary/20 focus:border-brand-primary" placeholder="What does this tool do?" required>
+                </div>
+                <div class="flex gap-4">
+                    <div class="w-1/2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                        <input type="text" id="tool-category" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-brand-primary/20 focus:border-brand-primary" placeholder="e.g. Image Tools" required>
+                    </div>
+                    <div class="w-1/2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">URL (Link)</label>
+                        <input type="text" id="tool-url" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-brand-primary/20 focus:border-brand-primary" placeholder="e.g. image-compressor.html" required>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-100">
+                    <button type="button" id="cancel-modal-btn" class="px-4 py-2 text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200">Cancel</button>
+                    <button type="submit" id="save-tool-btn" class="px-4 py-2 bg-brand-primary text-white rounded-xl hover:bg-brand-secondary">Save Tool</button>
+                </div>
+            </form>
+        </div>
     </div>
+    
 
     <script src="../assets/js/firebase-config.js"></script>
     <script src="../assets/js/auth.js"></script>
     <script src="../assets/js/tools-data.js"></script>
     <script src="../assets/js/admin.js"></script>
     <script src="../assets/js/tools.js"></script>
+    <!-- Firebase Firestore Script for Adding Tools -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
+    authDomain: "akhitool.firebaseapp.com",
+    projectId: "akhitool",
+    storageBucket: "akhitool.firebasestorage.app",
+    messagingSenderId: "892498311198",
+    appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Modal Open & Close Logic
+  const modal = document.getElementById("tool-modal");
+  const addBtn = document.getElementById("add-tool-btn");
+  const closeBtn = document.getElementById("close-modal-btn");
+  const cancelBtn = document.getElementById("cancel-modal-btn");
+  const form = document.getElementById("add-tool-form");
+
+  // ಓಪನ್ ಮಾಡಲು
+  if(addBtn) addBtn.addEventListener("click", () => modal.classList.remove("hidden"));
+  
+  // ಕ್ಲೋಸ್ ಮಾಡಲು
+  const closeModal = () => {
+      modal.classList.add("hidden");
+      form.reset(); // ಫಾರ್ಮ್ ಕ್ಲಿಯರ್ ಮಾಡುತ್ತದೆ
+  };
+  if(closeBtn) closeBtn.addEventListener("click", closeModal);
+  if(cancelBtn) cancelBtn.addEventListener("click", closeModal);
+
+  // ಡೇಟಾವನ್ನು Firebase ಗೆ ಸೇವ್ ಮಾಡುವುದು
+  if(form) {
+      form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const saveBtn = document.getElementById("save-tool-btn");
+          saveBtn.innerText = "Saving...";
+
+          try {
+              // 'tools' ಎಂಬ ಕಲೆಕ್ಷನ್‌ಗೆ ಡೇಟಾ ಕಳುಹಿಸುವುದು
+              await addDoc(collection(db, "tools"), {
+                  name: document.getElementById("tool-name").value,
+                  description: document.getElementById("tool-desc").value,
+                  category: document.getElementById("tool-category").value,
+                  url: document.getElementById("tool-url").value,
+                  dateAdded: new Date()
+              });
+              
+              alert("Tool Successfully Added! 🚀");
+              closeModal();
+              saveBtn.innerText = "Save Tool";
+              
+          } catch (error) {
+              console.error("Error adding document: ", error);
+              alert("Something went wrong! Error: " + error.message);
+              saveBtn.innerText = "Save Tool";
+          }
+      });
+  }
+</script>
+
 </body>
                   </html>
   
