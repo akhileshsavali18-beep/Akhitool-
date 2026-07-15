@@ -89,130 +89,94 @@
             </div>
         </div>
     </header>
-   <!-- Mobile Drawer -->
+<!-- Mobile Drawer (ಇದನ್ನು ನಿಮ್ಮ html ನಲ್ಲಿ ಇಟ್ಟುಕೊಳ್ಳಿ) -->
+<div id="mobile-menu-overlay" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300"></div>
 <div id="mobile-drawer" class="fixed inset-y-0 right-0 z-50 w-72 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col h-full overflow-y-auto">
     <div class="flex items-center justify-between p-4 border-b border-gray-100">
         <span class="font-bold text-lg">Menu</span>
         <button id="mobile-close-btn" class="text-gray-500 p-2">✕</button>
     </div>
-    <!-- ಡೇಟಾ ಇಲ್ಲಿ ಬಂದು ಕೂರಬೇಕು -->
     <div id="mobile-menu-container" class="px-2 py-4 space-y-1">
-        <p class="px-4 py-4 text-gray-400">Loading...</p>
+        <p class="px-4 py-4 text-gray-400">Loading categories...</p>
     </div>
 </div>
-    
 
+<!-- Firebase & Main Logic (ಪೇಜ್‌ನ ತೀರಾ ಕೊನೆಯಲ್ಲಿ ಹಾಕಿ) -->
 <script type="module">
-  // Firebase Imports (ಅವಶ್ಯಕತೆ ಇದ್ದರೆ)
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  const firebaseConfig = { /* ನಿಮ್ಮ ಕಾನ್ಫಿಗರೇಶನ್ ಇಲ್ಲೇ ಇರಲಿ */ };
+  const firebaseConfig = {
+    apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
+    authDomain: "akhitool.firebaseapp.com",
+    projectId: "akhitool",
+    storageBucket: "akhitool.firebasestorage.app",
+    messagingSenderId: "892498311198",
+    appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
+  };
+
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  async function loadMobileMenu() {
-      const container = document.getElementById("mobile-menu-container");
+  async function init() {
       const toolsSnap = await getDocs(collection(db, "tools"));
+      const tools = [];
       let menuData = {};
 
       toolsSnap.forEach((doc) => {
-          const tool = doc.data();
+          const tool = { id: doc.id, ...doc.data() };
+          tools.push(tool);
           const cat = tool.category || "General";
           if(!menuData[cat]) menuData[cat] = [];
           menuData[cat].push(tool);
       });
 
+      // 1. Popular Tools (Homepage)
+      const popularContainer = document.getElementById("popular-tools-container");
+      if(popularContainer) {
+          popularContainer.innerHTML = tools.map(tool => `
+              <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-soft hover:shadow-hover transition-all">
+                  <h3 class="font-bold text-lg mb-2">${tool.name}</h3>
+                  <p class="text-gray-500 text-sm mb-4 line-clamp-2">${tool.description}</p>
+                  <a href="${tool.url}" class="text-brand-primary font-medium text-sm">Use Now →</a>
+              </div>
+          `).join('');
+      }
+
+      // 2. Mobile Menu (Drawer)
+      const container = document.getElementById("mobile-menu-container");
       container.innerHTML = `<a href="/" class="block px-4 py-3 font-semibold text-brand-primary border-b">Home</a>`;
       
       Object.keys(menuData).forEach(cat => {
-          const tools = menuData[cat];
           const div = document.createElement("div");
           div.className = "border-b border-gray-50";
           div.innerHTML = `
-              <button class="menu-cat-btn w-full flex justify-between px-4 py-3 font-medium text-gray-700 hover:bg-gray-50">
-                  ${cat} <span class="arrow transition-transform">▼</span>
+              <button class="menu-cat-btn w-full flex justify-between px-4 py-3 font-medium text-gray-700">
+                  ${cat} <span class="arrow">▼</span>
               </button>
               <div class="cat-tools-list hidden bg-gray-50 px-4 py-2 space-y-1">
-                  ${tools.map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600 hover:text-brand-primary">${t.name}</a>`).join('')}
+                  ${menuData[cat].map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600 hover:text-brand-primary">${t.name}</a>`).join('')}
               </div>
           `;
-          
-          // Dropdown Click Logic
-          div.querySelector('.menu-cat-btn').addEventListener('click', (e) => {
-              const list = div.querySelector('.cat-tools-list');
-              list.classList.toggle('hidden');
-              div.querySelector('.arrow').classList.toggle('rotate-180');
-          });
-          
           container.appendChild(div);
+          div.querySelector('.menu-cat-btn').addEventListener('click', () => {
+              div.querySelector('.cat-tools-list').classList.toggle('hidden');
+          });
       });
   }
-  loadMobileMenu();
+
+  // ಮೆನು ಬಟನ್ ಲಾಜಿಕ್
+  document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+      document.getElementById('mobile-drawer').classList.remove('translate-x-full');
+      document.getElementById('mobile-menu-overlay').classList.remove('hidden');
+  });
+  document.getElementById('mobile-close-btn').addEventListener('click', () => {
+      document.getElementById('mobile-drawer').classList.add('translate-x-full');
+      document.getElementById('mobile-menu-overlay').classList.add('hidden');
+  });
+
+  init();
 </script>
-    
-    
-        <!-- Header (Logo Removed, Close button aligned to right) -->
-        <div class="flex items-center justify-end p-4 border-b border-gray-100 shrink-0">
-            <button id="mobile-close-btn" class="text-gray-500 hover:text-brand-primary p-2 focus:outline-none rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-        </div>
-        
-        <!-- Menu Items (Scrollable) -->
-        <div class="px-4 py-4 space-y-1 overflow-y-auto flex-grow pb-20">
-            <a href="/" class="block px-4 py-3 rounded-xl text-base font-semibold text-brand-primary bg-blue-50 transition-colors">Home</a>
-            
-            <!-- Categories Dropdown (Accordion) -->
-
-                 <div class="pt-2 pb-1">
-                <button id="mobile-categories-btn" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:bg-gray-50 transition-colors focus:outline-none">
-                    <span class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                        Categories
-                    </span>
-                    <svg id="mobile-categories-icon" class="w-5 h-5 text-gray-500 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                
-                <!-- Expanded Category Links -->
-                <div id="mobile-categories-menu" class="hidden px-2 pt-2 pb-2 space-y-1 overflow-hidden">
-                    <a href="/categories/pdf-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-                        <svg class="w-4 h-4 text-brand-primary/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                        PDF Tools
-                    </a>
-                    <a href="/categories/image-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-                        <svg class="w-4 h-4 text-brand-secondary/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        Image Tools
-                    </a>
-                    <a href="/categories/calculators.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-                        <svg class="w-4 h-4 text-green-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                        Calculators
-                    </a>
-                    <a href="/categories/ai-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-                        <svg class="w-4 h-4 text-purple-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        AI Tools
-                    </a>
-                    <a href="/categories/dev-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-                        <svg class="w-4 h-4 text-orange-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-                        Developer Tools
-                    </a>
-                    <a href="/categories/seo-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-                        <svg class="w-4 h-4 text-red-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        SEO Tools
-                    </a>
-                </div>
-            </div>
-
-            <div class="border-t border-gray-100 my-2"></div>
-            
-            <!-- Company Links -->
-            <p class="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider">Company</p>
-            <a href="/about.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">About</a>
-            <a href="/contact.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Contact</a>
-            <a href="/privacy-policy.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Privacy Policy</a>
-            <a href="/terms-of-service.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Terms of Service</a>
-            <a href="/disclaimer.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Disclaimer</a>
-                                                                                                                          </div>                                                                                                                    </div>
     
     <!-- Full-Screen Explore Tools Modal -->
     <div id="explore-modal" class="fixed inset-0 z-[60] bg-brand-bg hidden opacity-0 transition-opacity duration-300 flex-col h-screen overflow-hidden">
@@ -516,109 +480,79 @@
             </div>
         </div>
     </footer>
-    <!-- Final Firebase Script to load tools into Homepage -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
-    authDomain: "akhitool.firebaseapp.com",
-    projectId: "akhitool",
-    storageBucket: "akhitool.firebasestorage.app",
-    messagingSenderId: "892498311198",
-    appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  async function loadAllTools() {
-      try {
-          const querySnapshot = await getDocs(collection(db, "tools"));
-          const tools = [];
-          
-          querySnapshot.forEach((doc) => {
-              tools.push({ id: doc.id, ...doc.data() });
-          });
-
-          if (tools.length === 0) return;
-
-          // 1. Popular Tools (ಎಲ್ಲವನ್ನೂ ತೋರಿಸು)
-          const popularContainer = document.getElementById("popular-tools-container");
-          if(popularContainer) {
-              popularContainer.innerHTML = tools.map(tool => `
-                  <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-soft hover:shadow-hover transition-all">
-                      <h3 class="font-bold text-lg mb-2">${tool.name}</h3>
-                      <p class="text-gray-500 text-sm mb-4 line-clamp-2">${tool.description}</p>
-                      <a href="${tool.url}" class="text-brand-primary font-medium text-sm">Use Now →</a>
-                  </div>
-              `).join('');
-          }
-
-          // 2. Recent Tools (Date ಮೇಲೆ sort ಮಾಡಿ)
-          const recentContainer = document.getElementById("recent-tools-container");
-          if(recentContainer) {
-              const recent = [...tools].sort((a, b) => b.dateAdded?.seconds - a.dateAdded?.seconds);
-              recentContainer.innerHTML = recent.slice(0, 3).map(tool => `
-                  <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-soft">
-                      <h3 class="font-bold text-lg">${tool.name}</h3>
-                      <p class="text-gray-500 text-sm">${tool.description}</p>
-                  </div>
-              `).join('');
-          }
-
-      } catch (e) {
-          console.error("Error loading tools:", e);
-      }
-  }
-
-  loadAllTools();
-</script>
+    <!-- Firebase & Logic -->
     <script type="module">
-  // ... Firebase Imports ...
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  async function loadMobileMenu() {
-      const container = document.getElementById("mobile-menu-container");
-      if(!container) return; // ಕಂಟೈನರ್ ಸಿಗದಿದ್ದರೆ ಸ್ಕ್ರಿಪ್ಟ್ ನಿಲ್ಲಿಸಿ
+        const firebaseConfig = {
+            apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
+            authDomain: "akhitool.firebaseapp.com",
+            projectId: "akhitool",
+            storageBucket: "akhitool.firebasestorage.app",
+            messagingSenderId: "892498311198",
+            appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
+        };
 
-      const toolsSnap = await getDocs(collection(db, "tools"));
-      let menuData = {};
-      
-      // ಡೇಟಾ ಗ್ರೂಪಿಂಗ್
-      toolsSnap.forEach((doc) => {
-          const tool = doc.data();
-          const cat = tool.category || "General";
-          if(!menuData[cat]) menuData[cat] = [];
-          menuData[cat].push(tool);
-      });
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-      // ಮೆನು ರೆಂಡರಿಂಗ್
-      container.innerHTML = `<a href="/" class="block px-4 py-3 font-semibold text-brand-primary border-b">Home</a>`;
-      
-      Object.keys(menuData).forEach(cat => {
-          const tools = menuData[cat];
-          const div = document.createElement("div");
-          div.className = "border-b border-gray-50";
-          div.innerHTML = `
-              <button class="menu-cat-btn w-full flex justify-between px-4 py-3 font-medium text-gray-700">
-                  ${cat} <span>▼</span>
-              </button>
-              <div class="cat-tools-list hidden bg-gray-50 px-4 py-2 space-y-1">
-                  ${tools.map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600">${t.name}</a>`).join('')}
-              </div>
-          `;
-          container.appendChild(div);
-          div.querySelector('.menu-cat-btn').addEventListener('click', () => {
-              div.querySelector('.cat-tools-list').classList.toggle('hidden');
-          });
-      });
-  }
+        async function init() {
+            const toolsSnap = await getDocs(collection(db, "tools"));
+            const tools = [];
+            let menuData = {};
 
-  // ಈ ಲೈನ್ ಮುಖ್ಯ:
-  loadMobileMenu(); 
+            toolsSnap.forEach((doc) => {
+                const tool = { id: doc.id, ...doc.data() };
+                tools.push(tool);
+                const cat = tool.category || "General";
+                if(!menuData[cat]) menuData[cat] = [];
+                menuData[cat].push(tool);
+            });
+
+            // Popular Tools
+            const popCont = document.getElementById("popular-tools-container");
+            if(popCont) popCont.innerHTML = tools.map(t => `
+                <div class="bg-white p-6 rounded-2xl border shadow-sm">
+                    <h3 class="font-bold">${t.name}</h3>
+                    <p class="text-sm text-gray-500 mb-4">${t.description}</p>
+                    <a href="${t.url}" class="text-blue-600 font-medium">Use Now →</a>
+                </div>
+            `).join('');
+
+            // Mobile Menu
+            const menuCont = document.getElementById("mobile-menu-container");
+            menuCont.innerHTML = `<a href="/" class="block px-4 py-3 font-semibold text-blue-600 border-b">Home</a>`;
+            
+            Object.keys(menuData).forEach(cat => {
+                const div = document.createElement("div");
+                div.className = "border-b";
+                div.innerHTML = `
+                    <button class="menu-cat-btn w-full flex justify-between px-4 py-3 font-medium text-gray-700 hover:bg-gray-50">
+                        ${cat} <span>▼</span>
+                    </button>
+                    <div class="cat-tools-list hidden bg-gray-50 px-4 py-2 space-y-1">
+                        ${menuData[cat].map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600">${t.name}</a>`).join('')}
+                    </div>
+                `;
+                div.querySelector('.menu-cat-btn').addEventListener('click', () => {
+                    div.querySelector('.cat-tools-list').classList.toggle('hidden');
+                });
+                menuCont.appendChild(div);
+            });
+        }
+
+        // Mobile Menu Toggles
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-drawer').classList.remove('translate-x-full');
+            document.getElementById('mobile-menu-overlay').classList.remove('hidden');
+        });
+        document.getElementById('mobile-close-btn').addEventListener('click', () => {
+            document.getElementById('mobile-drawer').classList.add('translate-x-full');
+            document.getElementById('mobile-menu-overlay').classList.add('hidden');
+        });
+
+        init();
     </script>
-    
-    
 </body>
 </html>
