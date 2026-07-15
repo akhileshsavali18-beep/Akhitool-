@@ -458,9 +458,62 @@
             </div>
         </div>
     </footer>
+    <!-- Firebase Firestore Script for Live Tools -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
+    authDomain: "akhitool.firebaseapp.com",
+    projectId: "akhitool",
+    storageBucket: "akhitool.firebasestorage.app",
+    messagingSenderId: "892498311198",
+    appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function fetchAndRenderTools() {
+      try {
+          const querySnapshot = await getDocs(collection(db, "tools"));
+          const tools = [];
+          querySnapshot.forEach((doc) => {
+              tools.push(doc.data());
+          });
+
+          // Popular Tools (First 4)
+          const popularContainer = document.getElementById("popular-tools-container");
+          if(popularContainer) {
+              popularContainer.innerHTML = tools.slice(0, 4).map(tool => `
+                  <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-soft hover:shadow-hover transition-all">
+                      <h3 class="font-bold text-lg mb-2">${tool.name}</h3>
+                      <p class="text-gray-500 text-sm mb-4">${tool.description}</p>
+                      <a href="${tool.url}" class="text-brand-primary font-medium text-sm">Use Now →</a>
+                  </div>
+              `).join('');
+          }
+
+          // Recently Added Tools (First 3)
+          const recentContainer = document.getElementById("recent-tools-container");
+          if(recentContainer) {
+              recentContainer.innerHTML = tools.slice(0, 3).map(tool => `
+                  <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-soft">
+                      <h3 class="font-bold text-lg">${tool.name}</h3>
+                      <p class="text-gray-500 text-sm">${tool.description}</p>
+                  </div>
+              `).join('');
+          }
+
+      } catch (e) {
+          console.error("Error loading tools:", e);
+      }
+  }
+
+  fetchAndRenderTools();
+                                </script>
     
-    <script src="/assets/js/tools-data.js"></script>
-    <script src="/assets/js/main.js"></script>
     
 </body>
 </html>
