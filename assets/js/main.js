@@ -1,206 +1,94 @@
-// assets/js/main.js
-
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // ==========================================
-    // 1. DYNAMIC TOOL RENDERING
-    // ==========================================
-    const renderToolCard = (tool) => {
-        return `
-            <a href="${tool.url}" class="block bg-brand-card rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-full">
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="w-12 h-12 rounded-xl ${tool.iconBg} ${tool.iconColor} flex items-center justify-center group-hover:bg-brand-primary group-hover:text-white transition-colors shrink-0">
-                        ${tool.icon}
-                    </div>
-                    <h3 class="text-md sm:text-lg font-semibold text-brand-text group-hover:text-brand-primary transition-colors">${tool.name}</h3>
-                </div>
-                <p class="text-gray-500 text-sm leading-relaxed">${tool.description}</p>
-            </a>
-        `;
-    };
-
-    // Populate sections if they exist on the page
-    const popContainer = document.getElementById('popular-tools-container');
-    if (popContainer) {
-        popContainer.innerHTML = toolsData.filter(t => t.isPopular).map(renderToolCard).join('');
-    }
-
-    const trendingContainer = document.getElementById('trending-tools-container');
-    if (trendingContainer) {
-        trendingContainer.innerHTML = toolsData.filter(t => t.isTrending).map(renderToolCard).join('');
-    }
-
-    const recentContainer = document.getElementById('recent-tools-container');
-    if (recentContainer) {
-        recentContainer.innerHTML = toolsData.filter(t => t.isRecent).map(renderToolCard).join('');
-    }
-
-    // ==========================================
-    // 2. MOBILE SLIDE-IN DRAWER
-    // ==========================================
-    const mobileBtn = document.getElementById('mobile-menu-btn');
+    // -------------------------------------------------------------------------
+    // 1. MOBILE MENU & DROPDOWN LOGIC
+    // -------------------------------------------------------------------------
+    const menuBtn = document.getElementById('mobile-menu-btn');
     const mobileDrawer = document.getElementById('mobile-drawer');
     const mobileOverlay = document.getElementById('mobile-menu-overlay');
-    const closeDrawerBtn = document.getElementById('mobile-close-btn');
+    const mobileCloseBtn = document.getElementById('mobile-close-btn');
+    
+    // Dropdown Elements
+    const catBtn = document.getElementById('mobile-categories-btn');
+    const catMenu = document.getElementById('mobile-categories-menu');
+    const catIcon = document.getElementById('mobile-categories-icon');
 
-    const toggleDrawer = () => {
-        const isClosed = mobileDrawer.classList.contains('translate-x-full');
-        if (isClosed) {
-            mobileDrawer.classList.remove('translate-x-full');
+    // Toggle Mobile Menu Function
+    function toggleMenu() {
+        if (!mobileDrawer || !mobileOverlay) return;
+        const isHidden = mobileDrawer.classList.contains('translate-x-full');
+        if (isHidden) {
             mobileOverlay.classList.remove('hidden');
-            // Small delay to allow display block to apply before opacity transition
             setTimeout(() => mobileOverlay.classList.remove('opacity-0'), 10);
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            mobileDrawer.classList.remove('translate-x-full');
         } else {
-            mobileDrawer.classList.add('translate-x-full');
             mobileOverlay.classList.add('opacity-0');
+            mobileDrawer.classList.add('translate-x-full');
             setTimeout(() => mobileOverlay.classList.add('hidden'), 300);
-            document.body.style.overflow = '';
         }
-    };
+    }
 
-    if (mobileBtn && mobileDrawer && mobileOverlay && closeDrawerBtn) {
-        mobileBtn.addEventListener('click', toggleDrawer);
-        closeDrawerBtn.addEventListener('click', toggleDrawer);
-        mobileOverlay.addEventListener('click', toggleDrawer);
+    if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
+    if (mobileCloseBtn) mobileCloseBtn.addEventListener('click', toggleMenu);
+    if (mobileOverlay) mobileOverlay.addEventListener('click', toggleMenu);
 
-        // Close on link click
-        const drawerLinks = mobileDrawer.querySelectorAll('.drawer-link');
-        drawerLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                toggleDrawer();
-            });
+    // Toggle Categories Dropdown Function
+    if (catBtn && catMenu && catIcon) {
+        catBtn.addEventListener('click', () => {
+            catMenu.classList.toggle('hidden');
+            catIcon.classList.toggle('-rotate-180');
         });
     }
 
-    // ==========================================
-    // 3. EXPLORE TOOLS FULL-SCREEN MODAL
-    // ==========================================
-    const exploreModal = document.getElementById('explore-modal');
-    const closeExploreBtn = document.getElementById('close-explore-btn');
-    const exploreGrid = document.getElementById('explore-tools-grid');
-    const modalSearchInput = document.getElementById('modal-search-input');
-    const emptyState = document.getElementById('explore-empty-state');
-    
-    // Bind explore buttons (Hero button & Navbar link)
-    const exploreTriggers = document.querySelectorAll('#hero-explore-btn, #nav-explore-btn, .open-explore-modal');
-    
-    const openExploreModal = () => {
-        if (!exploreModal) return;
-        // Populate grid initially
-        exploreGrid.innerHTML = toolsData.map(renderToolCard).join('');
-        exploreModal.classList.remove('hidden');
-        setTimeout(() => exploreModal.classList.remove('opacity-0'), 10);
-        document.body.style.overflow = 'hidden'; // Stop background scrolling
-        if(modalSearchInput) modalSearchInput.focus();
-    };
-
-    const closeExploreModal = () => {
-        if (!exploreModal) return;
-        exploreModal.classList.add('opacity-0');
-        setTimeout(() => exploreModal.classList.add('hidden'), 300);
-        document.body.style.overflow = '';
-        if(modalSearchInput) modalSearchInput.value = '';
-    };
-
-    exploreTriggers.forEach(btn => btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        openExploreModal();
-    }));
-
-    if (closeExploreBtn) {
-        closeExploreBtn.addEventListener('click', closeExploreModal);
+    // -------------------------------------------------------------------------
+    // 2. DYNAMIC TOOLS RENDERING LOGIC
+    // -------------------------------------------------------------------------
+    // Check if toolsData exists (from tools-data.js)
+    if (typeof toolsData === 'undefined') {
+        console.warn("tools-data.js is not loaded properly.");
+        return;
     }
 
-    // ==========================================
-    // 4. INSTANT SEARCH LOGIC (MODAL)
-    // ==========================================
-    if (modalSearchInput && exploreGrid) {
-        modalSearchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            const filtered = toolsData.filter(tool => {
-                return tool.name.toLowerCase().includes(query) || 
-                       tool.category.toLowerCase().includes(query) || 
-                       tool.keywords.toLowerCase().includes(query);
-            });
+    // Function to generate Tool Card HTML
+    function createToolCard(tool) {
+        return `
+            <a href="${tool.url}" class="group block p-6 bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.03)] hover:shadow-lg hover:border-brand-primary/30 transition-all duration-300 hover:-translate-y-1">
+                <div class="w-12 h-12 rounded-xl ${tool.bgColor || 'bg-blue-50'} flex items-center justify-center ${tool.textColor || 'text-brand-primary'} mb-5 group-hover:bg-brand-primary group-hover:text-white transition-colors duration-300">
+                    ${tool.iconSvg}
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">${tool.title}</h3>
+                <p class="text-sm text-gray-500 line-clamp-2">${tool.description}</p>
+            </a>
+        `;
+    }
 
-            if (filtered.length === 0) {
-                exploreGrid.innerHTML = '';
-                emptyState.classList.remove('hidden');
+    // Render Popular Tools (On Homepage)
+    const popularContainer = document.getElementById('popular-tools-container');
+    if (popularContainer) {
+        const popularTools = toolsData.filter(t => t.isPopular);
+        popularContainer.innerHTML = popularTools.map(createToolCard).join('');
+    }
+
+    // Render Tools by Category (On Category Pages)
+    const categoryContainers = {
+        'image-tools-container': 'Image Tools',
+        'calculators-tools-container': 'Calculators',
+        'pdf-tools-container': 'PDF Tools',
+        'ai-tools-container': 'AI Tools',
+        'dev-tools-container': 'Developer Tools',
+        'seo-tools-container': 'SEO Tools'
+    };
+
+    for (const [containerId, categoryName] of Object.entries(categoryContainers)) {
+        const container = document.getElementById(containerId);
+        if (container) {
+            const categoryTools = toolsData.filter(t => t.category === categoryName);
+            if (categoryTools.length > 0) {
+                container.innerHTML = categoryTools.map(createToolCard).join('');
             } else {
-                emptyState.classList.add('hidden');
-                exploreGrid.innerHTML = filtered.map(renderToolCard).join('');
+                container.innerHTML = `<p class="text-gray-500 col-span-full text-center py-8">More tools coming soon!</p>`;
             }
-        });
+        }
     }
-
-    // ==========================================
-    // 5. MAIN HERO DROPDOWN SEARCH
-    // ==========================================
-    const mainSearchInput = document.getElementById('main-search-input');
-    const searchDropdown = document.getElementById('main-search-dropdown');
-
-    if (mainSearchInput && searchDropdown) {
-        // Build dropdown item HTML
-        const renderDropdownItem = (tool) => {
-            return `
-                <a href="${tool.url}" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0">
-                    <div class="w-10 h-10 rounded-lg ${tool.iconBg} ${tool.iconColor} flex items-center justify-center shrink-0">
-                        ${tool.icon}
-                    </div>
-                    <div>
-                        <div class="text-sm font-semibold text-gray-800">${tool.name}</div>
-                        <div class="text-xs text-gray-400">${tool.category}</div>
-                    </div>
-                </a>
-            `;
-        };
-
-        mainSearchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            
-            if (query.length < 1) {
-                searchDropdown.classList.add('hidden');
-                searchDropdown.innerHTML = '';
-                return;
-            }
-
-            const filtered = toolsData.filter(tool => {
-                return tool.name.toLowerCase().includes(query) || 
-                       tool.category.toLowerCase().includes(query) || 
-                       tool.keywords.toLowerCase().includes(query);
-            });
-
-            if (filtered.length > 0) {
-                searchDropdown.innerHTML = filtered.map(renderDropdownItem).join('');
-                searchDropdown.classList.remove('hidden');
-                searchDropdown.classList.add('flex');
-            } else {
-                searchDropdown.innerHTML = `
-                    <div class="px-4 py-4 text-center text-sm text-gray-500">
-                        No tools found for "${query}"
-                    </div>
-                `;
-                searchDropdown.classList.remove('hidden');
-                searchDropdown.classList.add('flex');
-            }
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!mainSearchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
-                searchDropdown.classList.add('hidden');
-            }
-        });
-
-        // Open Dropdown again if input has value on focus
-        mainSearchInput.addEventListener('focus', () => {
-            if (mainSearchInput.value.trim().length > 0) {
-                searchDropdown.classList.remove('hidden');
-                searchDropdown.classList.add('flex');
-            }
-        });
-    }
-
 });
+
                                                      
