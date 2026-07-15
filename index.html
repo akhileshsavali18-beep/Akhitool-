@@ -90,10 +90,16 @@
         </div>
     </header>
     
-    <!-- Mobile Navigation Drawer (Updated with Categories Dropdown - No Logo) -->
-    <div id="mobile-menu-overlay" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300 cursor-pointer"></div>
-    <div id="mobile-drawer" class="fixed inset-y-0 right-0 z-50 w-72 sm:w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col h-full">
-        
+    <!-- Mobile Drawer -->
+<div id="mobile-drawer" class="fixed inset-y-0 right-0 z-50 w-72 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col h-full">
+    <div class="flex items-center justify-end p-4 border-b border-gray-100">
+        <button id="mobile-close-btn" class="text-gray-500 p-2"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+    </div>
+    <div id="mobile-menu-container" class="px-4 py-4 space-y-2 overflow-y-auto">
+        <!-- ಇಲ್ಲಿ ಎಲ್ಲಾ Categories ಮತ್ತು Tools ಆಟೋಮ್ಯಾಟಿಕ್ ಆಗಿ ಬರುತ್ತವೆ -->
+    </div>
+</div>
+    
         <!-- Header (Logo Removed, Close button aligned to right) -->
         <div class="flex items-center justify-end p-4 border-b border-gray-100 shrink-0">
             <button id="mobile-close-btn" class="text-gray-500 hover:text-brand-primary p-2 focus:outline-none rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
@@ -517,6 +523,47 @@
 
   loadAllTools();
 </script>
+    // Firebase ನಿಂದ ಕ್ಯಾಟಗರಿ ಮತ್ತು ಟೂಲ್ಸ್ ತರುವ ಫಂಕ್ಷನ್
+async function loadMobileMenu() {
+    const toolsSnap = await getDocs(collection(db, "tools"));
+    const container = document.getElementById("mobile-menu-container");
+    
+    let menuData = {}; // {CategoryName: [tool1, tool2]}
+
+    toolsSnap.forEach((doc) => {
+        const tool = doc.data();
+        const cat = tool.category || "Uncategorized";
+        if(!menuData[cat]) menuData[cat] = [];
+        menuData[cat].push(tool);
+    });
+
+    // ಮೆನು ಬಿಲ್ಡ್ ಮಾಡುವುದು
+    container.innerHTML = `<a href="/" class="block px-4 py-3 font-semibold text-brand-primary">Home</a>`;
+    
+    Object.keys(menuData).forEach(cat => {
+        const tools = menuData[cat];
+        container.innerHTML += `
+            <div class="border-t border-gray-100">
+                <button class="menu-cat-btn w-full flex justify-between px-4 py-3 font-semibold text-gray-800">
+                    ${cat} <span>▼</span>
+                </button>
+                <div class="cat-tools-list hidden px-4 pb-2 space-y-1">
+                    ${tools.slice(0, 4).map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600 pl-4">${t.name}</a>`).join('')}
+                    ${tools.length > 4 ? `<a href="/categories/${cat.toLowerCase()}.html" class="block py-2 text-sm text-brand-primary font-medium pl-4">View More →</a>` : ''}
+                </div>
+            </div>
+        `;
+    });
+
+    // ಡ್ರಾಪ್-ಡೌನ್ ಕ್ಲಿಕ್ ಲಾಜಿಕ್
+    document.querySelectorAll('.menu-cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.nextElementSibling.classList.toggle('hidden');
+        });
+    });
+}
+loadMobileMenu();
+    
     
     <!-- Mobile Menu Logic -->
 <script>
