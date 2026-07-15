@@ -96,10 +96,68 @@
         <span class="font-bold text-lg">Menu</span>
         <button id="mobile-close-btn" class="text-gray-500 p-2">✕</button>
     </div>
-    <div id="mobile-menu-container" class="px-2 py-4 space-y-1">
-        <p class="px-4 py-4 text-gray-400">Loading categories...</p>
-    </div>
-</div>
+    <script type="module">
+  // Firebase Imports (ಅಗತ್ಯವಿರುವಂತದ್ದು)
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = { /* ನಿಮ್ಮ ಕಾನ್ಫಿಗರೇಶನ್ */ };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function renderNestedMenu() {
+      const container = document.getElementById("mobile-menu-container");
+      const toolsSnap = await getDocs(collection(db, "tools"));
+      let menuData = {}; // {Category: {SubCategory/Type: [Tools]}}
+
+      toolsSnap.forEach((doc) => {
+          const tool = doc.data();
+          const cat = tool.category || "General";
+          if(!menuData[cat]) menuData[cat] = [];
+          menuData[cat].push(tool);
+      });
+
+      container.innerHTML = `
+          <a href="/" class="block px-4 py-3 font-semibold text-blue-600 border-b">Home</a>
+          
+          <!-- Category Dropdown -->
+          <div class="border-b">
+              <button id="cat-main-btn" class="w-full flex justify-between px-4 py-3 font-semibold text-gray-800">Category <span>▼</span></button>
+              <div id="cat-dropdown" class="hidden bg-gray-50 px-2">
+                  ${Object.keys(menuData).map(cat => `
+                      <div class="nested-cat">
+                          <button class="w-full flex justify-between px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">
+                              ${cat} <span>▶</span>
+                          </button>
+                          <div class="hidden px-4 py-1 space-y-1">
+                              ${menuData[cat].map(t => `<a href="${t.url}" class="block py-1 text-xs text-gray-600">${t.name}</a>`).join('')}
+                          </div>
+                      </div>
+                  `).join('')}
+              </div>
+          </div>
+
+          <!-- Company Dropdown -->
+          <div class="border-b">
+              <button id="comp-main-btn" class="w-full flex justify-between px-4 py-3 font-semibold text-gray-800">Company <span>▼</span></button>
+              <div id="comp-dropdown" class="hidden bg-gray-50 px-4 py-2 space-y-1 text-sm text-gray-600">
+                  <a href="/about.html" class="block py-1">About</a>
+                  <a href="/contact.html" class="block py-1">Contact</a>
+              </div>
+          </div>
+      `;
+
+      // Event Listeners
+      document.getElementById('cat-main-btn').onclick = () => document.getElementById('cat-dropdown').classList.toggle('hidden');
+      document.getElementById('comp-main-btn').onclick = () => document.getElementById('comp-dropdown').classList.toggle('hidden');
+      
+      document.querySelectorAll('.nested-cat button').forEach(btn => {
+          btn.onclick = () => btn.nextElementSibling.classList.toggle('hidden');
+      });
+  }
+  renderNestedMenu();
+                              </script>
+    
 
 <!-- Firebase & Main Logic (ಪೇಜ್‌ನ ತೀರಾ ಕೊನೆಯಲ್ಲಿ ಹಾಕಿ) -->
 <script type="module">
