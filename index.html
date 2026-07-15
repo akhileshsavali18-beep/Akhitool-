@@ -518,6 +518,31 @@
   loadAllTools();
 </script>
     
+    <!-- Mobile Menu Logic -->
+<script>
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileDrawer = document.getElementById('mobile-drawer');
+    const mobileClose = document.getElementById('mobile-close-btn');
+    const overlay = document.getElementById('mobile-menu-overlay');
+
+    if(mobileBtn) {
+        mobileBtn.addEventListener('click', () => {
+            mobileDrawer.classList.remove('translate-x-full');
+            overlay.classList.remove('hidden');
+            // ಸ್ವಲ್ಪ delay ಕೊಟ್ಟು opacity ಬದಲಾಯಿಸಿದರೆ smooth ಆಗಿ ಓಪನ್ ಆಗುತ್ತೆ
+            setTimeout(() => { overlay.classList.add('opacity-100'); }, 10);
+        });
+    }
+
+    const closeMenu = () => {
+        mobileDrawer.classList.add('translate-x-full');
+        overlay.classList.remove('opacity-100');
+        setTimeout(() => { overlay.classList.add('hidden'); }, 300);
+    };
+
+    if(mobileClose) mobileClose.addEventListener('click', closeMenu);
+    if(overlay) overlay.addEventListener('click', closeMenu);
+</script>
     
     
 </body>
