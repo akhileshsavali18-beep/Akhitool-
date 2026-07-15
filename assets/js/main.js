@@ -51,25 +51,19 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
 
-        // Render Popular
-        const pop = document.getElementById('popular-tools-container');
-        if (pop) pop.innerHTML = toolsData.filter(t => t.isPopular).map(createToolCard).join('');
+            // Function to generate Tool Card HTML (Debugging Version)
+    function createToolCard(tool) {
+        // Debugging: ಇದು ಯಾಕೆ undefined ಬರ್ತಿದೆ ಅಂತ ತೋರಿಸುತ್ತದೆ
+        if (!tool.title) console.log("Missing title for tool:", tool);
 
-        // Render Categories
-        const cats = {
-            'image-tools-container': 'Image Tools',
-            'calculators-tools-container': 'Calculators',
-            'pdf-tools-container': 'PDF Tools',
-            'ai-tools-container': 'AI Tools',
-            'dev-tools-container': 'Developer Tools',
-            'seo-tools-container': 'SEO Tools'
-        };
-
-        for (const [id, name] of Object.entries(cats)) {
-            const cont = document.getElementById(id);
-            if (cont) {
-                cont.innerHTML = toolsData.filter(t => t.category === name).map(createToolCard).join('');
-            }
-        }
+        return `
+            <a href="${tool.url || '#'}" class="group block p-6 bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.03)] hover:shadow-lg hover:border-brand-primary/30 transition-all duration-300 hover:-translate-y-1">
+                <div class="w-12 h-12 rounded-xl ${tool.bgColor || 'bg-blue-50'} flex items-center justify-center ${tool.textColor || 'text-brand-primary'} mb-5 group-hover:bg-brand-primary group-hover:text-white transition-colors duration-300">
+                    ${tool.iconSvg || '<svg>...</svg>'}
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">${tool.title || tool.name || 'Untitled Tool'}</h3>
+                <p class="text-sm text-gray-500 line-clamp-2">${tool.description || tool.desc || 'No description available.'}</p>
+            </a>
+        `;
     }
-});
+        
