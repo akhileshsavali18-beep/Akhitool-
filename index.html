@@ -58,11 +58,13 @@
 <body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-primary selection:text-white flex flex-col min-h-screen overflow-x-hidden">
 
 <!-- Navbar -->
-<header class="fixed top-0 w-full bg-white border-b z-40 h-16 flex items-center px-4 justify-between">
-    <a href="/" class="text-xl font-bold">AkhiTool</a>
-    <!-- ಮೆನು ಬಟನ್ ಐಡಿ mobile-menu-btn ಇರಲಿ -->
+<header class="fixed top-0 w-full bg-white z-40 h-16 flex items-center px-4 justify-between border-b">
+    <a href="/" class="flex items-center">
+        <img src="logo.png" alt="AkhiTool Logo" class="h-10 w-auto"> <!-- Logo ಇಲ್ಲಿ ಬರಲಿ -->
+    </a>
     <button id="mobile-menu-btn" class="p-2 border rounded-lg">☰</button>
 </header>
+    
                 
                 <!-- Logo Wrapper: -ml-2 moves it closer to the left edge -->
                 <a href="index.html" class="relative flex items-center shrink-0 h-full w-[110px] md:w-[130px] group -ml-2">
@@ -620,31 +622,58 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // ಮೆನು ಓಪನ್/ಕ್ಲೋಸ್ ಲಾಜಿಕ್ (ಇದು ಮೊದಲು ರನ್ ಆಗಲಿ)
-    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-        document.getElementById('mobile-drawer').classList.remove('translate-x-full');
-    });
-    document.getElementById('mobile-close-btn').addEventListener('click', () => {
-        document.getElementById('mobile-drawer').classList.add('translate-x-full');
-    });
-
-    // ಡೇಟಾ ಲೋಡ್ ಮಾಡುವುದು
-    async function loadData() {
+    async function init() {
         try {
-            const container = document.getElementById("mobile-menu-container");
             const snap = await getDocs(collection(db, "tools"));
-            
-            // ಡೇಟಾ ಸಿಕ್ಕರೆ ಮಾತ್ರ ಲೂಪ್ ಮಾಡು
-            if(!snap.empty) {
-                container.innerHTML = `<a href="/" class="block py-2">Home</a>`;
-                // ಮೆನು ಬಿಲ್ಡ್ ಲಾಜಿಕ್ ಇಲ್ಲಿ ಹಾಕಿ...
+            let tools = [];
+            let menuData = {};
+
+            snap.forEach((doc) => {
+                const tool = { id: doc.id, ...doc.data() };
+                tools.push(tool);
+                const cat = tool.category || "General";
+                if(!menuData[cat]) menuData[cat] = [];
+                menuData[cat].push(tool);
+            });
+
+            // 1. Popular Tools render (container id check ಮಾಡಿ)
+            const popCont = document.getElementById("popular-tools-container");
+            if(popCont) {
+                popCont.innerHTML = tools.map(t => `
+                    <div class="bg-white p-4 border rounded-xl shadow-sm">
+                        <h3 class="font-bold">${t.name}</h3>
+                        <a href="${t.url}" class="text-blue-500 text-sm">Use Tool →</a>
+                    </div>
+                `).join('');
             }
-        } catch (e) {
-            console.log("Error loading:", e);
-        }
+
+            // 2. Mobile Menu render
+            const menuCont = document.getElementById("mobile-menu-container");
+            if(menuCont) {
+                menuCont.innerHTML = '<a href="/" class="block py-2 font-bold">Home</a>';
+                Object.keys(menuData).forEach(cat => {
+                    const div = document.createElement("div");
+                    div.className = "border-t";
+                    div.innerHTML = `
+                        <button class="w-full flex justify-between py-3 font-medium">${cat} <span>▼</span></button>
+                        <div class="hidden px-2 space-y-1">
+                            ${menuData[cat].map(t => `<a href="${t.url}" class="block py-1 text-sm text-gray-600">${t.name}</a>`).join('')}
+                        </div>
+                    `;
+                    div.querySelector('button').onclick = (e) => e.target.nextElementSibling.classList.toggle('hidden');
+                    menuCont.appendChild(div);
+                });
+            }
+        } catch (e) { console.error(e); }
     }
-    loadData();
+
+    // Menu Buttons
+    document.getElementById('mobile-menu-btn').onclick = () => document.getElementById('mobile-drawer').classList.remove('translate-x-full');
+    document.getElementById('mobile-close-btn').onclick = () => document.getElementById('mobile-drawer').classList.add('translate-x-full');
+
+    init();
 </script>
+    
     
 </body>
 </html>
