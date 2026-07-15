@@ -463,49 +463,6 @@
         <!-- ಟೂಲ್ಸ್ ಡೇಟಾ ಲೋಡ್ ಮಾಡುವ Scripts (ಇದೇ ನಿಮ್ಮ ಟೂಲ್ಸ್ ತರುವುದು!) -->
     <script src="/assets/js/tools-data.js"></script>
     <script src="/assets/js/main.js"></script>
-
-    <!-- Mobile Menu & Dropdown Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const menuBtn = document.getElementById('mobile-menu-btn');
-            const mobileDrawer = document.getElementById('mobile-drawer');
-            const mobileOverlay = document.getElementById('mobile-menu-overlay');
-            const mobileCloseBtn = document.getElementById('mobile-close-btn');
-            
-            // Dropdown Elements
-            const catBtn = document.getElementById('mobile-categories-btn');
-            const catMenu = document.getElementById('mobile-categories-menu');
-            const catIcon = document.getElementById('mobile-categories-icon');
-
-            if (!menuBtn || !mobileDrawer || !mobileOverlay || !mobileCloseBtn) return;
-
-            // Toggle Main Menu
-            function toggleMenu() {
-                const isHidden = mobileDrawer.classList.contains('translate-x-full');
-                if (isHidden) {
-                    mobileOverlay.classList.remove('hidden');
-                    setTimeout(() => mobileOverlay.classList.remove('opacity-0'), 10);
-                    mobileDrawer.classList.remove('translate-x-full');
-                } else {
-                    mobileOverlay.classList.add('opacity-0');
-                    mobileDrawer.classList.add('translate-x-full');
-                    setTimeout(() => mobileOverlay.classList.add('hidden'), 300);
-                }
-            }
-
-            // Toggle Categories Dropdown
-            if(catBtn && catMenu && catIcon) {
-                catBtn.addEventListener('click', () => {
-                    catMenu.classList.toggle('hidden');
-                    catIcon.classList.toggle('-rotate-180');
-                });
-            }
-
-            menuBtn.addEventListener('click', toggleMenu);
-            mobileCloseBtn.addEventListener('click', toggleMenu);
-            mobileOverlay.addEventListener('click', toggleMenu);
-        });
-            </script>
     
 </body>
 </html>
