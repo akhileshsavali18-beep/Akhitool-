@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("AkhiTool Script Loaded Successfully");
-
     // 1. MOBILE MENU LOGIC
     const menuBtn = document.getElementById('mobile-menu-btn');
     const mobileDrawer = document.getElementById('mobile-drawer');
@@ -40,26 +38,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. DYNAMIC TOOLS RENDERING LOGIC
     if (typeof toolsData !== 'undefined') {
         function createToolCard(tool) {
+            // ಇಲ್ಲಿ ನಿಮ್ಮ tools-data.js ನಲ್ಲಿ ಇರುವ Keys ಗಳನ್ನು ಬಳಸಲಾಗಿದೆ
             return `
                 <a href="${tool.url}" class="group block p-6 bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.03)] hover:shadow-lg hover:border-brand-primary/30 transition-all duration-300 hover:-translate-y-1">
-                    <div class="w-12 h-12 rounded-xl ${tool.bgColor || 'bg-blue-50'} flex items-center justify-center ${tool.textColor || 'text-brand-primary'} mb-5 group-hover:bg-brand-primary group-hover:text-white transition-colors duration-300">
-                        ${tool.iconSvg}
+                    <div class="w-12 h-12 rounded-xl ${tool.iconBg} flex items-center justify-center ${tool.iconColor} mb-5 group-hover:bg-brand-primary group-hover:text-white transition-colors duration-300">
+                        ${tool.icon}
                     </div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">${tool.title}</h3>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">${tool.name}</h3>
                     <p class="text-sm text-gray-500 line-clamp-2">${tool.description}</p>
                 </a>
             `;
         }
 
-                function createToolCard(tool) {
-        return `
-            <a href="${tool.url}" class="group block p-6 bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.03)] hover:shadow-lg hover:border-brand-primary/30 transition-all duration-300 hover:-translate-y-1">
-                <div class="w-12 h-12 rounded-xl ${tool.iconBg} flex items-center justify-center ${tool.iconColor} mb-5 group-hover:bg-brand-primary group-hover:text-white transition-colors duration-300">
-                    ${tool.icon}
-                </div>
-                <h3 class="text-lg font-bold text-gray-900 mb-2">${tool.name}</h3>
-                <p class="text-sm text-gray-500 line-clamp-2">${tool.description}</p>
-            </a>
-        `;
-                }
-        
+        const popularContainer = document.getElementById('popular-tools-container');
+        if (popularContainer) {
+            popularContainer.innerHTML = toolsData.filter(t => t.isPopular).map(createToolCard).join('');
+        }
+
+        const cats = {
+            'image-tools-container': 'Image Tools',
+            'calculators-tools-container': 'Calculators',
+            'pdf-tools-container': 'PDF Tools',
+            'ai-tools-container': 'AI Tools',
+            'dev-tools-container': 'Developer Tools',
+            'seo-tools-container': 'SEO Tools'
+        };
+
+        for (const [id, name] of Object.entries(cats)) {
+            const cont = document.getElementById(id);
+            if (cont) {
+                cont.innerHTML = toolsData.filter(t => t.category === name).map(createToolCard).join('');
+            }
+        }
+    } else {
+        console.error("toolsData is missing!");
+    }
+});
