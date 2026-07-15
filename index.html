@@ -458,10 +458,10 @@
             </div>
         </div>
     </footer>
-    <!-- Firebase Firestore Script for Live Tools -->
+    <!-- Firebase Firestore Script for Live Tools AND Categories -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
@@ -475,44 +475,36 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  async function fetchAndRenderTools() {
+  async function loadAllData() {
       try {
-          const querySnapshot = await getDocs(collection(db, "tools"));
-          const tools = [];
-          querySnapshot.forEach((doc) => {
-              tools.push(doc.data());
-          });
-
-          // Popular Tools (First 4)
-          const popularContainer = document.getElementById("popular-tools-container");
-          if(popularContainer) {
-              popularContainer.innerHTML = tools.slice(0, 4).map(tool => `
-                  <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-soft hover:shadow-hover transition-all">
-                      <h3 class="font-bold text-lg mb-2">${tool.name}</h3>
-                      <p class="text-gray-500 text-sm mb-4">${tool.description}</p>
-                      <a href="${tool.url}" class="text-brand-primary font-medium text-sm">Use Now →</a>
-                  </div>
-              `).join('');
+          // 1. Tools ಮತ್ತು Categories ಡೇಟಾ ತರುವುದು
+          const toolsSnap = await getDocs(collection(db, "tools"));
+          const catsSnap = await getDocs(collection(db, "categories"));
+          
+          // 2. Categories ಲಿಸ್ಟ್ ಅಪ್‌ಡೇಟ್ ಮಾಡುವುದು
+          const catMenu = document.getElementById("mobile-categories-menu");
+          if(catMenu) {
+              catMenu.innerHTML = ""; // ಹಳೆ ಡಮ್ಮಿ ಡೇಟಾ ಕ್ಲಿಯರ್ ಮಾಡಿ
+              catsSnap.forEach((doc) => {
+                  const cat = doc.data();
+                  catMenu.innerHTML += `
+                      <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
+                          ${cat.name}
+                      </a>
+                  `;
+              });
           }
 
-          // Recently Added Tools (First 3)
-          const recentContainer = document.getElementById("recent-tools-container");
-          if(recentContainer) {
-              recentContainer.innerHTML = tools.slice(0, 3).map(tool => `
-                  <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-soft">
-                      <h3 class="font-bold text-lg">${tool.name}</h3>
-                      <p class="text-gray-500 text-sm">${tool.description}</p>
-                  </div>
-              `).join('');
-          }
-
+          // 3. Tools ಲಿಸ್ಟ್ ಅಪ್‌ಡೇಟ್ ಮಾಡುವುದು (ಹಿಂದಿನಂತೆ)
+          // ... (ನಿಮ್ಮ ಟೂಲ್ಸ್ ಲೋಡ್ ಮಾಡುವ ಕೋಡ್ ಇಲ್ಲಿ ಇರಲಿ)
       } catch (e) {
-          console.error("Error loading tools:", e);
+          console.error("Error loading data:", e);
       }
   }
 
-  fetchAndRenderTools();
-                                </script>
+  loadAllData();
+</script>
+    
     <!-- ಮೊಬೈಲ್ ಮೆನು ಸರಿಯಾಗಲು ಈ ಕೆಳಗಿನ ಕೋಡ್ ಬಳಸಿ -->
 <script>
     const mobileBtn = document.getElementById('mobile-menu-btn');
