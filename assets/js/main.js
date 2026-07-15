@@ -31,13 +31,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mobileCloseBtn) mobileCloseBtn.addEventListener('click', toggleMenu);
     if (mobileOverlay) mobileOverlay.addEventListener('click', toggleMenu);
 
-    // Toggle Categories Dropdown Function
-    if (catBtn && catMenu && catIcon) {
-        catBtn.addEventListener('click', () => {
-            catMenu.classList.toggle('hidden');
-            catIcon.classList.toggle('-rotate-180');
+        // Toggle Categories Dropdown Function
+    const catBtn = document.getElementById('mobile-categories-btn');
+    const catMenu = document.getElementById('mobile-categories-menu');
+    const catIcon = document.getElementById('mobile-categories-icon');
+
+    if (catBtn) {
+        catBtn.addEventListener('click', function(e) {
+            e.preventDefault(); // ಬೇರೆ ಯಾವುದೇ ಆಕ್ಷನ್ ಆಗದಂತೆ ತಡೆಯುತ್ತದೆ
+            if (catMenu) {
+                catMenu.classList.toggle('hidden');
+            }
+            if (catIcon) {
+                catIcon.classList.toggle('-rotate-180');
+            }
         });
     }
+    
 
     // -------------------------------------------------------------------------
     // 2. DYNAMIC TOOLS RENDERING LOGIC
