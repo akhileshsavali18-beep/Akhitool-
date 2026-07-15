@@ -67,16 +67,11 @@
         </form>
     </div>
 
-    <!-- Firebase Ready Auth Logic -->
-    <script src="../assets/js/firebase-config.js"></script>
-    <script src="../assets/js/auth.js"></script>
-    <!-- Firebase Authentication Script -->
+    <!-- Firebase Authentication Script with Local Persistence -->
 <script type="module">
-  // Firebase SDK ಇಂಪೋರ್ಟ್ ಮಾಡಿಕೊಳ್ಳುವುದು
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  // ನಿಮ್ಮ ಫೈರ್‌ಬೇಸ್ ಕಾನ್ಫಿಗರೇಶನ್ 
   const firebaseConfig = {
     apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
     authDomain: "akhitool.firebaseapp.com",
@@ -86,16 +81,14 @@
     appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
   };
 
-  // Firebase Initialize ಮಾಡುವುದು
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  // ಲಾಗಿನ್ ಫಂಕ್ಷನ್
   const loginBtn = document.getElementById("login-btn");
   
   if (loginBtn) {
       loginBtn.addEventListener("click", (e) => {
-          e.preventDefault(); // ಪೇಜ್ ರಿಲೋಡ್ ಆಗುವುದನ್ನು ತಡೆಯುತ್ತದೆ
+          e.preventDefault(); 
           
           const emailInput = document.getElementById("email").value;
           const passwordInput = document.getElementById("password").value;
@@ -105,24 +98,26 @@
               return;
           }
 
-          loginBtn.innerText = "Logging in..."; // ಲೋಡಿಂಗ್ ಟೆಕ್ಸ್ಟ್
+          loginBtn.innerText = "Logging in...";
 
-          // ಫೈರ್‌ಬೇಸ್ ಮೂಲಕ ಲಾಗಿನ್ ಪರಿಶೀಲನೆ
-          signInWithEmailAndPassword(auth, emailInput, passwordInput)
+          // ಲಾಗಿನ್ ಡೇಟಾವನ್ನು ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಸೇವ್ ಮಾಡಲು ಕಮಾಂಡ್
+          setPersistence(auth, browserLocalPersistence)
+            .then(() => {
+              return signInWithEmailAndPassword(auth, emailInput, passwordInput);
+            })
             .then((userCredential) => {
-              // ಲಾಗಿನ್ ಸಕ್ಸಸ್ ಆದಾಗ
               alert("ಲಾಗಿನ್ ಯಶಸ್ವಿಯಾಗಿದೆ!");
-              window.location.href = "dashboard.html"; // ನೇರವಾಗಿ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ಗೆ ಹೋಗುತ್ತದೆ
+              window.location.href = "dashboard.html"; 
             })
             .catch((error) => {
-              // ಪಾಸ್‌ವರ್ಡ್ ಅಥವಾ ಈಮೇಲ್ ತಪ್ಪಾಗಿದ್ದಾಗ
               alert("ತಪ್ಪು Email ಅಥವಾ Password. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.");
               console.error(error.message);
-              loginBtn.innerText = "Login"; // ಬಟನ್ ಮತ್ತೆ ಮೊದಲಿನಂತೆ ಆಗುತ್ತದೆ
+              loginBtn.innerText = "Login"; 
             });
       });
   }
-</script>
+                                </script>
+    
     
 </body>
 </html>
