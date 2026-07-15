@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+       <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -69,7 +70,8 @@
 
     <!-- Main Content -->
     <div class="flex-1 flex flex-col h-full lg:ml-64 w-full transition-all">
-        <!-- Header -->
+        
+        <!-- Header (Fixed: Profile and View Website added) -->
         <header class="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-4 sm:px-6 shrink-0 z-10">
             <div class="flex items-center gap-4">
                 <button id="sidebar-toggle" class="lg:hidden text-gray-500 hover:text-brand-primary p-2">
@@ -77,10 +79,20 @@
                 </button>
                 <h1 class="text-xl font-bold text-gray-800 hidden sm:block">Website Settings</h1>
             </div>
+            
+            <div class="flex items-center gap-4">
+                <a href="../index.html" target="_blank" class="text-sm font-medium text-gray-500 hover:text-brand-primary hidden sm:inline-flex items-center gap-1">
+                    View Website
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+                <div class="w-9 h-9 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary font-bold border border-brand-primary/20">
+                    A
+                </div>
+            </div>
         </header>
 
-        <!-- Main Scrollable Area -->
-        <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-brand-bg">
+        <!-- Main Scrollable Area (Fixed: pb-32 added for mobile scroll) -->
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 pb-32 bg-brand-bg">
             <h1 class="text-2xl font-bold text-gray-800 mb-6 sm:hidden">Settings</h1>
 
             <div class="max-w-3xl space-y-6">
@@ -101,8 +113,7 @@
 
                 <!-- Logo Settings -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                    <h2 class="text-lg font-bold text-gray-800 mb-4">Logo Settings</h2>
-                    <div class="space-y-4">
+                    <h2 class="text-lg font-bold text-gray-800 mb-4">Logo Settings</h2><div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">Main Logo (PNG/SVG)</label>
                             <input type="file" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-brand-primary hover:file:bg-blue-100 cursor-pointer">
@@ -135,13 +146,62 @@
                     </button>
                 </div>
             </div>
-
         </main>
     </div>
 
-    <script src="../assets/js/firebase-config.js"></script>
-    <script src="../assets/js/auth.js"></script>
-    <script src="../assets/js/admin.js"></script>
+<!-- Firebase Auth & Mobile Menu Script -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
+    authDomain: "akhitool.firebaseapp.com",
+    projectId: "akhitool",
+    storageBucket: "akhitool.firebasestorage.app",
+    messagingSenderId: "892498311198",
+    appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // 1. Mobile Menu Logic
+  const sidebarToggle = document.getElementById("sidebar-toggle");
+  const sidebar = document.getElementById("sidebar");
+  const sidebarOverlay = document.getElementById("sidebar-overlay");
+
+  if (sidebarToggle) {
+      sidebarToggle.addEventListener("click", () => {
+          sidebar.classList.remove("-translate-x-full");
+          sidebarOverlay.classList.remove("hidden");
+      });
+  }
+  if (sidebarOverlay) {
+      sidebarOverlay.addEventListener("click", () => {
+          sidebar.classList.add("-translate-x-full");
+          sidebarOverlay.classList.add("hidden");
+      });
+  }
+
+  // 2. Authentication Check & Logout
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "login.html";
+    }
+  });
+
+  const logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      signOut(auth).then(() => {
+        window.location.href = "login.html";
+      }).catch((error) => {
+        alert("Logout Error");
+      });
+    });
+  }
+</script>
 </body>
-                                                                                                        </html>
-  
+                                                                                                          </html>
+                                                                                                          
