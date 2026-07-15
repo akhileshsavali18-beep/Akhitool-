@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. DYNAMIC TOOLS RENDERING LOGIC
     if (typeof toolsData !== 'undefined') {
         function createToolCard(tool) {
-            // ಇಲ್ಲಿ ನಿಮ್ಮ tools-data.js ನಲ್ಲಿ ಇರುವ Keys ಗಳನ್ನು ಬಳಸಲಾಗಿದೆ
             return `
                 <a href="${tool.url}" class="group block p-6 bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.03)] hover:shadow-lg hover:border-brand-primary/30 transition-all duration-300 hover:-translate-y-1">
                     <div class="w-12 h-12 rounded-xl ${tool.iconBg} flex items-center justify-center ${tool.iconColor} mb-5 group-hover:bg-brand-primary group-hover:text-white transition-colors duration-300">
@@ -50,11 +49,21 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
 
-        const popularContainer = document.getElementById('popular-tools-container');
-        if (popularContainer) {
-            popularContainer.innerHTML = toolsData.filter(t => t.isPopular).map(createToolCard).join('');
-        }
+        // Render sections logic
+        const sections = [
+            { id: 'popular-tools-container', filter: (t) => t.isPopular },
+            { id: 'trending-tools-container', filter: (t) => t.isTrending },
+            { id: 'recent-tools-container', filter: (t) => t.isRecent }
+        ];
 
+        sections.forEach(sec => {
+            const container = document.getElementById(sec.id);
+            if (container) {
+                container.innerHTML = toolsData.filter(sec.filter).map(createToolCard).join('');
+            }
+        });
+
+        // Render Categories
         const cats = {
             'image-tools-container': 'Image Tools',
             'calculators-tools-container': 'Calculators',
@@ -70,7 +79,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 cont.innerHTML = toolsData.filter(t => t.category === name).map(createToolCard).join('');
             }
         }
-    } else {
-        console.error("toolsData is missing!");
     }
-});
+    
