@@ -164,7 +164,8 @@
             <a href="/" class="block px-4 py-3 rounded-xl text-base font-semibold text-brand-primary bg-blue-50 transition-colors">Home</a>
             
             <!-- Categories Dropdown (Accordion) -->
-            <div class="pt-2 pb-1">
+
+                 <div class="pt-2 pb-1">
                 <button id="mobile-categories-btn" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:bg-gray-50 transition-colors focus:outline-none">
                     <span class="flex items-center gap-3">
                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
@@ -211,8 +212,7 @@
             <a href="/privacy-policy.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Privacy Policy</a>
             <a href="/terms-of-service.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Terms of Service</a>
             <a href="/disclaimer.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Disclaimer</a>
-        </div>
-                                                                                                                         </div>
+                                                                                                                          </div>                                                                                                                    </div>
     
     <!-- Full-Screen Explore Tools Modal -->
     <div id="explore-modal" class="fixed inset-0 z-[60] bg-brand-bg hidden opacity-0 transition-opacity duration-300 flex-col h-screen overflow-hidden">
@@ -575,73 +575,49 @@
 
   loadAllTools();
 </script>
-    // Firebase ನಿಂದ ಕ್ಯಾಟಗರಿ ಮತ್ತು ಟೂಲ್ಸ್ ತರುವ ಫಂಕ್ಷನ್
-async function loadMobileMenu() {
-    const toolsSnap = await getDocs(collection(db, "tools"));
-    const container = document.getElementById("mobile-menu-container");
-    
-    let menuData = {}; // {CategoryName: [tool1, tool2]}
+    <script type="module">
+  // ... Firebase Imports ...
 
-    toolsSnap.forEach((doc) => {
-        const tool = doc.data();
-        const cat = tool.category || "Uncategorized";
-        if(!menuData[cat]) menuData[cat] = [];
-        menuData[cat].push(tool);
-    });
+  async function loadMobileMenu() {
+      const container = document.getElementById("mobile-menu-container");
+      if(!container) return; // ಕಂಟೈನರ್ ಸಿಗದಿದ್ದರೆ ಸ್ಕ್ರಿಪ್ಟ್ ನಿಲ್ಲಿಸಿ
 
-    // ಮೆನು ಬಿಲ್ಡ್ ಮಾಡುವುದು
-    container.innerHTML = `<a href="/" class="block px-4 py-3 font-semibold text-brand-primary">Home</a>`;
-    
-    Object.keys(menuData).forEach(cat => {
-        const tools = menuData[cat];
-        container.innerHTML += `
-            <div class="border-t border-gray-100">
-                <button class="menu-cat-btn w-full flex justify-between px-4 py-3 font-semibold text-gray-800">
-                    ${cat} <span>▼</span>
-                </button>
-                <div class="cat-tools-list hidden px-4 pb-2 space-y-1">
-                    ${tools.slice(0, 4).map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600 pl-4">${t.name}</a>`).join('')}
-                    ${tools.length > 4 ? `<a href="/categories/${cat.toLowerCase()}.html" class="block py-2 text-sm text-brand-primary font-medium pl-4">View More →</a>` : ''}
-                </div>
-            </div>
-        `;
-    });
+      const toolsSnap = await getDocs(collection(db, "tools"));
+      let menuData = {};
+      
+      // ಡೇಟಾ ಗ್ರೂಪಿಂಗ್
+      toolsSnap.forEach((doc) => {
+          const tool = doc.data();
+          const cat = tool.category || "General";
+          if(!menuData[cat]) menuData[cat] = [];
+          menuData[cat].push(tool);
+      });
 
-    // ಡ್ರಾಪ್-ಡೌನ್ ಕ್ಲಿಕ್ ಲಾಜಿಕ್
-    document.querySelectorAll('.menu-cat-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            btn.nextElementSibling.classList.toggle('hidden');
-        });
-    });
-}
-loadMobileMenu();
-    
-    
-    <!-- Mobile Menu Logic -->
-<script>
-    const mobileBtn = document.getElementById('mobile-menu-btn');
-    const mobileDrawer = document.getElementById('mobile-drawer');
-    const mobileClose = document.getElementById('mobile-close-btn');
-    const overlay = document.getElementById('mobile-menu-overlay');
+      // ಮೆನು ರೆಂಡರಿಂಗ್
+      container.innerHTML = `<a href="/" class="block px-4 py-3 font-semibold text-brand-primary border-b">Home</a>`;
+      
+      Object.keys(menuData).forEach(cat => {
+          const tools = menuData[cat];
+          const div = document.createElement("div");
+          div.className = "border-b border-gray-50";
+          div.innerHTML = `
+              <button class="menu-cat-btn w-full flex justify-between px-4 py-3 font-medium text-gray-700">
+                  ${cat} <span>▼</span>
+              </button>
+              <div class="cat-tools-list hidden bg-gray-50 px-4 py-2 space-y-1">
+                  ${tools.map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600">${t.name}</a>`).join('')}
+              </div>
+          `;
+          container.appendChild(div);
+          div.querySelector('.menu-cat-btn').addEventListener('click', () => {
+              div.querySelector('.cat-tools-list').classList.toggle('hidden');
+          });
+      });
+  }
 
-    if(mobileBtn) {
-        mobileBtn.addEventListener('click', () => {
-            mobileDrawer.classList.remove('translate-x-full');
-            overlay.classList.remove('hidden');
-            // ಸ್ವಲ್ಪ delay ಕೊಟ್ಟು opacity ಬದಲಾಯಿಸಿದರೆ smooth ಆಗಿ ಓಪನ್ ಆಗುತ್ತೆ
-            setTimeout(() => { overlay.classList.add('opacity-100'); }, 10);
-        });
-    }
-
-    const closeMenu = () => {
-        mobileDrawer.classList.add('translate-x-full');
-        overlay.classList.remove('opacity-100');
-        setTimeout(() => { overlay.classList.add('hidden'); }, 300);
-    };
-
-    if(mobileClose) mobileClose.addEventListener('click', closeMenu);
-    if(overlay) overlay.addEventListener('click', closeMenu);
-</script>
+  // ಈ ಲೈನ್ ಮುಖ್ಯ:
+  loadMobileMenu(); 
+    </script>
     
     
 </body>
