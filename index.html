@@ -535,6 +535,17 @@
 
     if(mobileClose) mobileClose.addEventListener('click', closeMenu);
     if(overlay) overlay.addEventListener('click', closeMenu);
+    const catBtn = document.getElementById('mobile-categories-btn');
+const catMenu = document.getElementById('mobile-categories-menu');
+const catIcon = document.getElementById('mobile-categories-icon');
+
+if(catBtn) {
+    catBtn.addEventListener('click', () => {
+        catMenu.classList.toggle('hidden');
+        catIcon.classList.toggle('rotate-180');
+    });
+    }
+            
 </script>
     
     
