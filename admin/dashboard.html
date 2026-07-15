@@ -102,7 +102,7 @@
                     </div>
                     <div>
                         <p class="text-sm font-medium text-gray-500">Total Tools</p>
-                        <p class="text-2xl font-bold text-gray-900" id="stat-total-tools">10</p>
+                        <p class="text-2xl font-bold text-gray-900" id="stat-total-tools">0</p>
                     </div>
                 </div>
                 
@@ -112,7 +112,7 @@
                     </div>
                     <div>
                         <p class="text-sm font-medium text-gray-500">Categories</p>
-                        <p class="text-2xl font-bold text-gray-900" id="stat-categories">6</p>
+                        <p class="text-2xl font-bold text-gray-900" id="stat-categories">0</p>
                     </div>
                 </div>
 
@@ -144,7 +144,7 @@
                             </tr>
                         </thead>
                         <tbody id="recent-tools-tbody" class="text-sm text-gray-700 divide-y divide-gray-50">
-                            <!-- Injected by assets/js/admin.js -->
+                            <tr><td colspan="4" class="text-center py-4 text-gray-500">Loading data...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -153,15 +153,11 @@
         </main>
     </div>
 
-    <!-- Scripts -->
-    <script src="../assets/js/firebase-config.js"></script>
-    <script src="../assets/js/auth.js"></script>
-    <script src="../assets/js/tools-data.js"></script>
-    <script src="../assets/js/admin.js"></script>
-    <!-- Firebase Auth Check & Logout Script -->
+    <!-- Firebase Auth & Firestore Script (No more dummy data!) -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
@@ -174,16 +170,33 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  // ಬಳಕೆದಾರರು ಲಾಗಿನ್ ಆಗಿದ್ದಾರಾ ಎಂದು ಚೆಕ್ ಮಾಡುವುದು (Security)
+  // 1. Mobile Menu Logic
+  const sidebarToggle = document.getElementById("sidebar-toggle");
+  const sidebar = document.getElementById("sidebar");
+  const sidebarOverlay = document.getElementById("sidebar-overlay");
+
+  if (sidebarToggle) {
+      sidebarToggle.addEventListener("click", () => {
+          sidebar.classList.remove("-translate-x-full");
+          sidebarOverlay.classList.remove("hidden");
+      });
+  }
+  if (sidebarOverlay) {
+      sidebarOverlay.addEventListener("click", () => {
+          sidebar.classList.add("-translate-x-full");
+          sidebarOverlay.classList.add("hidden");
+      });
+  }
+
+  // 2. Authentication Check & Logout
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      // ಲಾಗಿನ್ ಆಗಿಲ್ಲ ಅಂದರೆ ವಾಪಸ್ ಲಾಗಿನ್ ಪೇಜ್‌ಗೆ ಕಳುಹಿಸುತ್ತದೆ
       window.location.href = "login.html";
     }
   });
 
-  // Logout ಬಟನ್ ಕೆಲಸ ಮಾಡಲು
   const logoutBtn = document.getElementById("logout-btn");
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
@@ -194,8 +207,74 @@
       });
     });
   }
+
+  // 3. Fetch Data for Dashboard (Live Firestore Connection)
+  async function loadDashboardData() {
+      try {
+          const querySnapshot = await getDocs(collection(db, "tools"));
+          
+          let toolsList = [];
+          let uniqueCategories = new Set();
+          
+          querySnapshot.forEach((docSnap) => {
+              const toolData = docSnap.data();
+              toolsList.push(toolData);
+              if (toolData.category) {
+                  uniqueCategories.add(toolData.category);
+              }
+          });
+
+          // Update Top Cards
+          document.getElementById("stat-total-tools").innerText = toolsList.length;
+          document.getElementById("stat-categories").innerText = uniqueCategories.size;
+
+          // Update Recent Tools Table (Shows top 5 recent tools based on date added)
+          const tbody = document.getElementById("recent-tools-tbody");
+          tbody.innerHTML = "";
+
+          // Sort by date added (newest first)
+          toolsList.sort((a, b) => {
+              const dateA = a.dateAdded ? a.dateAdded.toMillis() : 0;
+              const dateB = b.dateAdded ? b.dateAdded.toMillis() : 0;
+              return dateB - dateA;
+          });
+
+          const recentTools = toolsList.slice(0, 5); // Take only first 5
+
+          if (recentTools.length === 0) {
+              tbody.innerHTML = '<tr><td colspan="4" class="text-center py-6 text-gray-500">No tools found. Add a new tool to see it here!</td></tr>';
+          } else {
+              recentTools.forEach(tool => {
+                  const tr = document.createElement("tr");
+                  tr.className = "border-b border-gray-50 hover:bg-gray-50/50 transition-colors";
+                  tr.innerHTML = `
+                      <td class="px-6 py-4 font-medium text-gray-800">${tool.name}</td>
+                      <td class="px-6 py-4 hidden sm:table-cell">
+                          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-brand-primary border border-blue-100">
+                              ${tool.category}
+                          </span>
+                      </td>
+                      <td class="px-6 py-4 text-center">
+                          <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-50 text-green-600">Active</span>
+                      </td>
+                      <td class="px-6 py-4 text-right">
+                          <a href="tools.html" class="text-brand-primary hover:text-brand-secondary text-sm font-medium">Edit</a>
+                      </td>
+                  `;
+                  tbody.appendChild(tr);
+              });
+          }
+
+      } catch (error) {
+          console.error("Error fetching dashboard data:", error);
+          document.getElementById("recent-tools-tbody").innerHTML = '<tr><td colspan="4" class="text-center text-red-500 py-4">Failed to load data</td></tr>';
+      }
+  }
+
+  // Load the data when page opens
+  loadDashboardData();
+
 </script>
-    
 </body>
-  </html>
-                                                                                                                                                                                                                       
+        </html>
+    
