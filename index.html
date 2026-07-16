@@ -57,11 +57,14 @@
 ‎</head>
 ‎<body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-primary selection:text-white flex flex-col min-h-screen overflow-x-hidden">
 ‎
-‎                       <!-- Navigation -->
-‎    <header class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-lg border-b border-gray-100 transition-all h-[64px]">
-‎        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-‎            <!-- Flex Container: Keeps Logo Left, Menu Right, Vertically Centered -->
-‎            <div class="flex justify-between items-center h-full w-full">
+‎<!-- Navbar -->
+‎<header class="fixed top-0 w-full bg-white z-40 h-16 flex items-center px-4 justify-between border-b">
+‎    <a href="/" class="flex items-center">
+‎        <img src="logo.png" alt="AkhiTool Logo" class="h-10 w-auto"> <!-- Logo ಇಲ್ಲಿ ಬರಲಿ -->
+‎    </a>
+‎    <button id="mobile-menu-btn" class="p-2 border rounded-lg">☰</button>
+‎</header>
+‎    
 ‎                
 ‎                <!-- Logo Wrapper: -ml-2 moves it closer to the left edge -->
 ‎                <a href="index.html" class="relative flex items-center shrink-0 h-full w-[110px] md:w-[130px] group -ml-2">
@@ -89,32 +92,29 @@
 ‎            </div>
 ‎        </div>
 ‎    </header>
-‎   <!-- Mobile Drawer -->
-‎<div id="mobile-drawer" class="fixed inset-y-0 right-0 z-50 w-72 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col h-full overflow-y-auto">
-‎    <div class="flex items-center justify-between p-4 border-b border-gray-100">
-‎        <span class="font-bold text-lg">Menu</span>
-‎        <button id="mobile-close-btn" class="text-gray-500 p-2">✕</button>
+‎<!-- Mobile Menu (Drawer) -->
+‎<div id="mobile-drawer" class="fixed inset-y-0 right-0 z-50 w-72 bg-white shadow-2xl transform translate-x-full transition-transform duration-300">
+‎    <div class="p-4 border-b flex justify-between">
+‎        <span class="font-bold">Menu</span>
+‎        <button id="mobile-close-btn" class="p-2">✕</button>
 ‎    </div>
-‎    <!-- ಡೇಟಾ ಇಲ್ಲಿ ಬಂದು ಕೂರಬೇಕು -->
-‎    <div id="mobile-menu-container" class="px-2 py-4 space-y-1">
-‎        <p class="px-4 py-4 text-gray-400">Loading...</p>
+‎    <div id="mobile-menu-container" class="p-4">
+‎        <!-- ಮೆನು ಇಲ್ಲಿ ಲೋಡ್ ಆಗುತ್ತದೆ -->
 ‎    </div>
 ‎</div>
-‎    
-‎
-‎<script type="module">
-‎  // Firebase Imports (ಅವಶ್ಯಕತೆ ಇದ್ದರೆ)
+‎    <script type="module">
+‎  // Firebase Imports (ಅಗತ್ಯವಿರುವಂತದ್ದು)
 ‎  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 ‎  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 ‎
-‎  const firebaseConfig = { /* ನಿಮ್ಮ ಕಾನ್ಫಿಗರೇಶನ್ ಇಲ್ಲೇ ಇರಲಿ */ };
+‎  const firebaseConfig = { /* ನಿಮ್ಮ ಕಾನ್ಫಿಗರೇಶನ್ */ };
 ‎  const app = initializeApp(firebaseConfig);
 ‎  const db = getFirestore(app);
 ‎
-‎  async function loadMobileMenu() {
+‎  async function renderNestedMenu() {
 ‎      const container = document.getElementById("mobile-menu-container");
 ‎      const toolsSnap = await getDocs(collection(db, "tools"));
-‎      let menuData = {};
+‎      let menuData = {}; // {Category: {SubCategory/Type: [Tools]}}
 ‎
 ‎      toolsSnap.forEach((doc) => {
 ‎          const tool = doc.data();
@@ -123,96 +123,124 @@
 ‎          menuData[cat].push(tool);
 ‎      });
 ‎
+‎      container.innerHTML = `
+‎          <a href="/" class="block px-4 py-3 font-semibold text-blue-600 border-b">Home</a>
+‎          
+‎          <!-- Category Dropdown -->
+‎          <div class="border-b">
+‎              <button id="cat-main-btn" class="w-full flex justify-between px-4 py-3 font-semibold text-gray-800">Category <span>▼</span></button>
+‎              <div id="cat-dropdown" class="hidden bg-gray-50 px-2">
+‎                  ${Object.keys(menuData).map(cat => `
+‎                      <div class="nested-cat">
+‎                          <button class="w-full flex justify-between px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">
+‎                              ${cat} <span>▶</span>
+‎                          </button>
+‎                          <div class="hidden px-4 py-1 space-y-1">
+‎                              ${menuData[cat].map(t => `<a href="${t.url}" class="block py-1 text-xs text-gray-600">${t.name}</a>`).join('')}
+‎                          </div>
+‎                      </div>
+‎                  `).join('')}
+‎              </div>
+‎          </div>
+‎
+‎          <!-- Company Dropdown -->
+‎          <div class="border-b">
+‎              <button id="comp-main-btn" class="w-full flex justify-between px-4 py-3 font-semibold text-gray-800">Company <span>▼</span></button>
+‎              <div id="comp-dropdown" class="hidden bg-gray-50 px-4 py-2 space-y-1 text-sm text-gray-600">
+‎                  <a href="/about.html" class="block py-1">About</a>
+‎                  <a href="/contact.html" class="block py-1">Contact</a>
+‎              </div>
+‎          </div>
+‎      `;
+‎
+‎      // Event Listeners
+‎      document.getElementById('cat-main-btn').onclick = () => document.getElementById('cat-dropdown').classList.toggle('hidden');
+‎      document.getElementById('comp-main-btn').onclick = () => document.getElementById('comp-dropdown').classList.toggle('hidden');
+‎      
+‎      document.querySelectorAll('.nested-cat button').forEach(btn => {
+‎          btn.onclick = () => btn.nextElementSibling.classList.toggle('hidden');
+‎      });
+‎  }
+‎  renderNestedMenu();
+‎                              </script>
+‎    
+‎
+‎<!-- Firebase & Main Logic (ಪೇಜ್‌ನ ತೀರಾ ಕೊನೆಯಲ್ಲಿ ಹಾಕಿ) -->
+‎<script type="module">
+‎  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+‎  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+‎
+‎  const firebaseConfig = {
+‎    apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
+‎    authDomain: "akhitool.firebaseapp.com",
+‎    projectId: "akhitool",
+‎    storageBucket: "akhitool.firebasestorage.app",
+‎    messagingSenderId: "892498311198",
+‎    appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
+‎  };
+‎
+‎  const app = initializeApp(firebaseConfig);
+‎  const db = getFirestore(app);
+‎
+‎  async function init() {
+‎      const toolsSnap = await getDocs(collection(db, "tools"));
+‎      const tools = [];
+‎      let menuData = {};
+‎
+‎      toolsSnap.forEach((doc) => {
+‎          const tool = { id: doc.id, ...doc.data() };
+‎          tools.push(tool);
+‎          const cat = tool.category || "General";
+‎          if(!menuData[cat]) menuData[cat] = [];
+‎          menuData[cat].push(tool);
+‎      });
+‎
+‎      // 1. Popular Tools (Homepage)
+‎      const popularContainer = document.getElementById("popular-tools-container");
+‎      if(popularContainer) {
+‎          popularContainer.innerHTML = tools.map(tool => `
+‎              <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-soft hover:shadow-hover transition-all">
+‎                  <h3 class="font-bold text-lg mb-2">${tool.name}</h3>
+‎                  <p class="text-gray-500 text-sm mb-4 line-clamp-2">${tool.description}</p>
+‎                  <a href="${tool.url}" class="text-brand-primary font-medium text-sm">Use Now →</a>
+‎              </div>
+‎          `).join('');
+‎      }
+‎
+‎      // 2. Mobile Menu (Drawer)
+‎      const container = document.getElementById("mobile-menu-container");
 ‎      container.innerHTML = `<a href="/" class="block px-4 py-3 font-semibold text-brand-primary border-b">Home</a>`;
 ‎      
 ‎      Object.keys(menuData).forEach(cat => {
-‎          const tools = menuData[cat];
 ‎          const div = document.createElement("div");
 ‎          div.className = "border-b border-gray-50";
 ‎          div.innerHTML = `
-‎              <button class="menu-cat-btn w-full flex justify-between px-4 py-3 font-medium text-gray-700 hover:bg-gray-50">
-‎                  ${cat} <span class="arrow transition-transform">▼</span>
+‎              <button class="menu-cat-btn w-full flex justify-between px-4 py-3 font-medium text-gray-700">
+‎                  ${cat} <span class="arrow">▼</span>
 ‎              </button>
 ‎              <div class="cat-tools-list hidden bg-gray-50 px-4 py-2 space-y-1">
-‎                  ${tools.map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600 hover:text-brand-primary">${t.name}</a>`).join('')}
+‎                  ${menuData[cat].map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600 hover:text-brand-primary">${t.name}</a>`).join('')}
 ‎              </div>
 ‎          `;
-‎          
-‎          // Dropdown Click Logic
-‎          div.querySelector('.menu-cat-btn').addEventListener('click', (e) => {
-‎              const list = div.querySelector('.cat-tools-list');
-‎              list.classList.toggle('hidden');
-‎              div.querySelector('.arrow').classList.toggle('rotate-180');
-‎          });
-‎          
 ‎          container.appendChild(div);
+‎          div.querySelector('.menu-cat-btn').addEventListener('click', () => {
+‎              div.querySelector('.cat-tools-list').classList.toggle('hidden');
+‎          });
 ‎      });
 ‎  }
-‎  loadMobileMenu();
+‎
+‎  // ಮೆನು ಬಟನ್ ಲಾಜಿಕ್
+‎  document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+‎      document.getElementById('mobile-drawer').classList.remove('translate-x-full');
+‎      document.getElementById('mobile-menu-overlay').classList.remove('hidden');
+‎  });
+‎  document.getElementById('mobile-close-btn').addEventListener('click', () => {
+‎      document.getElementById('mobile-drawer').classList.add('translate-x-full');
+‎      document.getElementById('mobile-menu-overlay').classList.add('hidden');
+‎  });
+‎
+‎  init();
 ‎</script>
-‎    
-‎    
-‎        <!-- Header (Logo Removed, Close button aligned to right) -->
-‎        <div class="flex items-center justify-end p-4 border-b border-gray-100 shrink-0">
-‎            <button id="mobile-close-btn" class="text-gray-500 hover:text-brand-primary p-2 focus:outline-none rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-‎                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-‎            </button>
-‎        </div>
-‎        
-‎        <!-- Menu Items (Scrollable) -->
-‎        <div class="px-4 py-4 space-y-1 overflow-y-auto flex-grow pb-20">
-‎            <a href="/" class="block px-4 py-3 rounded-xl text-base font-semibold text-brand-primary bg-blue-50 transition-colors">Home</a>
-‎            
-‎            <!-- Categories Dropdown (Accordion) -->
-‎
-‎                 <div class="pt-2 pb-1">
-‎                <button id="mobile-categories-btn" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:bg-gray-50 transition-colors focus:outline-none">
-‎                    <span class="flex items-center gap-3">
-‎                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-‎                        Categories
-‎                    </span>
-‎                    <svg id="mobile-categories-icon" class="w-5 h-5 text-gray-500 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-‎                </button>
-‎                
-‎                <!-- Expanded Category Links -->
-‎                <div id="mobile-categories-menu" class="hidden px-2 pt-2 pb-2 space-y-1 overflow-hidden">
-‎                    <a href="/categories/pdf-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-‎                        <svg class="w-4 h-4 text-brand-primary/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-‎                        PDF Tools
-‎                    </a>
-‎                    <a href="/categories/image-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-‎                        <svg class="w-4 h-4 text-brand-secondary/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-‎                        Image Tools
-‎                    </a>
-‎                    <a href="/categories/calculators.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-‎                        <svg class="w-4 h-4 text-green-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-‎                        Calculators
-‎                    </a>
-‎                    <a href="/categories/ai-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-‎                        <svg class="w-4 h-4 text-purple-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-‎                        AI Tools
-‎                    </a>
-‎                    <a href="/categories/dev-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-‎                        <svg class="w-4 h-4 text-orange-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-‎                        Developer Tools
-‎                    </a>
-‎                    <a href="/categories/seo-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-‎                        <svg class="w-4 h-4 text-red-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-‎                        SEO Tools
-‎                    </a>
-‎                </div>
-‎            </div>
-‎
-‎            <div class="border-t border-gray-100 my-2"></div>
-‎            
-‎            <!-- Company Links -->
-‎            <p class="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider">Company</p>
-‎            <a href="/about.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">About</a>
-‎            <a href="/contact.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Contact</a>
-‎            <a href="/privacy-policy.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Privacy Policy</a>
-‎            <a href="/terms-of-service.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Terms of Service</a>
-‎            <a href="/disclaimer.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Disclaimer</a>
-‎                                                                                                                          </div>                                                                                                                    </div>
 ‎    
 ‎    <!-- Full-Screen Explore Tools Modal -->
 ‎    <div id="explore-modal" class="fixed inset-0 z-[60] bg-brand-bg hidden opacity-0 transition-opacity duration-300 flex-col h-screen overflow-hidden">
@@ -305,82 +333,91 @@
 ‎                    <rect x="150" y="50" width="500" height="48" rx="16" fill="#F8FAFC"/>
 ‎                    <path d="M150 98H650" stroke="#E2E8F0" stroke-width="2"/>
 ‎                    <circle cx="180" cy="74" r="6" fill="#CBD5E1"/>
-                    <circle cx="204" cy="74" r="6" fill="#CBD5E1"/>
-                    <circle cx="228" cy="74" r="6" fill="#CBD5E1"/>
-                    <rect x="190" y="130" width="120" height="80" rx="12" fill="#EEF2FF"/>
-                    <rect x="340" y="130" width="120" height="80" rx="12" fill="#E0F2FE"/>
-                    <rect x="490" y="130" width="120" height="80" rx="12" fill="#ECFEFF"/>
-                    <rect x="190" y="240" width="120" height="80" rx="12" fill="#FDF4FF"/>
-                    <rect x="340" y="240" width="120" height="80" rx="12" fill="#F0FDF4"/>
-                    <rect x="490" y="240" width="120" height="80" rx="12" fill="#FFFBEB"/>
-                    <path d="M370 170L400 200L385 205L370 230L360 225L375 200L355 190L370 170Z" fill="#2563EB" stroke="white" stroke-width="2.5" class="drop-shadow-md"/>
-                </svg>
-            </div>
-</section>
-
- <!-- 2. Popular Tools (Injected by JS) -->
-        <section id="popular" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text">Popular Tools</h2>
-                <button class="open-explore-modal text-sm font-medium text-brand-primary hover:text-brand-secondary flex items-center gap-1 min-h-[44px]">View all <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
-            </div>
-            <div id="popular-tools-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                <!-- Data loaded via assets/js/main.js -->
-            </div>
-        </section>
-
-        <!-- 3. Trending Tools (Injected by JS) -->
-        <section id="trending" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-6 sm:mb-8 flex items-center gap-2">
-                Trending Tools
-                <span class="relative flex h-3 w-3 shrink-0">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-3 w-3 bg-red-50"></span>
-                </span>
-            </h2>
-            <div id="trending-tools-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                 <!-- Data loaded via assets/js/main.js -->
-            </div>
-        </section>
-
-    <!-- 5. Why Choose AkhiTool -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 mt-4 sm:mt-8 border-t border-gray-100">
-            <div class="text-center mb-10 sm:mb-16">
-                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-3 sm:mb-4">Why Choose AkhiTool</h2>
-                <p class="text-gray-500 max-w-xl mx-auto text-sm sm:text-base px-2">Built for modern professionals, developers, and creators who value speed and privacy.</p>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center">
-                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
-                    <div class="w-14 h-14 rounded-2xl bg-yellow-50 text-yellow-500 flex items-center justify-center mb-5 shrink-0">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">Lightning Fast</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed flex-grow">All tools work instantly in your browser.</p>
-                </div>
-                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
-                    <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center mb-5 shrink-0">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">Privacy First</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed flex-grow">Your files never leave your device whenever possible.</p>
-                </div>
-                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
-                    <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center mb-5 shrink-0">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">Mobile Friendly</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed flex-grow">Designed for phones, tablets and desktop.</p>
-                </div>
-                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
-                    <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-500 flex items-center justify-center mb-5 shrink-0">
-                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    </div>‎<h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">100% Free</h3>
+‎                    <circle cx="204" cy="74" r="6" fill="#CBD5E1"/>
+‎                    <circle cx="228" cy="74" r="6" fill="#CBD5E1"/>
+‎                    <rect x="190" y="130" width="120" height="80" rx="12" fill="#EEF2FF"/>
+‎                    <rect x="340" y="130" width="120" height="80" rx="12" fill="#E0F2FE"/>
+‎                    <rect x="490" y="130" width="120" height="80" rx="12" fill="#ECFEFF"/>
+‎                    <rect x="190" y="240" width="120" height="80" rx="12" fill="#FDF4FF"/>
+‎                    <rect x="340" y="240" width="120" height="80" rx="12" fill="#F0FDF4"/>
+‎                    <rect x="490" y="240" width="120" height="80" rx="12" fill="#FFFBEB"/>
+‎                    <path d="M370 170L400 200L385 205L370 230L360 225L375 200L355 190L370 170Z" fill="#2563EB" stroke="white" stroke-width="2.5" class="drop-shadow-md"/>
+‎                </svg>
+‎            </div>
+‎                        </section>
+‎                        
+‎        <!-- 2. Popular Tools (Injected by JS) -->
+‎        <section id="popular" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+‎            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+‎                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text">Popular Tools</h2>
+‎                <button class="open-explore-modal text-sm font-medium text-brand-primary hover:text-brand-secondary flex items-center gap-1 min-h-[44px]">View all <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+‎            </div>
+‎            <div id="popular-tools-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+‎                <!-- Data loaded via assets/js/main.js -->
+‎            </div>
+‎        </section>
+‎
+‎        <!-- 3. Trending Tools (Injected by JS) -->
+‎        <section id="trending" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+‎            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-6 sm:mb-8 flex items-center gap-2">
+‎                Trending Tools
+‎                <span class="relative flex h-3 w-3 shrink-0">
+‎                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+‎                  <span class="relative inline-flex rounded-full h-3 w-3 bg-red-50"></span>
+‎                </span>
+‎            </h2>
+‎            <div id="trending-tools-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+‎                 <!-- Data loaded via assets/js/main.js -->
+‎            </div>
+‎        </section>
+‎
+‎        <!-- 4. Recently Added Tools (Injected by JS) -->
+‎        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+‎            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-6 sm:mb-8">Recently Added Tools</h2>
+‎            <div id="recent-tools-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+‎                <!-- Data loaded via assets/js/main.js -->
+‎            </div>
+‎        </section>
+‎
+‎        <!-- 5. Why Choose AkhiTool -->
+‎        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 mt-4 sm:mt-8 border-t border-gray-100">
+‎            <div class="text-center mb-10 sm:mb-16">
+‎                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-3 sm:mb-4">Why Choose AkhiTool</h2>
+‎                <p class="text-gray-500 max-w-xl mx-auto text-sm sm:text-base px-2">Built for modern professionals, developers, and creators who value speed and privacy.</p>
+‎            </div>
+‎            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center">
+‎                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
+‎                    <div class="w-14 h-14 rounded-2xl bg-yellow-50 text-yellow-500 flex items-center justify-center mb-5 shrink-0">
+‎                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+‎                    </div>
+‎                    <h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">Lightning Fast</h3>
+‎                    <p class="text-gray-500 text-sm leading-relaxed flex-grow">All tools work instantly in your browser.</p>
+‎                </div>
+‎                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
+‎                    <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center mb-5 shrink-0">
+‎                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+‎                    </div>
+‎                    <h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">Privacy First</h3>
+‎                    <p class="text-gray-500 text-sm leading-relaxed flex-grow">Your files never leave your device whenever possible.</p>
+‎                </div>
+‎                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
+‎                    <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center mb-5 shrink-0">
+‎                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+‎                    </div>
+‎                    <h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">Mobile Friendly</h3>
+‎                    <p class="text-gray-500 text-sm leading-relaxed flex-grow">Designed for phones, tablets and desktop.</p>
+‎                </div>
+‎                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
+‎                    <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-500 flex items-center justify-center mb-5 shrink-0">
+‎                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+‎                    </div>
+‎                    <h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">100% Free</h3>
 ‎                    <p class="text-gray-500 text-sm leading-relaxed flex-grow">No signup. No hidden charges.</p>
 ‎                </div>
 ‎            </div>
 ‎        </section>
-‎
-‎        <!-- 6. Statistics Section -->
+
+        <!-- 6. Statistics Section -->
 ‎        <section class="bg-white border-y border-gray-100 py-10 sm:py-12 mb-12 sm:mb-16">
 ‎            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 ‎                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center divide-x-0 md:divide-x divide-gray-100">
@@ -403,214 +440,240 @@
 ‎                </div>
 ‎            </div>
 ‎        </section>
+‎
+‎        <!-- 7. FAQ -->
+        <section id="faq" class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 w-full">
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-6 sm:mb-8 text-center">Frequently Asked Questions</h2>
+            <div class="space-y-3 sm:space-y-4">
+                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full" open>
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
+                        <span class="pr-4">What is AkhiTool?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-500 px-4 sm:px-6 pb-4 sm:pb-6 text-sm leading-relaxed border-t border-gray-50 pt-3 sm:pt-4">
+                        AkhiTool is your everyday online toolbox offering a wide collection of utilities for PDFs, images, developers, SEO, and daily calculations, all packed into one fast, easy-to-use platform.
+                    </div>
+                </details>
+                
+                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
+                        <span class="pr-4">Are these tools free?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-500 px-4 sm:px-6 pb-4 sm:pb-6 text-sm leading-relaxed border-t border-gray-50 pt-3 sm:pt-4">
+                        Yes, absolutely! All tools on AkhiTool are 100% free to use. There are no paywalls, hidden charges, or premium subscriptions required.
+                    </div>
+                </details>
 
-    <!-- 7. FAQ -->
-‎        <section id="faq" class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 w-full">
-‎            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-6 sm:mb-8 text-center">Frequently Asked Questions</h2>
-‎            <div class="space-y-3 sm:space-y-4">
-‎                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full" open>
-‎                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
-‎                        <span class="pr-4">What is AkhiTool?</span>
-‎                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
-‎                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-‎                        </span>
-‎                    </summary>
-‎                    <div class="text-gray-500 px-4 sm:px-6 pb-4 sm:pb-6 text-sm leading-relaxed border-t border-gray-50 pt-3 sm:pt-4">
-‎                        AkhiTool is your everyday online toolbox offering a wide collection of utilities for PDFs, images, developers, SEO, and daily calculations, all packed into one fast, easy-to-use platform.
-‎                    </div>
-‎                </details>
-‎                
-‎                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
-‎                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
-‎                        <span class="pr-4">Are these tools free?</span>
-‎                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
-‎                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-‎                        </span>
-‎                    </summary>
-‎                    <div class="text-gray-500 px-4 sm:px-6 pb-4 sm:pb-6 text-sm leading-relaxed border-t border-gray-50 pt-3 sm:pt-4">
-‎                        Yes, absolutely! All tools on AkhiTool are 100% free to use. There are no paywalls, hidden charges, or premium subscriptions required.
-‎                    </div>
-‎                </details>
-‎
-‎                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
-‎                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
-‎                        <span class="pr-4">Do I need to create an account?</span>
-‎                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
-‎                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-‎                        </span>
-‎                    </summary>
-‎                    <div class="text-gray-500 px-4 sm:px-6 pb-4 sm:pb-6 text-sm leading-relaxed border-t border-gray-50 pt-3 sm:pt-4">
-‎                        No signup or account creation is required. You can start using any tool instantly right from your browser.
-‎                    </div>
-‎                </details>
-‎
-‎                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
-‎                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
-‎                        <span class="pr-4">Is my data safe?</span>
-‎                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
-‎                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-‎                        </span>
-‎                    </summary>
-‎                    <div class="text-gray-500 px-4 sm:px-6 pb-4 sm:pb-6 text-sm leading-relaxed border-t border-gray-50 pt-3 sm:pt-4">
-‎                        Privacy is our priority. Most of our tools process your data locally on your device. For tools that require server processing, your files are securely handled and deleted immediately after the process is complete.
-‎                    </div>
-‎                </details>
-‎            </div>
-‎        </section>
-‎    </main>
-‎
-    ‎    <!-- 8. Modern Footer -->
-‎    <!-- Footer -->
-‎    <footer class="bg-white border-t border-gray-100 pt-12 sm:pt-16 pb-8 w-full mt-auto">
-‎        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-‎            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-10 mb-10 sm:mb-12">
-‎                <div class="col-span-1 sm:col-span-2 pr-0 lg:pr-8">
-‎                    <!-- Removed Logo and replaced with a clean text heading -->
-‎                    <h3 class="text-xl font-extrabold text-brand-text mb-4">AkhiTool</h3>
-‎                    <p class="text-gray-500 text-sm leading-relaxed mb-6 max-w-sm">
-‎                        Your everyday online toolbox. Free tools for PDF, images, calculators, AI, text, SEO and more—all built for speed and privacy.
-‎                    </p>
-‎                </div>
-‎                <div class="w-full">
-‎                    <h4 class="font-semibold text-brand-text mb-3 sm:mb-4">Popular Tools</h4>
-‎                    <ul class="text-sm text-gray-500 flex flex-col">
-‎                        <li><a href="/age-calculator.html" class="block py-1.5 hover:text-brand-primary transition-colors">Age Calculator</a></li>
-‎                        <li><a href="/emi-calculator.html" class="block py-1.5 hover:text-brand-primary transition-colors">EMI Calculator</a></li>
-‎                        <li><a href="/password-generator.html" class="block py-1.5 hover:text-brand-primary transition-colors">Password Generator</a></li>
-‎                        <li><a href="/qr-code-generator.html" class="block py-1.5 hover:text-brand-primary transition-colors">QR Generator</a></li>
-‎                    </ul>
-‎                </div>
-‎                <div class="w-full">
-‎                    <h4 class="font-semibold text-brand-text mb-3 sm:mb-4">Categories</h4>
-‎                    <ul class="text-sm text-gray-500 flex flex-col">
-‎                        <li><a href="/categories/pdf-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">PDF Tools</a></li>
-‎                        <li><a href="/categories/image-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">Image Tools</a></li>
-‎                        <li><a href="/categories/calculators.html" class="block py-1.5 hover:text-brand-primary transition-colors">Calculators</a></li>
-‎                        <li><a href="/categories/ai-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">AI Tools</a></li>
-‎                        <li><a href="/categories/dev-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">Developer Tools</a></li>
-‎                        <li><a href="/categories/seo-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">SEO Tools</a></li>
-‎                    </ul>
-‎                </div>
-‎                <div class="w-full">
-‎                    <h4 class="font-semibold text-brand-text mb-3 sm:mb-4">Company</h4>
-‎                    <ul class="text-sm text-gray-500 flex flex-col">
-‎                        <li><a href="/about.html" class="block py-1.5 hover:text-brand-primary transition-colors">About</a></li>
-‎                        <li><a href="/contact.html" class="block py-1.5 hover:text-brand-primary transition-colors">Contact</a></li>
-‎                        <li><a href="/privacy-policy.html" class="block py-1.5 hover:text-brand-primary transition-colors">Privacy Policy</a></li>
-‎                        <li><a href="/terms-of-service.html" class="block py-1.5 hover:text-brand-primary transition-colors">Terms of Service</a></li>
-‎                        <li><a href="/disclaimer.html" class="block py-1.5 hover:text-brand-primary transition-colors">Disclaimer</a></li>
-‎                    </ul>
-‎                </div>
-‎            </div>
-‎            <div class="border-t border-gray-100 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
-‎                <p class="text-sm text-gray-400 w-full sm:w-auto">© 2026 AkhiTool. All Rights Reserved.</p>
-‎            </div>
-‎        </div>
-‎    </footer>
-‎    <!-- Final Firebase Script to load tools into Homepage -->
-‎<script type="module">
-‎  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-‎  import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-‎
-‎  const firebaseConfig = {
-‎    apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
-‎    authDomain: "akhitool.firebaseapp.com",
-‎    projectId: "akhitool",
-‎    storageBucket: "akhitool.firebasestorage.app",
-‎    messagingSenderId: "892498311198",
-‎    appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
-‎  };
-‎
-‎  const app = initializeApp(firebaseConfig);
-‎  const db = getFirestore(app);
-‎
-‎  async function loadAllTools() {
-‎      try {
-‎          const querySnapshot = await getDocs(collection(db, "tools"));
-‎          const tools = [];
-‎          
-‎          querySnapshot.forEach((doc) => {
-‎              tools.push({ id: doc.id, ...doc.data() });
-‎          });
-‎
-‎          if (tools.length === 0) return;
-‎
-‎          // 1. Popular Tools (ಎಲ್ಲವನ್ನೂ ತೋರಿಸು)
-‎          const popularContainer = document.getElementById("popular-tools-container");
-‎          if(popularContainer) {
-‎              popularContainer.innerHTML = tools.map(tool => `
-‎                  <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-soft hover:shadow-hover transition-all">
-‎                      <h3 class="font-bold text-lg mb-2">${tool.name}</h3>
-‎                      <p class="text-gray-500 text-sm mb-4 line-clamp-2">${tool.description}</p>
-‎                      <a href="${tool.url}" class="text-brand-primary font-medium text-sm">Use Now →</a>
-‎                  </div>
-‎              `).join('');
-‎          }
-‎
-‎          // 2. Recent Tools (Date ಮೇಲೆ sort ಮಾಡಿ)
-‎          const recentContainer = document.getElementById("recent-tools-container");
-‎          if(recentContainer) {
-‎              const recent = [...tools].sort((a, b) => b.dateAdded?.seconds - a.dateAdded?.seconds);
-‎              recentContainer.innerHTML = recent.slice(0, 3).map(tool => `
-‎                  <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-soft">
-‎                      <h3 class="font-bold text-lg">${tool.name}</h3>
-‎                      <p class="text-gray-500 text-sm">${tool.description}</p>
-‎                  </div>
-‎              `).join('');
-‎          }
-‎
-‎      } catch (e) {
-‎          console.error("Error loading tools:", e);
-‎      }
-‎  }
-‎
-‎  loadAllTools();
-‎</script>
-‎    <script type="module">
-‎  // ... Firebase Imports ...
-‎
-‎  async function loadMobileMenu() {
-‎      const container = document.getElementById("mobile-menu-container");
-‎      if(!container) return; // ಕಂಟೈನರ್ ಸಿಗದಿದ್ದರೆ ಸ್ಕ್ರಿಪ್ಟ್ ನಿಲ್ಲಿಸಿ
-‎
-‎      const toolsSnap = await getDocs(collection(db, "tools"));
-‎      let menuData = {};
-‎      
-‎      // ಡೇಟಾ ಗ್ರೂಪಿಂಗ್
-‎      toolsSnap.forEach((doc) => {
-‎          const tool = doc.data();
-‎          const cat = tool.category || "General";
-‎          if(!menuData[cat]) menuData[cat] = [];
-‎          menuData[cat].push(tool);
-‎      });
-‎
-‎      // ಮೆನು ರೆಂಡರಿಂಗ್
-‎      container.innerHTML = `<a href="/" class="block px-4 py-3 font-semibold text-brand-primary border-b">Home</a>`;
-‎      
-‎      Object.keys(menuData).forEach(cat => {
-‎          const tools = menuData[cat];
-‎          const div = document.createElement("div");
-‎          div.className = "border-b border-gray-50";
-‎          div.innerHTML = `
-‎              <button class="menu-cat-btn w-full flex justify-between px-4 py-3 font-medium text-gray-700">
-‎                  ${cat} <span>▼</span>
-‎              </button>
-‎              <div class="cat-tools-list hidden bg-gray-50 px-4 py-2 space-y-1">
-‎                  ${tools.map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600">${t.name}</a>`).join('')}
-‎              </div>
-‎          `;
-‎          container.appendChild(div);
-‎          div.querySelector('.menu-cat-btn').addEventListener('click', () => {
-‎              div.querySelector('.cat-tools-list').classList.toggle('hidden');
-‎          });
-‎      });
-‎  }
-‎
-‎  // ಈ ಲೈನ್ ಮುಖ್ಯ:
-‎  loadMobileMenu(); 
-‎    </script>
-‎    
-‎    
-‎</body>
-‎</html>
-‎
+                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
+                        <span class="pr-4">Do I need to create an account?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-500 px-4 sm:px-6 pb-4 sm:pb-6 text-sm leading-relaxed border-t border-gray-50 pt-3 sm:pt-4">
+                        No signup or account creation is required. You can start using any tool instantly right from your browser.
+                    </div>
+                </details>
+
+                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
+                        <span class="pr-4">Is my data safe?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-500 px-4 sm:px-6 pb-4 sm:pb-6 text-sm leading-relaxed border-t border-gray-50 pt-3 sm:pt-4">
+                        Privacy is our priority. Most of our tools process your data locally on your device. For tools that require server processing, your files are securely handled and deleted immediately after the process is complete.
+                    </div>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <!-- 8. Modern Footer -->
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 pt-12 sm:pt-16 pb-8 w-full mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-10 mb-10 sm:mb-12">
+                <div class="col-span-1 sm:col-span-2 pr-0 lg:pr-8">
+                    <!-- Removed Logo and replaced with a clean text heading -->
+                    <h3 class="text-xl font-extrabold text-brand-text mb-4">AkhiTool</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6 max-w-sm">
+                        Your everyday online toolbox. Free tools for PDF, images, calculators, AI, text, SEO and more—all built for speed and privacy.
+                    </p>
+                </div>
+                <div class="w-full">
+                    <h4 class="font-semibold text-brand-text mb-3 sm:mb-4">Popular Tools</h4>
+                    <ul class="text-sm text-gray-500 flex flex-col">
+                        <li><a href="/age-calculator.html" class="block py-1.5 hover:text-brand-primary transition-colors">Age Calculator</a></li>
+                        <li><a href="/emi-calculator.html" class="block py-1.5 hover:text-brand-primary transition-colors">EMI Calculator</a></li>
+                        <li><a href="/password-generator.html" class="block py-1.5 hover:text-brand-primary transition-colors">Password Generator</a></li>
+                        <li><a href="/qr-code-generator.html" class="block py-1.5 hover:text-brand-primary transition-colors">QR Generator</a></li>
+                    </ul>
+                </div>
+                <div class="w-full">
+                    <h4 class="font-semibold text-brand-text mb-3 sm:mb-4">Categories</h4>
+                    <ul class="text-sm text-gray-500 flex flex-col">
+                        <li><a href="/categories/pdf-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">PDF Tools</a></li>
+                        <li><a href="/categories/image-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">Image Tools</a></li>
+                        <li><a href="/categories/calculators.html" class="block py-1.5 hover:text-brand-primary transition-colors">Calculators</a></li>
+                        <li><a href="/categories/ai-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">AI Tools</a></li>
+                        <li><a href="/categories/dev-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">Developer Tools</a></li>
+                        <li><a href="/categories/seo-tools.html" class="block py-1.5 hover:text-brand-primary transition-colors">SEO Tools</a></li>
+                    </ul>
+                </div>
+                <div class="w-full">
+                    <h4 class="font-semibold text-brand-text mb-3 sm:mb-4">Company</h4>
+                    <ul class="text-sm text-gray-500 flex flex-col">
+                        <li><a href="/about.html" class="block py-1.5 hover:text-brand-primary transition-colors">About</a></li>
+                        <li><a href="/contact.html" class="block py-1.5 hover:text-brand-primary transition-colors">Contact</a></li>
+                        <li><a href="/privacy-policy.html" class="block py-1.5 hover:text-brand-primary transition-colors">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service.html" class="block py-1.5 hover:text-brand-primary transition-colors">Terms of Service</a></li>
+                        <li><a href="/disclaimer.html" class="block py-1.5 hover:text-brand-primary transition-colors">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-100 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+                <p class="text-sm text-gray-400 w-full sm:w-auto">© 2026 AkhiTool. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Firebase & Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
+            authDomain: "akhitool.firebaseapp.com",
+            projectId: "akhitool",
+            storageBucket: "akhitool.firebasestorage.app",
+            messagingSenderId: "892498311198",
+            appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function init() {
+            const toolsSnap = await getDocs(collection(db, "tools"));
+            const tools = [];
+            let menuData = {};
+
+            toolsSnap.forEach((doc) => {
+                const tool = { id: doc.id, ...doc.data() };
+                tools.push(tool);
+                const cat = tool.category || "General";
+                if(!menuData[cat]) menuData[cat] = [];
+                menuData[cat].push(tool);
+            });
+
+            // Popular Tools
+            const popCont = document.getElementById("popular-tools-container");
+            if(popCont) popCont.innerHTML = tools.map(t => `
+                <div class="bg-white p-6 rounded-2xl border shadow-sm">
+                    <h3 class="font-bold">${t.name}</h3>
+                    <p class="text-sm text-gray-500 mb-4">${t.description}</p>
+                    <a href="${t.url}" class="text-blue-600 font-medium">Use Now →</a>
+                </div>
+            `).join('');
+
+            // Mobile Menu
+            const menuCont = document.getElementById("mobile-menu-container");
+            menuCont.innerHTML = `<a href="/" class="block px-4 py-3 font-semibold text-blue-600 border-b">Home</a>`;
+            
+            Object.keys(menuData).forEach(cat => {
+                const div = document.createElement("div");
+                div.className = "border-b";
+                div.innerHTML = `
+                    <button class="menu-cat-btn w-full flex justify-between px-4 py-3 font-medium text-gray-700 hover:bg-gray-50">
+                        ${cat} <span>▼</span>
+                    </button>
+                    <div class="cat-tools-list hidden bg-gray-50 px-4 py-2 space-y-1">
+                        ${menuData[cat].map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600">${t.name}</a>`).join('')}
+                    </div>
+                `;
+                div.querySelector('.menu-cat-btn').addEventListener('click', () => {
+                    div.querySelector('.cat-tools-list').classList.toggle('hidden');
+                });
+                menuCont.appendChild(div);
+            });
+        }
+
+        <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
+        authDomain: "akhitool.firebaseapp.com",
+        projectId: "akhitool",
+        storageBucket: "akhitool.firebasestorage.app",
+        messagingSenderId: "892498311198",
+        appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function init() {
+        try {
+            const snap = await getDocs(collection(db, "tools"));
+            let tools = [];
+            let menuData = {};
+
+            snap.forEach((doc) => {
+                const tool = { id: doc.id, ...doc.data() };
+                tools.push(tool);
+                const cat = tool.category || "General";
+                if(!menuData[cat]) menuData[cat] = [];
+                menuData[cat].push(tool);
+            });
+
+            // 1. Popular Tools render (container id check ಮಾಡಿ)
+            const popCont = document.getElementById("popular-tools-container");
+            if(popCont) {
+                popCont.innerHTML = tools.map(t => `
+                    <div class="bg-white p-4 border rounded-xl shadow-sm">
+                        <h3 class="font-bold">${t.name}</h3>
+                        <a href="${t.url}" class="text-blue-500 text-sm">Use Tool →</a>
+                    </div>
+                `).join('');
+            }
+
+            // 2. Mobile Menu render
+            const menuCont = document.getElementById("mobile-menu-container");
+            if(menuCont) {
+                menuCont.innerHTML = '<a href="/" class="block py-2 font-bold">Home</a>';
+                Object.keys(menuData).forEach(cat => {
+                    const div = document.createElement("div");
+                    div.className = "border-t";
+                    div.innerHTML = `
+                        <button class="w-full flex justify-between py-3 font-medium">${cat} <span>▼</span></button>
+                        <div class="hidden px-2 space-y-1">
+                            ${menuData[cat].map(t => `<a href="${t.url}" class="block py-1 text-sm text-gray-600">${t.name}</a>`).join('')}
+                        </div>
+                    `;
+                    div.querySelector('button').onclick = (e) => e.target.nextElementSibling.classList.toggle('hidden');
+                    menuCont.appendChild(div);
+                });
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    // Menu Buttons
+    document.getElementById('mobile-menu-btn').onclick = () => document.getElementById('mobile-drawer').classList.remove('translate-x-full');
+    document.getElementById('mobile-close-btn').onclick = () => document.getElementById('mobile-drawer').classList.add('translate-x-full');
+
+    init();
+</script>
+    
+    
+</body>
+</html>
