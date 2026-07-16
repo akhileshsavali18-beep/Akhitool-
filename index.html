@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+‎<!DOCTYPE html>
 ‎<html lang="en" class="scroll-smooth overflow-x-hidden">
 ‎<head>
 ‎    <meta charset="UTF-8">
@@ -52,13 +52,12 @@
 ‎            }
 ‎        }
 ‎    </script>
-    
 ‎    <!-- Inside the <head> tag, before the closing </head> -->
 ‎<link rel="stylesheet" href="assets/css/navbar.css">
 ‎</head>
 ‎<body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-primary selection:text-white flex flex-col min-h-screen overflow-x-hidden">
-
-         <!-- Navigation -->
+‎
+‎                       <!-- Navigation -->
 ‎    <header class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-lg border-b border-gray-100 transition-all h-[64px]">
 ‎        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
 ‎            <!-- Flex Container: Keeps Logo Left, Menu Right, Vertically Centered -->
@@ -90,11 +89,69 @@
 ‎            </div>
 ‎        </div>
 ‎    </header>
+‎   <!-- Mobile Drawer -->
+‎<div id="mobile-drawer" class="fixed inset-y-0 right-0 z-50 w-72 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col h-full overflow-y-auto">
+‎    <div class="flex items-center justify-between p-4 border-b border-gray-100">
+‎        <span class="font-bold text-lg">Menu</span>
+‎        <button id="mobile-close-btn" class="text-gray-500 p-2">✕</button>
+‎    </div>
+‎    <!-- ಡೇಟಾ ಇಲ್ಲಿ ಬಂದು ಕೂರಬೇಕು -->
+‎    <div id="mobile-menu-container" class="px-2 py-4 space-y-1">
+‎        <p class="px-4 py-4 text-gray-400">Loading...</p>
+‎    </div>
+‎</div>
 ‎    
-       <!-- Mobile Navigation Drawer (Updated with Categories Dropdown - No Logo) -->
-‎    <div id="mobile-menu-overlay" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300 cursor-pointer"></div>
-‎    <div id="mobile-drawer" class="fixed inset-y-0 right-0 z-50 w-72 sm:w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col h-full">
-‎        
+‎
+‎<script type="module">
+‎  // Firebase Imports (ಅವಶ್ಯಕತೆ ಇದ್ದರೆ)
+‎  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+‎  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+‎
+‎  const firebaseConfig = { /* ನಿಮ್ಮ ಕಾನ್ಫಿಗರೇಶನ್ ಇಲ್ಲೇ ಇರಲಿ */ };
+‎  const app = initializeApp(firebaseConfig);
+‎  const db = getFirestore(app);
+‎
+‎  async function loadMobileMenu() {
+‎      const container = document.getElementById("mobile-menu-container");
+‎      const toolsSnap = await getDocs(collection(db, "tools"));
+‎      let menuData = {};
+‎
+‎      toolsSnap.forEach((doc) => {
+‎          const tool = doc.data();
+‎          const cat = tool.category || "General";
+‎          if(!menuData[cat]) menuData[cat] = [];
+‎          menuData[cat].push(tool);
+‎      });
+‎
+‎      container.innerHTML = `<a href="/" class="block px-4 py-3 font-semibold text-brand-primary border-b">Home</a>`;
+‎      
+‎      Object.keys(menuData).forEach(cat => {
+‎          const tools = menuData[cat];
+‎          const div = document.createElement("div");
+‎          div.className = "border-b border-gray-50";
+‎          div.innerHTML = `
+‎              <button class="menu-cat-btn w-full flex justify-between px-4 py-3 font-medium text-gray-700 hover:bg-gray-50">
+‎                  ${cat} <span class="arrow transition-transform">▼</span>
+‎              </button>
+‎              <div class="cat-tools-list hidden bg-gray-50 px-4 py-2 space-y-1">
+‎                  ${tools.map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600 hover:text-brand-primary">${t.name}</a>`).join('')}
+‎              </div>
+‎          `;
+‎          
+‎          // Dropdown Click Logic
+‎          div.querySelector('.menu-cat-btn').addEventListener('click', (e) => {
+‎              const list = div.querySelector('.cat-tools-list');
+‎              list.classList.toggle('hidden');
+‎              div.querySelector('.arrow').classList.toggle('rotate-180');
+‎          });
+‎          
+‎          container.appendChild(div);
+‎      });
+‎  }
+‎  loadMobileMenu();
+‎</script>
+‎    
+‎    
 ‎        <!-- Header (Logo Removed, Close button aligned to right) -->
 ‎        <div class="flex items-center justify-end p-4 border-b border-gray-100 shrink-0">
 ‎            <button id="mobile-close-btn" class="text-gray-500 hover:text-brand-primary p-2 focus:outline-none rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
@@ -107,7 +164,8 @@
 ‎            <a href="/" class="block px-4 py-3 rounded-xl text-base font-semibold text-brand-primary bg-blue-50 transition-colors">Home</a>
 ‎            
 ‎            <!-- Categories Dropdown (Accordion) -->
-‎            <div class="pt-2 pb-1">
+‎
+‎                 <div class="pt-2 pb-1">
 ‎                <button id="mobile-categories-btn" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:bg-gray-50 transition-colors focus:outline-none">
 ‎                    <span class="flex items-center gap-3">
 ‎                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
@@ -115,7 +173,8 @@
 ‎                    </span>
 ‎                    <svg id="mobile-categories-icon" class="w-5 h-5 text-gray-500 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
 ‎                </button>
-‎                        <!-- Expanded Category Links -->
+‎                
+‎                <!-- Expanded Category Links -->
 ‎                <div id="mobile-categories-menu" class="hidden px-2 pt-2 pb-2 space-y-1 overflow-hidden">
 ‎                    <a href="/categories/pdf-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
 ‎                        <svg class="w-4 h-4 text-brand-primary/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
@@ -131,7 +190,7 @@
 ‎                    </a>
 ‎                    <a href="/categories/ai-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
 ‎                        <svg class="w-4 h-4 text-purple-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        AI Tools
+‎                        AI Tools
 ‎                    </a>
 ‎                    <a href="/categories/dev-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
 ‎                        <svg class="w-4 h-4 text-orange-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
@@ -153,8 +212,8 @@
 ‎            <a href="/privacy-policy.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Privacy Policy</a>
 ‎            <a href="/terms-of-service.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Terms of Service</a>
 ‎            <a href="/disclaimer.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Disclaimer</a>
-‎        </div>
-‎                                                                                                                         </div>
+‎                                                                                                                          </div>                                                                                                                    </div>
+‎    
 ‎    <!-- Full-Screen Explore Tools Modal -->
 ‎    <div id="explore-modal" class="fixed inset-0 z-[60] bg-brand-bg hidden opacity-0 transition-opacity duration-300 flex-col h-screen overflow-hidden">
 ‎        <!-- Modal Header -->
@@ -190,7 +249,8 @@
 ‎            </div>
 ‎        </div>
 ‎    </div>
-   <!-- Main Content Starts -->
+‎
+‎        <!-- Main Content Starts -->
 ‎    <main class="flex-grow pt-24 sm:pt-32 pb-16 relative z-0">
 ‎        
 ‎        <!-- Premium SaaS Background Effects (Grid & Soft Glow) -->
@@ -227,7 +287,8 @@
 ‎                <div class="relative">
 ‎                    <input type="text" id="main-search-input" placeholder="Search tools (e.g. PDF, Image)..." autocomplete="off" 
 ‎                        class="block w-full pl-16 pr-32 py-5 border border-gray-200/80 rounded-2xl bg-white/80 backdrop-blur-xl placeholder-gray-400 focus:outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/15 text-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 text-brand-text relative z-10">
-                <div id="main-search-dropdown" class="absolute top-[calc(100%+8px)] left-0 w-full bg-white border border-gray-100 rounded-2xl shadow-2xl z-30 hidden flex-col overflow-hidden max-h-80 overflow-y-auto py-2"></div>
+‎                    
+‎                    <div id="main-search-dropdown" class="absolute top-[calc(100%+8px)] left-0 w-full bg-white border border-gray-100 rounded-2xl shadow-2xl z-30 hidden flex-col overflow-hidden max-h-80 overflow-y-auto py-2"></div>
 ‎                </div>
 ‎                <div class="absolute inset-y-0 right-3 sm:right-2 flex items-center z-10 pointer-events-none">
 ‎                    <button class="bg-brand-primary text-white px-6 sm:px-8 py-2.5 sm:py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 shadow-md pointer-events-auto hover:bg-brand-secondary hover:shadow-lg hover:-translate-y-0.5">Search</button>
@@ -244,114 +305,110 @@
 ‎                    <rect x="150" y="50" width="500" height="48" rx="16" fill="#F8FAFC"/>
 ‎                    <path d="M150 98H650" stroke="#E2E8F0" stroke-width="2"/>
 ‎                    <circle cx="180" cy="74" r="6" fill="#CBD5E1"/>
-‎                    <circle cx="204" cy="74" r="6" fill="#CBD5E1"/>
-‎                    <circle cx="228" cy="74" r="6" fill="#CBD5E1"/>
-‎                    <rect x="190" y="130" width="120" height="80" rx="12" fill="#EEF2FF"/>
-‎                    <rect x="340" y="130" width="120" height="80" rx="12" fill="#E0F2FE"/>
-‎                    <rect x="490" y="130" width="120" height="80" rx="12" fill="#ECFEFF"/>
-‎                    <rect x="190" y="240" width="120" height="80" rx="12" fill="#FDF4FF"/>
-‎                    <rect x="340" y="240" width="120" height="80" rx="12" fill="#F0FDF4"/>
-‎                    <rect x="490" y="240" width="120" height="80" rx="12" fill="#FFFBEB"/>
-‎                    <path d="M370 170L400 200L385 205L370 230L360 225L375 200L355 190L370 170Z" fill="#2563EB" stroke="white" stroke-width="2.5" class="drop-shadow-md"/>
-‎                </svg>
-‎            </div>
-‎                        </section>
-  <!-- 2. Popular Tools (Injected by JS) -->
-‎        <section id="popular" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-‎            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-‎                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text">Popular Tools</h2>
-‎                <button class="open-explore-modal text-sm font-medium text-brand-primary hover:text-brand-secondary flex items-center gap-1 min-h-[44px]">View all <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
-‎            </div>
-‎            <div id="popular-tools-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-‎                <!-- Data loaded via assets/js/main.js -->
-‎            </div>
-‎        </section>
-‎<!-- 3. Trending Tools (Injected by JS) -->
-‎        <section id="trending" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-‎            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-6 sm:mb-8 flex items-center gap-2">
-‎                Trending Tools
-‎                <span class="relative flex h-3 w-3 shrink-0">
-‎                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-‎                  <span class="relative inline-flex rounded-full h-3 w-3 bg-red-50"></span>
-‎                </span>
-‎            </h2>
-‎            <div id="trending-tools-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-‎                 <!-- Data loaded via assets/js/main.js -->
-‎            </div>
-‎        </section>
-  <!-- 4. Recently Added Tools (Injected by JS) -->
-‎        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-‎            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-6 sm:mb-8">Recently Added Tools</h2>
-‎            <div id="recent-tools-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-‎                <!-- Data loaded via assets/js/main.js -->
-‎            </div>
-‎        </section>
-‎
-‎        <!-- 5. Why Choose AkhiTool -->
-‎        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 mt-4 sm:mt-8 border-t border-gray-100">
-‎            <div class="text-center mb-10 sm:mb-16">
-‎                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-3 sm:mb-4">Why Choose AkhiTool</h2>
-‎                <p class="text-gray-500 max-w-xl mx-auto text-sm sm:text-base px-2">Built for modern professionals, developers, and creators who value speed and privacy.</p>
-‎            </div>
-‎            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center">
-‎                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
-‎                    <div class="w-14 h-14 rounded-2xl bg-yellow-50 text-yellow-500 flex items-center justify-center mb-5 shrink-0">
-‎                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-‎                    </div>
-‎                    <h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">Lightning Fast</h3>
-‎                    <p class="text-gray-500 text-sm leading-relaxed flex-grow">All tools work instantly in your browser.</p>
-‎                </div>
-‎                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
-‎                    <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center mb-5 shrink-0">
-‎                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-‎                    </div>
-‎                    <h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">Privacy First</h3>
-‎                    <p class="text-gray-500 text-sm leading-relaxed flex-grow">Your files never leave your device whenever possible.</p>
-‎                </div>
-‎                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
-‎                    <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center mb-5 shrink-0">
-‎                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-‎                    </div>
-‎                    <h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">Mobile Friendly</h3>
-‎                    <p class="text-gray-500 text-sm leading-relaxed flex-grow">Designed for phones, tablets and desktop.</p>
-‎                </div>
-‎                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
-‎                    <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-500 flex items-center justify-center mb-5 shrink-0">
-‎                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-‎                    </div>
-‎                    <h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">100% Free</h3>
+                    <circle cx="204" cy="74" r="6" fill="#CBD5E1"/>
+                    <circle cx="228" cy="74" r="6" fill="#CBD5E1"/>
+                    <rect x="190" y="130" width="120" height="80" rx="12" fill="#EEF2FF"/>
+                    <rect x="340" y="130" width="120" height="80" rx="12" fill="#E0F2FE"/>
+                    <rect x="490" y="130" width="120" height="80" rx="12" fill="#ECFEFF"/>
+                    <rect x="190" y="240" width="120" height="80" rx="12" fill="#FDF4FF"/>
+                    <rect x="340" y="240" width="120" height="80" rx="12" fill="#F0FDF4"/>
+                    <rect x="490" y="240" width="120" height="80" rx="12" fill="#FFFBEB"/>
+                    <path d="M370 170L400 200L385 205L370 230L360 225L375 200L355 190L370 170Z" fill="#2563EB" stroke="white" stroke-width="2.5" class="drop-shadow-md"/>
+                </svg>
+            </div>
+</section>
+
+ <!-- 2. Popular Tools (Injected by JS) -->
+        <section id="popular" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text">Popular Tools</h2>
+                <button class="open-explore-modal text-sm font-medium text-brand-primary hover:text-brand-secondary flex items-center gap-1 min-h-[44px]">View all <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+            </div>
+            <div id="popular-tools-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                <!-- Data loaded via assets/js/main.js -->
+            </div>
+        </section>
+
+        <!-- 3. Trending Tools (Injected by JS) -->
+        <section id="trending" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-6 sm:mb-8 flex items-center gap-2">
+                Trending Tools
+                <span class="relative flex h-3 w-3 shrink-0">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-red-50"></span>
+                </span>
+            </h2>
+            <div id="trending-tools-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                 <!-- Data loaded via assets/js/main.js -->
+            </div>
+        </section>
+
+    <!-- 5. Why Choose AkhiTool -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 mt-4 sm:mt-8 border-t border-gray-100">
+            <div class="text-center mb-10 sm:mb-16">
+                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-3 sm:mb-4">Why Choose AkhiTool</h2>
+                <p class="text-gray-500 max-w-xl mx-auto text-sm sm:text-base px-2">Built for modern professionals, developers, and creators who value speed and privacy.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center">
+                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
+                    <div class="w-14 h-14 rounded-2xl bg-yellow-50 text-yellow-500 flex items-center justify-center mb-5 shrink-0">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">Lightning Fast</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed flex-grow">All tools work instantly in your browser.</p>
+                </div>
+                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
+                    <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center mb-5 shrink-0">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">Privacy First</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed flex-grow">Your files never leave your device whenever possible.</p>
+                </div>
+                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center mb-5 shrink-0">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">Mobile Friendly</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed flex-grow">Designed for phones, tablets and desktop.</p>
+                </div>
+                <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col items-center">
+                    <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-500 flex items-center justify-center mb-5 shrink-0">
+                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>‎<h3 class="text-lg font-bold mb-2 sm:mb-3 text-brand-text">100% Free</h3>
 ‎                    <p class="text-gray-500 text-sm leading-relaxed flex-grow">No signup. No hidden charges.</p>
 ‎                </div>
 ‎            </div>
 ‎        </section>
-‎<!-- 6. Statistics Section -->
-        <section class="bg-white border-y border-gray-100 py-10 sm:py-12 mb-12 sm:mb-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center divide-x-0 md:divide-x divide-gray-100">
-                    <div class="flex flex-col items-center justify-center">
-                        <span class="text-3xl sm:text-4xl font-extrabold text-brand-primary mb-1 sm:mb-2">10+</span>
-                        <span class="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Free Tools</span>
-                    </div>
-                    <div class="flex flex-col items-center justify-center">
-                        <span class="text-3xl sm:text-4xl font-extrabold text-brand-primary mb-1 sm:mb-2">100%</span>
-                        <span class="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Free</span>
-                    </div>
-                    <div class="flex flex-col items-center justify-center mt-4 md:mt-0">
-                        <span class="text-3xl sm:text-4xl font-extrabold text-brand-primary mb-1 sm:mb-2">📱</span>
-                        <span class="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Mobile Friendly</span>
-                    </div>
-                    <div class="flex flex-col items-center justify-center mt-4 md:mt-0">
-                        <span class="text-3xl sm:text-4xl font-extrabold text-brand-primary mb-1 sm:mb-2">⚡</span>
-                        <span class="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Fast</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-           <!-- 7. FAQ -->
-        <section id="faq" class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 w-full">
-            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-6 sm:mb-8 text-center">Frequently Asked Questions</h2>
-            <div class="space-y-3 sm:space-y-4">
-                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full" open>
+‎
+‎        <!-- 6. Statistics Section -->
+‎        <section class="bg-white border-y border-gray-100 py-10 sm:py-12 mb-12 sm:mb-16">
+‎            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+‎                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center divide-x-0 md:divide-x divide-gray-100">
+‎                    <div class="flex flex-col items-center justify-center">
+‎                        <span class="text-3xl sm:text-4xl font-extrabold text-brand-primary mb-1 sm:mb-2">10+</span>
+‎                        <span class="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Free Tools</span>
+‎                    </div>
+‎                    <div class="flex flex-col items-center justify-center">
+‎                        <span class="text-3xl sm:text-4xl font-extrabold text-brand-primary mb-1 sm:mb-2">100%</span>
+‎                        <span class="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Free</span>
+‎                    </div>
+‎                    <div class="flex flex-col items-center justify-center mt-4 md:mt-0">
+‎                        <span class="text-3xl sm:text-4xl font-extrabold text-brand-primary mb-1 sm:mb-2">📱</span>
+‎                        <span class="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Mobile Friendly</span>
+‎                    </div>
+‎                    <div class="flex flex-col items-center justify-center mt-4 md:mt-0">
+‎                        <span class="text-3xl sm:text-4xl font-extrabold text-brand-primary mb-1 sm:mb-2">⚡</span>
+‎                        <span class="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Fast</span>
+‎                    </div>
+‎                </div>
+‎            </div>
+‎        </section>
+
+    <!-- 7. FAQ -->
+‎        <section id="faq" class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 w-full">
+‎            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-6 sm:mb-8 text-center">Frequently Asked Questions</h2>
+‎            <div class="space-y-3 sm:space-y-4">
+‎                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full" open>
 ‎                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
 ‎                        <span class="pr-4">What is AkhiTool?</span>
 ‎                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
@@ -362,7 +419,8 @@
 ‎                        AkhiTool is your everyday online toolbox offering a wide collection of utilities for PDFs, images, developers, SEO, and daily calculations, all packed into one fast, easy-to-use platform.
 ‎                    </div>
 ‎                </details>
-<details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
+‎                
+‎                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
 ‎                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
 ‎                        <span class="pr-4">Are these tools free?</span>
 ‎                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
@@ -373,7 +431,8 @@
 ‎                        Yes, absolutely! All tools on AkhiTool are 100% free to use. There are no paywalls, hidden charges, or premium subscriptions required.
 ‎                    </div>
 ‎                </details>
-‎<details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
+‎
+‎                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
 ‎                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
 ‎                        <span class="pr-4">Do I need to create an account?</span>
 ‎                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
@@ -384,7 +443,8 @@
 ‎                        No signup or account creation is required. You can start using any tool instantly right from your browser.
 ‎                    </div>
 ‎                </details>
-‎<details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
+‎
+‎                <details class="group bg-brand-card rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-all duration-300 w-full">
 ‎                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 sm:p-6 text-brand-text select-none min-h-[56px]">
 ‎                        <span class="pr-4">Is my data safe?</span>
 ‎                        <span class="transition-transform duration-300 group-open:rotate-180 text-gray-400 shrink-0">
@@ -398,7 +458,8 @@
 ‎            </div>
 ‎        </section>
 ‎    </main>
-‎‎    <!-- 8. Modern Footer -->
+‎
+    ‎    <!-- 8. Modern Footer -->
 ‎    <!-- Footer -->
 ‎    <footer class="bg-white border-t border-gray-100 pt-12 sm:pt-16 pb-8 w-full mt-auto">
 ‎        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -446,10 +507,10 @@
 ‎            </div>
 ‎        </div>
 ‎    </footer>
-‎    <!-- Firebase Firestore Script for Live Tools AND Categories -->
+‎    <!-- Final Firebase Script to load tools into Homepage -->
 ‎<script type="module">
 ‎  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-‎  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+‎  import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 ‎
 ‎  const firebaseConfig = {
 ‎    apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
@@ -463,69 +524,91 @@
 ‎  const app = initializeApp(firebaseConfig);
 ‎  const db = getFirestore(app);
 ‎
-‎  async function loadAllData() {
+‎  async function loadAllTools() {
 ‎      try {
-‎          // 1. Tools ಮತ್ತು Categories ಡೇಟಾ ತರುವುದು
-‎          const toolsSnap = await getDocs(collection(db, "tools"));
-‎          const catsSnap = await getDocs(collection(db, "categories"));
-       // 2. Categories ಲಿಸ್ಟ್ ಅಪ್‌ಡೇಟ್ ಮಾಡುವುದು
-‎          const catMenu = document.getElementById("mobile-categories-menu");
-‎          if(catMenu) {
-‎              catMenu.innerHTML = ""; // ಹಳೆ ಡಮ್ಮಿ ಡೇಟಾ ಕ್ಲಿಯರ್ ಮಾಡಿ
-‎              catsSnap.forEach((doc) => {
-‎                  const cat = doc.data();
-‎                  catMenu.innerHTML += `
-‎                      <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-‎                          ${cat.name}
-‎                      </a>
-‎                  `;
-‎              });
+‎          const querySnapshot = await getDocs(collection(db, "tools"));
+‎          const tools = [];
+‎          
+‎          querySnapshot.forEach((doc) => {
+‎              tools.push({ id: doc.id, ...doc.data() });
+‎          });
+‎
+‎          if (tools.length === 0) return;
+‎
+‎          // 1. Popular Tools (ಎಲ್ಲವನ್ನೂ ತೋರಿಸು)
+‎          const popularContainer = document.getElementById("popular-tools-container");
+‎          if(popularContainer) {
+‎              popularContainer.innerHTML = tools.map(tool => `
+‎                  <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-soft hover:shadow-hover transition-all">
+‎                      <h3 class="font-bold text-lg mb-2">${tool.name}</h3>
+‎                      <p class="text-gray-500 text-sm mb-4 line-clamp-2">${tool.description}</p>
+‎                      <a href="${tool.url}" class="text-brand-primary font-medium text-sm">Use Now →</a>
+‎                  </div>
+‎              `).join('');
 ‎          }
 ‎
-‎          // 3. Tools ಲಿಸ್ಟ್ ಅಪ್‌ಡೇಟ್ ಮಾಡುವುದು (ಹಿಂದಿನಂತೆ)
-‎          // ... (ನಿಮ್ಮ ಟೂಲ್ಸ್ ಲೋಡ್ ಮಾಡುವ ಕೋಡ್ ಇಲ್ಲಿ ಇರಲಿ)
+‎          // 2. Recent Tools (Date ಮೇಲೆ sort ಮಾಡಿ)
+‎          const recentContainer = document.getElementById("recent-tools-container");
+‎          if(recentContainer) {
+‎              const recent = [...tools].sort((a, b) => b.dateAdded?.seconds - a.dateAdded?.seconds);
+‎              recentContainer.innerHTML = recent.slice(0, 3).map(tool => `
+‎                  <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-soft">
+‎                      <h3 class="font-bold text-lg">${tool.name}</h3>
+‎                      <p class="text-gray-500 text-sm">${tool.description}</p>
+‎                  </div>
+‎              `).join('');
+‎          }
+‎
 ‎      } catch (e) {
-‎          console.error("Error loading data:", e);
+‎          console.error("Error loading tools:", e);
 ‎      }
 ‎  }
 ‎
-‎loadAllData();
+‎  loadAllTools();
 ‎</script>
-‎    
-‎    <!-- ಮೊಬೈಲ್ ಮೆನು ಸರಿಯಾಗಲು ಈ ಕೆಳಗಿನ ಕೋಡ್ ಬಳಸಿ -->
-‎<script>
-‎    const mobileBtn = document.getElementById('mobile-menu-btn');
-‎    const mobileDrawer = document.getElementById('mobile-drawer');
-‎    const mobileClose = document.getElementById('mobile-close-btn');
-‎    const overlay = document.getElementById('mobile-menu-overlay');
+‎    <script type="module">
+‎  // ... Firebase Imports ...
 ‎
-‎    if(mobileBtn) {
-‎        mobileBtn.addEventListener('click', () => {
-‎            mobileDrawer.classList.remove('translate-x-full');
-‎            overlay.classList.remove('hidden');
-‎            overlay.classList.add('opacity-100');
-‎        });
-‎    }
+‎  async function loadMobileMenu() {
+‎      const container = document.getElementById("mobile-menu-container");
+‎      if(!container) return; // ಕಂಟೈನರ್ ಸಿಗದಿದ್ದರೆ ಸ್ಕ್ರಿಪ್ಟ್ ನಿಲ್ಲಿಸಿ
 ‎
-‎    const closeMenu = () => {
-‎        mobileDrawer.classList.add('translate-x-full');
-‎        overlay.classList.add('hidden');
-‎    };
+‎      const toolsSnap = await getDocs(collection(db, "tools"));
+‎      let menuData = {};
+‎      
+‎      // ಡೇಟಾ ಗ್ರೂಪಿಂಗ್
+‎      toolsSnap.forEach((doc) => {
+‎          const tool = doc.data();
+‎          const cat = tool.category || "General";
+‎          if(!menuData[cat]) menuData[cat] = [];
+‎          menuData[cat].push(tool);
+‎      });
 ‎
-‎    if(mobileClose) mobileClose.addEventListener('click', closeMenu);
-‎    if(overlay) overlay.addEventListener('click', closeMenu);
-‎    const catBtn = document.getElementById('mobile-categories-btn');
-‎const catMenu = document.getElementById('mobile-categories-menu');
-‎const catIcon = document.getElementById('mobile-categories-icon');
+‎      // ಮೆನು ರೆಂಡರಿಂಗ್
+‎      container.innerHTML = `<a href="/" class="block px-4 py-3 font-semibold text-brand-primary border-b">Home</a>`;
+‎      
+‎      Object.keys(menuData).forEach(cat => {
+‎          const tools = menuData[cat];
+‎          const div = document.createElement("div");
+‎          div.className = "border-b border-gray-50";
+‎          div.innerHTML = `
+‎              <button class="menu-cat-btn w-full flex justify-between px-4 py-3 font-medium text-gray-700">
+‎                  ${cat} <span>▼</span>
+‎              </button>
+‎              <div class="cat-tools-list hidden bg-gray-50 px-4 py-2 space-y-1">
+‎                  ${tools.map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600">${t.name}</a>`).join('')}
+‎              </div>
+‎          `;
+‎          container.appendChild(div);
+‎          div.querySelector('.menu-cat-btn').addEventListener('click', () => {
+‎              div.querySelector('.cat-tools-list').classList.toggle('hidden');
+‎          });
+‎      });
+‎  }
 ‎
-‎if(catBtn) {
-‎    catBtn.addEventListener('click', () => {
-‎        catMenu.classList.toggle('hidden');
-‎        catIcon.classList.toggle('rotate-180');
-‎    });
-‎    }
-‎            
-‎</script>
+‎  // ಈ ಲೈನ್ ಮುಖ್ಯ:
+‎  loadMobileMenu(); 
+‎    </script>
 ‎    
 ‎    
 ‎</body>
