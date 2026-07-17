@@ -129,24 +129,24 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <form id="add-tool-form" class="p-6 space-y-4"> <!-- Tool Code Textarea (ಇದನ್ನು ನಿಮ್ಮ ಫಾರ್ಮ್ ಒಳಗೆ ಸೇರಿಸಿ) -->
-<div class="mt-4">
-    <label class="block text-sm font-medium text-gray-700 mb-1">Tool Code (Paste HTML/JS here)</label>
-    <textarea id="tool-code" rows="6" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 font-mono text-sm p-3" placeholder="Paste your tool code here, name and description will auto-fill!"></textarea>
-</div>
-                      
-                      <div><label class="block text-sm font-medium text-gray-700 mb-1">Tool Content (HTML/JS Code)</label>
-    <textarea id="tool-content" rows="6" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-brand-primary/20 focus:border-brand-primary" placeholder="Peste your tool code here..."></textarea>
-                      </div>
+                        <form id="add-tool-form" class="p-6 space-y-4">
+                
+                <!-- ಇದು ನಿಮ್ಮ ಮೂಲ ಕೋಡ್ ಬಾಕ್ಸ್, ಇದಕ್ಕೆ id="tool-code" ಸೇರಿಸಲಾಗಿದೆ -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tool Content (HTML/JS Code)</label>
+                    <textarea id="tool-code" rows="6" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-brand-primary/20 focus:border-brand-primary" placeholder="Paste your tool code here..."></textarea>
+                </div>
                       
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Tool Name</label>
                     <input type="text" id="tool-name" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-brand-primary/20 focus:border-brand-primary" placeholder="e.g. Image Compressor" required>
                 </div>
+                
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
                     <input type="text" id="tool-desc" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-brand-primary/20 focus:border-brand-primary" placeholder="What does this tool do?" required>
                 </div>
+                
                 <div class="flex gap-4">
                     <div class="w-1/2">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
@@ -157,11 +157,12 @@
                         <input type="text" id="tool-url" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-brand-primary/20 focus:border-brand-primary" placeholder="e.g. image-compressor.html" required>
                     </div>
                 </div>
+                
                 <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-100">
                     <button type="button" id="cancel-modal-btn" class="px-4 py-2 text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200">Cancel</button>
                     <button type="submit" id="save-tool-btn" class="px-4 py-2 bg-brand-primary text-white rounded-xl hover:bg-brand-secondary">Save Tool</button>
-                </div>
-            </form>
+                </div> 
+          </form>
         </div>
     </div>
 
