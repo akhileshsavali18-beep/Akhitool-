@@ -435,60 +435,46 @@
                 menuData[cat].push(tool);
             });
 
-            // 1. Popular Tools
-            const popCont = document.getElementById("popular-tools-container");
-            if(popCont) {
-                popCont.innerHTML = snap.docs.map(d => {
-                    const t = d.data();
-                    return `<div class="bg-white p-5 border rounded-2xl shadow-sm"><h3 class="font-bold">${t.name}</h3><a href="${t.url}" class="text-blue-600 text-sm font-semibold">Use Tool →</a></div>`;
-                }).join('');
-            }
-
-            // 2. Mobile Menu (Category + Company Dropdown)
+            // Mobile Menu
             const menuCont = document.getElementById("mobile-menu-container");
-            if(menuCont) {
-                menuCont.innerHTML = `
-                    <a href="/" class="block px-4 py-3 font-semibold text-blue-600 border-b">Home</a>
+            if (menuCont) {
+                menuCont.innerHTML = Object.keys(menuData).map(cat => `
                     <div class="border-b">
-                        <button id="cat-main-btn" class="w-full flex justify-between px-4 py-3 font-semibold">Category <span>▼</span></button>
-                        <div id="cat-dropdown" class="hidden bg-gray-50 px-2">
-                            ${Object.keys(menuData).map(cat => `
-                                <div class="nested-cat">
-                                    <button class="w-full flex justify-between px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">${cat} <span>▶</span></button>
-                                    <div class="hidden px-4 py-1 space-y-1">
-                                        ${menuData[cat].map(t => `<a href="${t.url}" class="block py-1 text-xs text-gray-600">${t.name}</a>`).join('')}
-                                    </div>
-                                </div>
-                            `).join('')}
+                        <button class="w-full flex justify-between items-center py-4 px-2 font-medium menu-cat-btn text-gray-800">
+                            <span class="flex items-center gap-3">🖼️ ${cat}</span>
+                            <span class="arrow transition-transform">▼</span>
+                        </button>
+                        <div class="hidden bg-gray-50 pb-2">
+                            ${menuData[cat].map(t => `<a href="${t.url}" class="block py-2 pl-10 text-sm text-gray-600 hover:text-blue-600">${t.name}</a>`).join('')}
+                            <a href="/category/${cat.toLowerCase()}.html" class="block py-2 pl-10 text-sm font-bold text-blue-600">View all ${cat} tools ></a>
                         </div>
                     </div>
-                    <div class="border-b">
-                        <button id="comp-main-btn" class="w-full flex justify-between px-4 py-3 font-semibold">Company <span>▼</span></button>
-                        <div id="comp-dropdown" class="hidden bg-gray-50 px-4 py-2 space-y-1 text-sm text-gray-600">
-                            <a href="/about.html" class="block py-1">About</a>
-                            <a href="/contact.html" class="block py-1">Contact</a>
-                        </div>
-                    </div>
-                `;
-// ಇದನ್ನಷ್ಟೇ ಗಮನಿಸಿ (Event Listener ಬದಲಾವಣೆ)
-    window.addEventListener('DOMContentLoaded', () => {
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const drawer = document.getElementById('mobile-drawer');
-        const closeBtn = document.getElementById('mobile-close-btn');
+                `).join('');
 
-        if(menuBtn) {
-            menuBtn.onclick = (e) => {
-                e.stopPropagation();
-                drawer.classList.remove('translate-x-full');
-            };
-        }
-        if(closeBtn) {
-            closeBtn.onclick = () => {
-                drawer.classList.add('translate-x-full');
-            };
-        }
+                // Dropdown Logic
+                document.querySelectorAll('.menu-cat-btn').forEach(btn => {
+                    btn.onclick = () => {
+                        btn.nextElementSibling.classList.toggle('hidden');
+                        btn.querySelector('.arrow').classList.toggle('rotate-180');
+                    };
+                });
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    // ಬಟನ್ ಲಾಜಿಕ್ - ಪೇಜ್ ಲೋಡ್ ಆದ್ಮೇಲೆ ರನ್ ಆಗಲಿ
+    window.onload = () => {
+        const btn = document.getElementById('mobile-menu-btn');
+        const drawer = document.getElementById('mobile-drawer');
+        const close = document.getElementById('mobile-close-btn');
+
+        if(btn) btn.onclick = () => drawer.classList.remove('translate-x-full');
+        if(close) close.onclick = () => drawer.classList.add('translate-x-full');
+        
         init();
-</script>
+    };
+        </script>
+    
                 
 </body>
 </html>
