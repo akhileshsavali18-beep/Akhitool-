@@ -61,7 +61,7 @@
 <header class="fixed top-0 w-full bg-white z-40 h-16 flex items-center px-4 justify-between border-b">
     <a href="/" class="flex items-center">
         <!-- ಇಲ್ಲಿ h-12 ಅಥವಾ h-14 ಕೊಡಿ, ಇದು ಲೋಗೋ ಗಾತ್ರ ಹೆಚ್ಚಿಸುತ್ತದೆ -->
-        <img src="logo.png" alt="AkhiTool Logo" class="h-18 w-auto"> 
+        <img src="logo.png" alt="AkhiTool Logo" class="h-16 w-auto"> 
     </a>
     <button id="mobile-menu-btn" class="p-2 border rounded-lg z-50">☰</button>
 </header>
@@ -472,81 +472,6 @@
         </div>
     </footer>
     
-    <!-- Firebase & Logic -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
-            authDomain: "akhitool.firebaseapp.com",
-            projectId: "akhitool",
-            storageBucket: "akhitool.firebasestorage.app",
-            messagingSenderId: "892498311198",
-            appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        async function init() {
-            const toolsSnap = await getDocs(collection(db, "tools"));
-            const tools = [];
-            let menuData = {};
-
-            toolsSnap.forEach((doc) => {
-                const tool = { id: doc.id, ...doc.data() };
-                tools.push(tool);
-                const cat = tool.category || "General";
-                if(!menuData[cat]) menuData[cat] = [];
-                menuData[cat].push(tool);
-            });
-
-            // Popular Tools
-            const popCont = document.getElementById("popular-tools-container");
-            if(popCont) popCont.innerHTML = tools.map(t => `
-                <div class="bg-white p-6 rounded-2xl border shadow-sm">
-                    <h3 class="font-bold">${t.name}</h3>
-                    <p class="text-sm text-gray-500 mb-4">${t.description}</p>
-                    <a href="${t.url}" class="text-blue-600 font-medium">Use Now →</a>
-                </div>
-            `).join('');
-
-            // Mobile Menu
-            const menuCont = document.getElementById("mobile-menu-container");
-            menuCont.innerHTML = `<a href="/" class="block px-4 py-3 font-semibold text-blue-600 border-b">Home</a>`;
-            
-            Object.keys(menuData).forEach(cat => {
-                const div = document.createElement("div");
-                div.className = "border-b";
-                div.innerHTML = `
-                    <button class="menu-cat-btn w-full flex justify-between px-4 py-3 font-medium text-gray-700 hover:bg-gray-50">
-                        ${cat} <span>▼</span>
-                    </button>
-                    <div class="cat-tools-list hidden bg-gray-50 px-4 py-2 space-y-1">
-                        ${menuData[cat].map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600">${t.name}</a>`).join('')}
-                    </div>
-                `;
-                div.querySelector('.menu-cat-btn').addEventListener('click', () => {
-                    div.querySelector('.cat-tools-list').classList.toggle('hidden');
-                });
-                menuCont.appendChild(div);
-            });
-        }
-
-        <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
-        authDomain: "akhitool.firebaseapp.com",
-        projectId: "akhitool",
-        storageBucket: "akhitool.firebasestorage.app",
-        messagingSenderId: "892498311198",
-        appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
-    };
-
     <!-- Firebase & Main Logic (ಪೇಜ್‌ನ ತೀರಾ ಕೊನೆಯಲ್ಲಿ ಹಾಕಿ) -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
