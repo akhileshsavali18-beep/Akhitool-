@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth overflow-x-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>AkhiTool - Tool Viewer</title>
+    
+    <link rel="icon" href="logo-icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { primary: '#2563EB', bg: '#F8FAFC' } } } } }
+    </script>
+</head>
+<body class="bg-brand-bg text-gray-900 font-sans antialiased flex flex-col min-h-screen">
+
+<!-- Navbar (ನಿಮ್ಮ ಹಳೆಯ ಡಿಝೈನ್) -->
+<header class="fixed top-0 w-full bg-white/90 backdrop-blur-lg z-50 h-20 flex items-center px-4 justify-between border-b shadow-sm">
+    <a href="index.html" class="flex items-center">
+        <img src="logo.png" alt="AkhiTool Logo" class="h-16 w-auto"> 
+    </a>
+    
+    <nav class="hidden lg:flex space-x-8 items-center">
+        <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-blue-600">Home</a>
+        <a href="index.html#popular" class="text-sm font-medium text-gray-600 hover:text-blue-600">Popular Tools</a>
+    </nav>
+    <button id="mobile-menu-btn" class="lg:hidden p-2 border rounded-lg bg-gray-100">☰</button>
+</header>
+
+<!-- ಮೆನು ಡ್ರಾಯರ್ -->
+<div id="mobile-drawer" class="fixed inset-y-0 right-0 z-[60] w-72 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 overflow-y-auto">
+    <div class="p-4 border-b flex justify-between items-center">
+        <span class="font-bold">Menu</span>
+        <button id="mobile-close-btn" class="p-2 text-xl font-bold">✕</button>
+    </div>
+    <div id="mobile-menu-container" class="p-4"></div>
+</div>
+
+<!-- Main Tool Container (ಇಲ್ಲಿ ಅಡ್ಮಿನ್ ಪ್ಯಾನಲ್ ಕೋಡ್ ಲೋಡ್ ಆಗುತ್ತದೆ) -->
+<main class="flex-grow pt-24 pb-16 relative z-0">
+    <div id="dynamic-tool-container" class="w-full">
+        <!-- ಲೋಡಿಂಗ್ ಅನಿಮೇಷನ್ -->
+        <div class="flex justify-center items-center py-20">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <span class="ml-3 text-gray-500 font-medium">Loading Tool...</span>
+        </div>
+    </div>
+</main>
+
+<!-- Firebase & Dynamic Loading Script -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
+        authDomain: "akhitool.firebaseapp.com",
+        projectId: "akhitool",
+        storageBucket: "akhitool.firebasestorage.app",
+        messagingSenderId: "892498311198",
+        appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // 1. URL ನಿಂದ ಟೂಲ್ ಐಡಿ ಪಡೆಯುವುದು (ಉದಾಹರಣೆಗೆ: ?id=webp-to-jpg)
+    const urlParams = new URLSearchParams(window.location.search);
+    const toolId = urlParams.get('id');
+    const container = document.getElementById('dynamic-tool-container');
+
+    async function loadTool() {
+        if (!toolId) {
+            container.innerHTML = `<div class="text-center py-20 text-red-500 font-bold text-xl">Tool ID not provided in URL.</div>`;
+            return;
+        }
+
+        try {
+            const snap = await getDocs(collection(db, "tools"));
+            let matchedTool = null;
+
+            snap.forEach((doc) => {
+                const data = doc.data();
+                // ಅಡ್ಮಿನ್ ಪ್ಯಾನಲ್ ಲಿಂಕ್‌ನಲ್ಲಿ ಈ ಐಡಿ ಮ್ಯಾಚ್ ಆಗುತ್ತದೆಯೇ ಎಂದು ಚೆಕ್ ಮಾಡುತ್ತದೆ
+                if (data.url && data.url.includes(toolId)) {
+                    matchedTool = data;
+                }
+            });
+
+            if (matchedTool && matchedTool.content) {
+                // ಡೇಟಾಬೇಸ್‌ನಿಂದ ಕೋಡ್ ತಂದು ಇಲ್ಲಿ ಪೇಸ್ಟ್ ಮಾಡುತ್ತದೆ
+                container.innerHTML = matchedTool.content;
+                
+                // HTML ಜೊತೆ ಇರುವ Javascript ಅನ್ನು ಆಕ್ಟಿವೇಟ್ ಮಾಡುವುದು
+                executeScripts(container);
+            } else {
+                container.innerHTML = `<div class="text-center py-20 text-red-500 font-bold text-xl">Tool not found!</div>`;
+            }
+        } catch (error) {
+            console.error("Error loading tool:", error);
+            container.innerHTML = `<div class="text-center py-20 text-red-500 font-bold text-xl">Failed to load tool from database.</div>`;
+        }
+    }
+
+    // Javascript ರನ್ ಮಾಡಲು ಬೇಕಾದ ವಿಶೇಷ ಫಂಕ್ಷನ್ (InnerHtml ನಲ್ಲಿ ಸ್ಕ್ರಿಪ್ಟ್ ಡೈರೆಕ್ಟ್ ರನ್ ಆಗಲ್ಲ)
+    function executeScripts(element) {
+        const scripts = element.querySelectorAll("script");
+        scripts.forEach((oldScript) => {
+            const newScript = document.createElement("script");
+            Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+            newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+            oldScript.parentNode.replaceChild(newScript, oldScript);
+        });
+    }
+
+    loadTool();
+</script>
+
+<!-- ಮೆನು ಬಟನ್ ಕಂಟ್ರೋಲ್ -->
+<script>
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const drawer = document.getElementById('mobile-drawer');
+    const closeBtn = document.getElementById('mobile-close-btn');
+
+    if(menuBtn) menuBtn.onclick = (e) => { e.stopPropagation(); drawer.classList.remove('translate-x-full'); };
+    if(closeBtn) closeBtn.onclick = () => drawer.classList.add('translate-x-full');
+</script>
+
+</body>
+  </html>
+  
