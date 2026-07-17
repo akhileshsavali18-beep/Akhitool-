@@ -442,48 +442,49 @@
                     return `<div class="bg-white p-5 border rounded-2xl shadow-sm"><h3 class="font-bold">${t.name}</h3><a href="${t.url}" class="text-blue-600 text-sm font-semibold">Use Tool →</a></div>`;
                 }).join('');
             }
-
-            // 2. Mobile Menu (Category + Company Dropdown)
-            const menuCont = document.getElementById("mobile-menu-container");
-            if(menuCont) {
-                menuCont.innerHTML = `
-                    <a href="/" class="block px-4 py-3 font-semibold text-blue-600 border-b">Home</a>
-                    <div class="border-b">
-                        <button id="cat-main-btn" class="w-full flex justify-between px-4 py-3 font-semibold">Category <span>▼</span></button>
-                        <div id="cat-dropdown" class="hidden bg-gray-50 px-2">
-                            ${Object.keys(menuData).map(cat => `
-                                <div class="nested-cat">
-                                    <button class="w-full flex justify-between px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">${cat} <span>▶</span></button>
-                                    <div class="hidden px-4 py-1 space-y-1">
-                                        ${menuData[cat].map(t => `<a href="${t.url}" class="block py-1 text-xs text-gray-600">${t.name}</a>`).join('')}
-                                    </div>
-                                </div>
-                            `).join('')}
+// Mobile Menu (Category + Company Dropdown)
+const menuCont = document.getElementById("mobile-menu-container");
+if (menuCont) {
+    // ಮೆನು ಕಂಟೇನರ್ ಅನ್ನು ಕ್ಲಿಯರ್ ಮಾಡಿ
+    menuCont.innerHTML = `
+        <a href="/" class="block px-4 py-3 font-semibold text-blue-600 border-b">Home</a>
+        <div class="border-b">
+            <button id="cat-main-btn" class="w-full flex justify-between px-4 py-3 font-semibold">Category <span>▼</span></button>
+            <div id="cat-dropdown" class="hidden bg-gray-50 px-2">
+                ${Object.keys(menuData).map(cat => `
+                    <div class="nested-cat">
+                        <button class="w-full flex justify-between px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">
+                            ${cat} <span>▶</span>
+                        </button>
+                        <div class="hidden px-4 py-1 space-y-1">
+                            ${menuData[cat].map(t => `<a href="${t.url}" class="block py-1 text-xs text-gray-600">${t.name}</a>`).join('')}
                         </div>
                     </div>
-                    <div class="border-b">
-                        <button id="comp-main-btn" class="w-full flex justify-between px-4 py-3 font-semibold">Company <span>▼</span></button>
-                        <div id="comp-dropdown" class="hidden bg-gray-50 px-4 py-2 space-y-1 text-sm text-gray-600">
-                            <a href="/about.html" class="block py-1">About</a>
-                            <a href="/contact.html" class="block py-1">Contact</a>
-                        </div>
-                    </div>
-                `;
+                `).join('')}
+            </div>
+        </div>
+        <div class="border-b">
+            <button id="comp-main-btn" class="w-full flex justify-between px-4 py-3 font-semibold">Company <span>▼</span></button>
+            <div id="comp-dropdown" class="hidden bg-gray-50 px-4 py-2 space-y-1 text-sm text-gray-600">
+                <a href="/about.html" class="block py-1">About</a>
+                <a href="/contact.html" class="block py-1">Contact</a>
+            </div>
+        </div>
+    `;
 
-                // Event Listeners
-                document.getElementById('cat-main-btn').onclick = () => document.getElementById('cat-dropdown').classList.toggle('hidden');
-                document.getElementById('comp-main-btn').onclick = () => document.getElementById('comp-dropdown').classList.toggle('hidden');
-                document.querySelectorAll('.nested-cat button').forEach(btn => btn.onclick = () => btn.nextElementSibling.classList.toggle('hidden'));
-            }
-        } catch (e) { console.error(e); }
-    }
-
-    // ಮೆನು ಬಟನ್ ಓಪನ್/ಕ್ಲೋಸ್
-    document.getElementById('mobile-menu-btn').onclick = () => document.getElementById('mobile-drawer').classList.remove('translate-x-full');
-    document.getElementById('mobile-close-btn').onclick = () => document.getElementById('mobile-drawer').classList.add('translate-x-full');
-
-    init();
-                                                  </script>
+    // ಇವೆಂಟ್ ಲಿಸನರ್ಸ್ ಅನ್ನು ಸರಿಯಾಗಿ ಆಡ್ ಮಾಡಿ
+    document.getElementById('cat-main-btn').onclick = () => document.getElementById('cat-dropdown').classList.toggle('hidden');
+    document.getElementById('comp-main-btn').onclick = () => document.getElementById('comp-dropdown').classList.toggle('hidden');
     
+    // ಎಲ್ಲ ನೆಸ್ಟೆಡ್ ಕ್ಯಾಟಗರಿಗಳಿಗೆ ಕ್ಲಿಕ್ ಲಾಜಿಕ್
+    document.querySelectorAll('.nested-cat > button').forEach(btn => {
+        btn.onclick = (e) => {
+            e.preventDefault();
+            btn.nextElementSibling.classList.toggle('hidden');
+        };
+    });
+        }
+                              
+</script>
 </body>
 </html>
