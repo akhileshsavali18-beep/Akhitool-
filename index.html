@@ -6,17 +6,14 @@
     <title>AkhiTool - Your Everyday Online Toolbox</title>
     <meta name="description" content="Free tools for PDF, images, calculators, AI, text, SEO and more.">
     
-    <!-- Favicons & App Icons -->
     <link rel="icon" href="logo-icon.png" type="image/png">
     <link rel="apple-touch-icon" href="logo-icon.png">
     <meta name="theme-color" content="#ffffff">
     
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -31,29 +28,12 @@
                             card: '#FFFFFF',
                             text: '#111827'
                         }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    boxShadow: {
-                        'soft': '0 4px 20px -2px rgba(37, 99, 235, 0.05)',
-                        'hover': '0 10px 30px -4px rgba(37, 99, 235, 0.12)',
-                    },
-                    animation: {
-                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
-                    },
-                    keyframes: {
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '10%': { opacity: '1', transform: 'translateY(0)' },
-                        }
                     }
                 }
             }
         }
-    ‎    </script>
-    <!-- Inside the <head> tag, before the closing </head> -->
-<link rel="stylesheet" href="assets/css/navbar.css">
+    </script>
+    <link rel="stylesheet" href="assets/css/navbar.css">
 </head>
 <body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-primary selection:text-white flex flex-col min-h-screen overflow-x-hidden">
 
@@ -62,16 +42,8 @@
     <a href="/" class="flex items-center">
         <img src="logo.png" alt="AkhiTool Logo" class="h-16 w-auto"> 
     </a>
-   <!-- Mobile Menu Button -->
-    <button id="mobile-menu-btn" class="lg:hidden p-2 border rounded-lg bg-gray-100">☰</button>
-</header>  
-
-    <!-- Logo Wrapper: -ml-2 moves it closer to the left edge -->
-‎                <a href="index.html" class="relative flex items-center shrink-0 h-full w-[110px] md:w-[130px] group -ml-2">
-‎                    <!-- Size reduced to h-[90px]. top-1/2 and -translate-y-1/2 perfectly centers it vertically -->
-‎                    <img src="logo.png" alt="AkhiTool Logo" class="absolute top-1/2 -translate-y-1/2 left-0 h-[90px] md:h-[110px] w-auto max-w-none transition-transform group-hover:scale-105 block">
-‎                </a>
-                  <!-- Desktop Nav -->
+    
+    <!-- Desktop Nav -->
     <nav class="hidden lg:flex space-x-8 items-center">
         <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary">Home</a>
         <a href="index.html#popular" class="text-sm font-medium text-gray-600 hover:text-brand-primary">Popular Tools</a>
@@ -79,7 +51,10 @@
         <a href="contact.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary">Contact</a>
     </nav>
 
-    </header>
+    <!-- Mobile Menu Button -->
+    <button id="mobile-menu-btn" class="lg:hidden p-2 border rounded-lg bg-gray-100">☰</button>
+</header>
+
 <!-- Mobile Menu (Drawer) -->
 <div id="mobile-drawer" class="fixed inset-y-0 right-0 z-[60] w-72 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 overflow-y-auto">
     <div class="p-4 border-b flex justify-between items-center">
@@ -90,7 +65,7 @@
         <!-- ಮೆನು ಡೇಟಾ ಇಲ್ಲಿ ಲೋಡ್ ಆಗುತ್ತದೆ -->
     </div>
 </div>
-‎        
+    
 ‎      
 
     <!-- Full-Screen Explore Tools Modal -->
