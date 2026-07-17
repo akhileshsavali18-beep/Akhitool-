@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth overflow-x-hidden">
 <head>
-    <header class="fixed top-0 w-full bg-white z-40 h-16 flex items-center px-4 justify-between border-b">
-    <a href="/" class="flex items-center">
-        <!-- ಇಲ್ಲಿ h-12 ಅಥವಾ h-14 ಕೊಡಿ, ಇದು ಲೋಗೋ ಗಾತ್ರ ಹೆಚ್ಚಿಸುತ್ತದೆ -->
-        <img src="logo.png" alt="AkhiTool Logo" class="h-12 w-auto"> 
-    </a>
-    <button id="mobile-menu-btn" class="p-2 border rounded-lg z-50">☰</button>
-    </header>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>AkhiTool - Your Everyday Online Toolbox</title>
@@ -68,10 +60,12 @@
 <!-- Navbar -->
 <header class="fixed top-0 w-full bg-white z-40 h-16 flex items-center px-4 justify-between border-b">
     <a href="/" class="flex items-center">
-        <img src="logo.png" alt="AkhiTool Logo" class="h-10 w-auto"> <!-- Logo ಇಲ್ಲಿ ಬರಲಿ -->
+        <!-- ಇಲ್ಲಿ h-12 ಅಥವಾ h-14 ಕೊಡಿ, ಇದು ಲೋಗೋ ಗಾತ್ರ ಹೆಚ್ಚಿಸುತ್ತದೆ -->
+        <img src="logo.png" alt="AkhiTool Logo" class="h-12 w-auto"> 
     </a>
-    <button id="mobile-menu-btn" class="p-2 border rounded-lg">☰</button>
+    <button id="mobile-menu-btn" class="p-2 border rounded-lg z-50">☰</button>
 </header>
+    
     
                 
                 <!-- Logo Wrapper: -ml-2 moves it closer to the left edge -->
@@ -552,6 +546,7 @@
             </div>
         </div>
     </footer>
+    
     <!-- Firebase & Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
