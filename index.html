@@ -481,17 +481,12 @@
         } catch (e) { console.error("Error:", e); }
     }
 
-    // ಮೆನು ಓಪನ್/ಕ್ಲೋಸ್ ಲಾಜಿಕ್
-    document.getElementById('mobile-menu-btn').onclick = (e) => {
-        e.stopPropagation();
-        document.getElementById('mobile-drawer').classList.remove('translate-x-full');
-    };
-    document.getElementById('mobile-close-btn').onclick = () => {
-        document.getElementById('mobile-drawer').classList.add('translate-x-full');
-    };
+// ಮೆನು ಬಟನ್ ಓಪನ್/ಕ್ಲೋಸ್
+    document.getElementById('mobile-menu-btn').onclick = () => document.getElementById('mobile-drawer').classList.remove('translate-x-full');
+    document.getElementById('mobile-close-btn').onclick = () => document.getElementById('mobile-drawer').classList.add('translate-x-full');
 
     init();
-                    </script>
+                                                  </script>
     
 </body>
 </html>
