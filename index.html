@@ -650,25 +650,30 @@
                 `).join('');
             }
 
-            // 2. Mobile Menu render
-            const menuCont = document.getElementById("mobile-menu-container");
-            if(menuCont) {
-                menuCont.innerHTML = '<a href="/" class="block py-2 font-bold">Home</a>';
-                Object.keys(menuData).forEach(cat => {
-                    const div = document.createElement("div");
-                    div.className = "border-t";
-                    div.innerHTML = `
-                        <button class="w-full flex justify-between py-3 font-medium">${cat} <span>▼</span></button>
-                        <div class="hidden px-2 space-y-1">
-                            ${menuData[cat].map(t => `<a href="${t.url}" class="block py-1 text-sm text-gray-600">${t.name}</a>`).join('')}
-                        </div>
-                    `;
-                    div.querySelector('button').onclick = (e) => e.target.nextElementSibling.classList.toggle('hidden');
-                    menuCont.appendChild(div);
-                });
-            }
-        } catch (e) { console.error(e); }
-    }
+            // Mobile Menu Render Logic
+const menuCont = document.getElementById("mobile-menu-container");
+if (menuCont) {
+    menuCont.innerHTML = '<a href="/" class="block px-4 py-3 font-bold border-b">Home</a>';
+    
+    // menuData ಎಂಬ ಆಬ್ಜೆಕ್ಟ್ ಸರಿಯಾಗಿ ಇದೆಯಾ ಎಂದು ಕನ್ಫರ್ಮ್ ಮಾಡಿ
+    Object.keys(menuData).forEach(cat => {
+        const div = document.createElement("div");
+        div.className = "border-b";
+        div.innerHTML = `
+            <button class="w-full text-left py-4 px-4 font-medium menu-toggle">${cat} <span>▼</span></button>
+            <div class="hidden pl-6 pb-2">
+                ${menuData[cat].map(t => `<a href="${t.url}" class="block py-1 text-sm text-gray-700">${t.name}</a>`).join('')}
+            </div>
+        `;
+        menuCont.appendChild(div);
+    });
+
+    // Toggle logic
+    document.querySelectorAll('.menu-toggle').forEach(btn => 
+        btn.onclick = () => btn.nextElementSibling.classList.toggle('hidden')
+    );
+}
+            
 
     // Menu Buttons
     document.getElementById('mobile-menu-btn').onclick = () => document.getElementById('mobile-drawer').classList.remove('translate-x-full');
