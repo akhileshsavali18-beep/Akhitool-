@@ -395,11 +395,8 @@
                 menuData[cat].push(tool);
             });
 
-            console.log("Loaded Categories:", Object.keys(menuData)); // ಇದು Console ನಲ್ಲಿ ಚೆಕ್ ಮಾಡಿ
-
             const menuCont = document.getElementById("mobile-menu-container");
             if (menuCont) {
-                // ಇಲ್ಲಿ ಡೇಟಾ ಲೂಪ್ ಆಗಿ ಕಾಣಿಸುತ್ತದೆಯೇ ಎಂದು ನೋಡೋಣ
                 menuCont.innerHTML = Object.keys(menuData).map(cat => `
                     <div class="border-b">
                         <button class="w-full flex justify-between items-center py-4 px-4 font-medium menu-cat-btn">
@@ -418,23 +415,19 @@
             }
         } catch (e) { console.error("Firebase Error:", e); }
     }
-<script>
+
+    // ಮೆನು ಬಟನ್ ಲಾಜಿಕ್
     const menuBtn = document.getElementById('mobile-menu-btn');
     const drawer = document.getElementById('mobile-drawer');
     const closeBtn = document.getElementById('mobile-close-btn');
 
-    // Drawer Open
-    menuBtn.onclick = (e) => {
-        e.stopPropagation();
-        drawer.classList.remove('translate-x-full');
-    };
+    if(menuBtn) menuBtn.onclick = (e) => { e.stopPropagation(); drawer.classList.remove('translate-x-full'); };
+    if(closeBtn) closeBtn.onclick = () => drawer.classList.add('translate-x-full');
 
-    // Drawer Close
-    closeBtn.onclick = () => {
-        drawer.classList.add('translate-x-full');
-    };
+    // ಇಲ್ಲಿ ಫಂಕ್ಷನ್ ಕರೆ ಮಾಡಿ
+    init();
 </script>
-    
+
     
     
                 
