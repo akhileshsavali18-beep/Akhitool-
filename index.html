@@ -61,7 +61,7 @@
 <header class="fixed top-0 w-full bg-white z-40 h-16 flex items-center px-4 justify-between border-b">
     <a href="/" class="flex items-center">
         <!-- ಇಲ್ಲಿ h-12 ಅಥವಾ h-14 ಕೊಡಿ, ಇದು ಲೋಗೋ ಗಾತ್ರ ಹೆಚ್ಚಿಸುತ್ತದೆ -->
-        <img src="logo.png" alt="AkhiTool Logo" class="h-16 w-auto"> 
+        <img src="logo.png" alt="AkhiTool Logo" class="h-18 w-auto"> 
     </a>
     <button id="mobile-menu-btn" class="p-2 border rounded-lg z-50">☰</button>
 </header>
@@ -485,63 +485,87 @@
     messagingSenderId: "892498311198",
     appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
   };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  async function init() {
-      const toolsSnap = await getDocs(collection(db, "tools"));
-      const tools = [];
-      let menuData = {};
-
-      toolsSnap.forEach((doc) => {
-          const tool = { id: doc.id, ...doc.data() };
-          tools.push(tool);
-          const cat = tool.category || "General";
-          if(!menuData[cat]) menuData[cat] = [];
-          menuData[cat].push(tool);
-      });
-
-      // 1. Popular Tools (Homepage)
-      const popularContainer = document.getElementById("popular-tools-container");
-      if(popularContainer) {
-          popularContainer.innerHTML = tools.map(tool => `
-              <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-soft hover:shadow-hover transition-all">
-                  <h3 class="font-bold text-lg mb-2">${tool.name}</h3>
-                  <p class="text-gray-500 text-sm mb-4 line-clamp-2">${tool.description}</p>
-                  <a href="${tool.url}" class="text-brand-primary font-medium text-sm">Use Now →</a>
-              </div>
-          `).join('');
-      }
-
-      // 2. Mobile Menu (Drawer)
-      const container = document.getElementById("mobile-menu-container");
-      container.innerHTML = `<a href="/" class="block px-4 py-3 font-semibold text-brand-primary border-b">Home</a>`;
-      
-      Object.keys(menuData).forEach(cat => {
-          const div = document.createElement("div");
-          div.className = "border-b border-gray-50";
-          div.innerHTML = `
-              <button class="menu-cat-btn w-full flex justify-between px-4 py-3 font-medium text-gray-700">
-                  ${cat} <span class="arrow">▼</span>
-              </button>
-              <div class="cat-tools-list hidden bg-gray-50 px-4 py-2 space-y-1">
-                  ${menuData[cat].map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600 hover:text-brand-primary">${t.name}</a>`).join('')}
-              </div>
-          `;
-          container.appendChild(div);
-          div.querySelector('.menu-cat-btn').addEventListener('click', () => {
-              div.querySelector('.cat-tools-list').classList.toggle('hidden');
-          });
-      });
-  }
-
- // Menu Buttons
+‎
+‎    const app = initializeApp(firebaseConfig);
+‎    const db = getFirestore(app);
+‎
+‎    async function init() {
+‎        try {
+‎            const snap = await getDocs(collection(db, "tools"));
+‎            let tools = [];
+‎            let menuData = {};
+‎
+‎            snap.forEach((doc) => {
+‎                const tool = { id: doc.id, ...doc.data() };
+‎                tools.push(tool);
+‎                const cat = tool.category || "General";
+‎                if(!menuData[cat]) menuData[cat] = [];
+‎                menuData[cat].push(tool);
+‎            });
+‎
+‎            // 1. Popular Tools render (container id check ಮಾಡಿ)
+‎            const popCont = document.getElementById("popular-tools-container");
+‎            if(popCont) {
+‎                popCont.innerHTML = tools.map(t => `
+‎                    <div class="bg-white p-4 border rounded-xl shadow-sm">
+‎                        <h3 class="font-bold">${t.name}</h3>
+‎                        <a href="${t.url}" class="text-blue-500 text-sm">Use Tool →</a>
+‎                    </div>
+‎                `).join('');
+‎            }
+‎
+‎            // Mobile Menu Render Logic
+‎const menuCont = document.getElementById("mobile-menu-container");
+‎if (menuCont) {
+‎    menuCont.innerHTML = '<a href="/" class="block px-4 py-3 font-bold border-b">Home</a>';
+‎    
+‎    // menuData ಎಂಬ ಆಬ್ಜೆಕ್ಟ್ ಸರಿಯಾಗಿ ಇದೆಯಾ ಎಂದು ಕನ್ಫರ್ಮ್ ಮಾಡಿ
+‎    Object.keys(menuData).forEach(cat => {
+‎        const div = document.createElement("div");
+‎        div.className = "border-b";
+‎        div.innerHTML = `
+‎            <button class="w-full text-left py-4 px-4 font-medium menu-toggle">${cat} <span>▼</span></button>
+‎            <div class="hidden pl-6 pb-2">
+‎                ${menuData[cat].map(t => `<a href="${t.url}" class="block py-1 text-sm text-gray-700">${t.name}</a>`).join('')}
+‎            </div>
+‎        `;
+‎        menuCont.appendChild(div);
+‎    });
+‎
+‎    // Toggle logic
+‎    document.querySelectorAll('.menu-toggle').forEach(btn => 
+‎        btn.onclick = () => btn.nextElementSibling.classList.toggle('hidden')
+‎    );
+‎}
+‎            
+‎
+‎    // Menu Buttons
 ‎    document.getElementById('mobile-menu-btn').onclick = () => document.getElementById('mobile-drawer').classList.remove('translate-x-full');
 ‎    document.getElementById('mobile-close-btn').onclick = () => document.getElementById('mobile-drawer').classList.add('translate-x-full');
 ‎
 ‎    init();
 ‎</script>
+‎<script type="module">
+‎    // ... (Firebase logic ಇಲ್ಲಿ ಇರಲಿ) ...
+‎
+‎    // ಮೆನು ಬಟನ್ ಕ್ಲಿಕ್ ಲಾಜಿಕ್ ಅನ್ನು ಸ್ಪಷ್ಟವಾಗಿ ಹೀಗೆ ಬರೆಯಿರಿ:
+‎    const menuBtn = document.getElementById('mobile-menu-btn');
+‎    const drawer = document.getElementById('mobile-drawer');
+‎    const closeBtn = document.getElementById('mobile-close-btn');
+‎
+‎    menuBtn.onclick = () => {
+‎        drawer.classList.remove('translate-x-full');
+‎    };
+‎    
+‎    closeBtn.onclick = () => {
+‎        drawer.classList.add('translate-x-full');
+‎    };
+‎
+‎    // ಉಳಿದ init() ಫಂಕ್ಷನ್ ಇಲ್ಲಿಯೇ ಇರಲಿ...
+‎    init();
+‎</script>
+‎
+
   
 </body>
 </html>
