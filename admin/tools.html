@@ -375,7 +375,25 @@
           }
       });
   }
-            </script>
+    // Mobile Menu Logic
+  const sidebarToggle = document.getElementById("sidebar-toggle");
+  const sidebar = document.getElementById("sidebar");
+  const sidebarOverlay = document.getElementById("sidebar-overlay");
+
+  if (sidebarToggle) {
+      sidebarToggle.addEventListener("click", () => {
+          if(sidebar) sidebar.classList.remove("-translate-x-full");
+          if(sidebarOverlay) sidebarOverlay.classList.remove("hidden");
+      });
+  }
+  if (sidebarOverlay) {
+      sidebarOverlay.addEventListener("click", () => {
+          if(sidebar) sidebar.classList.add("-translate-x-full");
+          if(sidebarOverlay) sidebarOverlay.classList.add("hidden");
+      });
+  }
+                
+      </script>
           
   
           
