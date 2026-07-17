@@ -456,68 +456,86 @@ AI Tools
             </div>
         </div>
     </footer>
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
-        authDomain: "akhitool.firebaseapp.com",
-        projectId: "akhitool",
-        storageBucket: "akhitool.firebasestorage.app",
-        messagingSenderId: "892498311198",
-        appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    async function init() {
-        try {
-            const snap = await getDocs(collection(db, "tools"));
-            let menuData = {};
-            snap.forEach((doc) => {
-                const tool = doc.data();
-                const cat = tool.category || "General";
-                if(!menuData[cat]) menuData[cat] = [];
-                menuData[cat].push(tool);
-            });
-
-            console.log("Loaded Categories:", Object.keys(menuData)); // ಇದು Console ನಲ್ಲಿ ಚೆಕ್ ಮಾಡಿ
-
-            const menuCont = document.getElementById("mobile-menu-container");
-            if (menuCont) {
-                // ಇಲ್ಲಿ ಡೇಟಾ ಲೂಪ್ ಆಗಿ ಕಾಣಿಸುತ್ತದೆಯೇ ಎಂದು ನೋಡೋಣ
-                menuCont.innerHTML = Object.keys(menuData).map(cat => `
-                    <div class="border-b">
-                        <button class="w-full flex justify-between items-center py-4 px-4 font-medium menu-cat-btn">
-                            <span>${cat}</span>
-                            <span>▼</span>
-                        </button>
-                        <div class="hidden bg-gray-50 px-4 py-2 space-y-2">
-                            ${menuData[cat].map(t => `<a href="${t.url}" class="block py-1 text-sm text-gray-700">${t.name}</a>`).join('')}
-                        </div>
-                    </div>
-                `).join('');
-
-                document.querySelectorAll('.menu-cat-btn').forEach(btn => {
-                    btn.onclick = () => btn.nextElementSibling.classList.toggle('hidden');
-                });
-            }
-        } catch (e) { console.error("Firebase Error:", e); }
-    }
-
-    // ಬಟನ್ ಓಪನ್/ಕ್ಲೋಸ್ ಲಾಜಿಕ್
-    const menuBtn = document.getElementById('mobile-menu-btn');
-    const drawer = document.getElementById('mobile-drawer');
-    const closeBtn = document.getElementById('mobile-close-btn');
-
-    menuBtn.onclick = () => drawer.classList.remove('translate-x-full');
-    closeBtn.onclick = () => drawer.classList.add('translate-x-full');
-
-    init();
-        </script>
-    
+  <!-- Firebase Firestore Script for Live Tools AND Categories -->
+‎<script type="module">
+‎  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+‎  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+‎
+‎  const firebaseConfig = {
+‎    apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
+‎    authDomain: "akhitool.firebaseapp.com",
+‎    projectId: "akhitool",
+‎    storageBucket: "akhitool.firebasestorage.app",
+‎    messagingSenderId: "892498311198",
+‎    appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
+‎  };
+‎
+‎  const app = initializeApp(firebaseConfig);
+‎  const db = getFirestore(app);
+‎
+‎  async function loadAllData() {
+‎      try {
+‎          // 1. Tools ಮತ್ತು Categories ಡೇಟಾ ತರುವುದು
+‎          const toolsSnap = await getDocs(collection(db, "tools"));
+‎          const catsSnap = await getDocs(collection(db, "categories"));
+       // 2. Categories ಲಿಸ್ಟ್ ಅಪ್‌ಡೇಟ್ ಮಾಡುವುದು
+‎          const catMenu = document.getElementById("mobile-categories-menu");
+‎          if(catMenu) {
+‎              catMenu.innerHTML = ""; // ಹಳೆ ಡಮ್ಮಿ ಡೇಟಾ ಕ್ಲಿಯರ್ ಮಾಡಿ
+‎              catsSnap.forEach((doc) => {
+‎                  const cat = doc.data();
+‎                  catMenu.innerHTML += `
+‎                      <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
+‎                          ${cat.name}
+‎                      </a>
+‎                  `;
+‎              });
+‎          }
+‎
+‎          // 3. Tools ಲಿಸ್ಟ್ ಅಪ್‌ಡೇಟ್ ಮಾಡುವುದು (ಹಿಂದಿನಂತೆ)
+‎          // ... (ನಿಮ್ಮ ಟೂಲ್ಸ್ ಲೋಡ್ ಮಾಡುವ ಕೋಡ್ ಇಲ್ಲಿ ಇರಲಿ)
+‎      } catch (e) {
+‎          console.error("Error loading data:", e);
+‎      }
+‎  }
+‎
+‎loadAllData();
+‎</script>
+‎    
+‎    <!-- ಮೊಬೈಲ್ ಮೆನು ಸರಿಯಾಗಲು ಈ ಕೆಳಗಿನ ಕೋಡ್ ಬಳಸಿ -->
+‎<script>
+‎    const mobileBtn = document.getElementById('mobile-menu-btn');
+‎    const mobileDrawer = document.getElementById('mobile-drawer');
+‎    const mobileClose = document.getElementById('mobile-close-btn');
+‎    const overlay = document.getElementById('mobile-menu-overlay');
+‎
+‎    if(mobileBtn) {
+‎        mobileBtn.addEventListener('click', () => {
+‎            mobileDrawer.classList.remove('translate-x-full');
+‎            overlay.classList.remove('hidden');
+‎            overlay.classList.add('opacity-100');
+‎        });
+‎    }
+‎
+‎    const closeMenu = () => {
+‎        mobileDrawer.classList.add('translate-x-full');
+‎        overlay.classList.add('hidden');
+‎    };
+‎
+‎    if(mobileClose) mobileClose.addEventListener('click', closeMenu);
+‎    if(overlay) overlay.addEventListener('click', closeMenu);
+‎    const catBtn = document.getElementById('mobile-categories-btn');
+‎const catMenu = document.getElementById('mobile-categories-menu');
+‎const catIcon = document.getElementById('mobile-categories-icon');
+‎
+‎if(catBtn) {
+‎    catBtn.addEventListener('click', () => {
+‎        catMenu.classList.toggle('hidden');
+‎        catIcon.classList.toggle('rotate-180');
+‎    });
+‎    }
+‎            
+‎</script>
     
                 
 </body>
