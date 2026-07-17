@@ -64,7 +64,9 @@
         <img src="logo.png" alt="AkhiTool Logo" class="h-16 w-auto"> 
     </a>
     <!-- ಮೆನು ಬಟನ್ -->
-    <button id="mobile-menu-btn" class="p-2 border rounded-lg bg-gray-100 z-50">☰</button>
+    <!-- ಬದಲಾಯಿಸಿ -->
+<button id="main-mobile-menu-btn" class="p-2 border rounded-lg bg-gray-100 z-[100]">☰</button>
+    
 </header>
     
                 
@@ -472,18 +474,22 @@ if (menuCont) {
         </div>
     `;
 
-    // ಇವೆಂಟ್ ಲಿಸನರ್ಸ್ ಅನ್ನು ಸರಿಯಾಗಿ ಆಡ್ ಮಾಡಿ
-    document.getElementById('cat-main-btn').onclick = () => document.getElementById('cat-dropdown').classList.toggle('hidden');
-    document.getElementById('comp-main-btn').onclick = () => document.getElementById('comp-dropdown').classList.toggle('hidden');
+    // ಬಟನ್ ಲಾಜಿಕ್ ಇಲ್ಲಿ ಬದಲಿಸಿ
+document.getElementById('main-mobile-menu-btn').onclick = () => {
+    document.getElementById('mobile-drawer').classList.remove('translate-x-full');
+};
+                                
+    // ಇವೆಂಟ್ ಲಿಸನರ್ಸ್ - e.stopPropagation() ಸೇರಿಸಿ
+document.getElementById('cat-main-btn').onclick = (e) => {
+    e.stopPropagation(); // ಇದು ಮುಖ್ಯ
+    document.getElementById('cat-dropdown').classList.toggle('hidden');
+};
+document.getElementById('comp-main-btn').onclick = (e) => {
+    e.stopPropagation();
+    document.getElementById('comp-dropdown').classList.toggle('hidden');
+};
+        
     
-    // ಎಲ್ಲ ನೆಸ್ಟೆಡ್ ಕ್ಯಾಟಗರಿಗಳಿಗೆ ಕ್ಲಿಕ್ ಲಾಜಿಕ್
-    document.querySelectorAll('.nested-cat > button').forEach(btn => {
-        btn.onclick = (e) => {
-            e.preventDefault();
-            btn.nextElementSibling.classList.toggle('hidden');
-        };
-    });
-        }
                               
 </script>
 </body>
