@@ -58,14 +58,14 @@
 <body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-primary selection:text-white flex flex-col min-h-screen overflow-x-hidden">
 
 <!-- Navbar -->
-<header class="fixed top-0 w-full bg-white z-40 h-16 flex items-center px-4 justify-between border-b">
+<header class="fixed top-0 w-full bg-white z-40 h-16 flex items-center px-4 justify-between border-b shadow-sm">
     <a href="/" class="flex items-center">
-        <!-- ಇಲ್ಲಿ h-12 ಅಥವಾ h-14 ಕೊಡಿ, ಇದು ಲೋಗೋ ಗಾತ್ರ ಹೆಚ್ಚಿಸುತ್ತದೆ -->
-        <img src="logo.png" alt="AkhiTool Logo" class="h-16 w-auto"> 
+        <!-- ಲೋಗೋ ಗಾತ್ರ ಸರಿಪಡಿಸಲಾಗಿದೆ -->
+        <img src="logo.png" alt="AkhiTool Logo" class="h-12 w-auto"> 
     </a>
-    <button id="mobile-menu-btn" class="p-2 border rounded-lg z-50">☰</button>
+    <!-- ಮೆನು ಬಟನ್ -->
+    <button id="mobile-menu-btn" class="p-2 border rounded-lg bg-gray-100 z-50">☰</button>
 </header>
-    
     
                 
                 <!-- Logo Wrapper: -ml-2 moves it closer to the left edge -->
@@ -95,13 +95,13 @@
         </div>
     </header>
 <!-- Mobile Menu (Drawer) -->
-<div id="mobile-drawer" class="fixed inset-y-0 right-0 z-50 w-72 bg-white shadow-2xl transform translate-x-full transition-transform duration-300">
-    <div class="p-4 border-b flex justify-between">
+<div id="mobile-drawer" class="fixed inset-y-0 right-0 z-[60] w-72 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 overflow-y-auto">
+    <div class="p-4 border-b flex justify-between items-center">
         <span class="font-bold">Menu</span>
-        <button id="mobile-close-btn" class="p-2">✕</button>
+        <button id="mobile-close-btn" class="p-2 text-xl font-bold">✕</button>
     </div>
     <div id="mobile-menu-container" class="p-4">
-        <!-- ಮೆನು ಇಲ್ಲಿ ಲೋಡ್ ಆಗುತ್ತದೆ -->
+        <!-- ಮೆನು ಡೇಟಾ ಇಲ್ಲಿ ಲೋಡ್ ಆಗುತ್ತದೆ -->
     </div>
 </div>
     <script type="module">
@@ -471,7 +471,7 @@
             </div>
         </div>
     </footer>
-    <!-- ಒಂದೇ ಒಂದು ಸ್ಕ್ರಿಪ್ಟ್ ಬ್ಲಾಕ್ ಬಳಸಿ -->
+<!-- Firebase & Menu Logic -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -492,7 +492,6 @@
         try {
             const snap = await getDocs(collection(db, "tools"));
             let menuData = {};
-
             snap.forEach((doc) => {
                 const tool = doc.data();
                 const cat = tool.category || "General";
@@ -500,41 +499,38 @@
                 menuData[cat].push(tool);
             });
 
-            // Popular Tools render
+            // Popular Tools
             const popCont = document.getElementById("popular-tools-container");
             if(popCont) {
                 popCont.innerHTML = snap.docs.map(d => {
                     const t = d.data();
-                    return `<div class="bg-white p-4 border rounded-xl shadow-sm"><h3 class="font-bold">${t.name}</h3><a href="${t.url}" class="text-blue-500 text-sm">Use Tool →</a></div>`;
+                    return `<div class="bg-white p-5 border rounded-2xl shadow-sm"><h3 class="font-bold">${t.name}</h3><a href="${t.url}" class="text-blue-600 text-sm font-semibold">Use Tool →</a></div>`;
                 }).join('');
             }
 
-            // Mobile Menu render
+            // Mobile Menu
             const menuCont = document.getElementById("mobile-menu-container");
-            if(menuCont) {
-                menuCont.innerHTML = '<a href="/" class="block py-2 font-bold border-b">Home</a>';
-                Object.keys(menuData).forEach(cat => {
-                    const div = document.createElement("div");
-                    div.className = "border-b";
-                    div.innerHTML = `
-                        <button class="w-full flex justify-between py-3 font-medium menu-toggle">${cat} <span>▼</span></button>
-                        <div class="hidden pl-4 pb-2">
-                            ${menuData[cat].map(t => `<a href="${t.url}" class="block py-1 text-sm text-gray-600">${t.name}</a>`).join('')}
-                        </div>
-                    `;
-                    div.querySelector('.menu-toggle').onclick = (e) => e.target.nextElementSibling.classList.toggle('hidden');
-                    menuCont.appendChild(div);
-                });
-            }
-        } catch (e) { console.error(e); }
+            menuCont.innerHTML = '<a href="/" class="block py-3 font-bold border-b">Home</a>';
+            Object.keys(menuData).forEach(cat => {
+                const div = document.createElement("div");
+                div.className = "border-b";
+                div.innerHTML = `
+                    <button class="w-full flex justify-between py-4 font-medium menu-toggle">${cat} <span>▼</span></button>
+                    <div class="hidden pl-4 pb-2">
+                        ${menuData[cat].map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600">${t.name}</a>`).join('')}
+                    </div>
+                `;
+                div.querySelector('.menu-toggle').onclick = (e) => e.target.nextElementSibling.classList.toggle('hidden');
+                menuCont.appendChild(div);
+            });
+        } catch (e) { console.error("Error:", e); }
     }
 
-    // ಮೆನು ಬಟನ್ ಲಾಜಿಕ್ (ಒಂದೇ ಕಡೆ ಬರೆಯಿರಿ)
+    // ಬಟನ್ ಲಾಜಿಕ್
     document.getElementById('mobile-menu-btn').onclick = () => document.getElementById('mobile-drawer').classList.remove('translate-x-full');
     document.getElementById('mobile-close-btn').onclick = () => document.getElementById('mobile-drawer').classList.add('translate-x-full');
 
     init();
 </script>
-    
 </body>
 </html>
