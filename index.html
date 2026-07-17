@@ -471,25 +471,21 @@ if (menuCont) {
                 <a href="/contact.html" class="block py-1">Contact</a>
             </div>
         </div>
-    `;
 
-    // ಬಟನ್ ಲಾಜಿಕ್ ಇಲ್ಲಿ ಬದಲಿಸಿ
-document.getElementById('main-mobile-menu-btn').onclick = () => {
-    document.getElementById('mobile-drawer').classList.remove('translate-x-full');
-};
-                                
-    // ಇವೆಂಟ್ ಲಿಸನರ್ಸ್ - e.stopPropagation() ಸೇರಿಸಿ
-document.getElementById('cat-main-btn').onclick = (e) => {
-    e.stopPropagation(); // ಇದು ಮುಖ್ಯ
-    document.getElementById('cat-dropdown').classList.toggle('hidden');
-};
-document.getElementById('comp-main-btn').onclick = (e) => {
+    // ಸ್ಕ್ರಿಪ್ಟ್‌ನ ಕೊನೆಯಲ್ಲಿ init() ಕರೆಯುವ ಮುನ್ನ ಇದನ್ನು ಹಾಕಿ
+const menuBtn = document.getElementById('mobile-menu-btn');
+const drawer = document.getElementById('mobile-drawer');
+const closeBtn = document.getElementById('mobile-close-btn');
+
+menuBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    document.getElementById('comp-dropdown').classList.toggle('hidden');
-};
-        
-    
-                              
+    drawer.classList.remove('translate-x-full');
+});
+
+closeBtn.addEventListener('click', () => {
+    drawer.classList.add('translate-x-full');
+});
+                                
 </script>
 </body>
 </html>
