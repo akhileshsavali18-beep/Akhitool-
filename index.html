@@ -470,21 +470,28 @@
                         </div>
                     </div>
                 `;
+// ಇದನ್ನಷ್ಟೇ ಗಮನಿಸಿ (Event Listener ಬದಲಾವಣೆ)
+    window.addEventListener('DOMContentLoaded', () => {
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const drawer = document.getElementById('mobile-drawer');
+        const closeBtn = document.getElementById('mobile-close-btn');
 
-                // Event Listeners
-                document.getElementById('cat-main-btn').onclick = () => document.getElementById('cat-dropdown').classList.toggle('hidden');
-                document.getElementById('comp-main-btn').onclick = () => document.getElementById('comp-dropdown').classList.toggle('hidden');
-                document.querySelectorAll('.nested-cat button').forEach(btn => btn.onclick = () => btn.nextElementSibling.classList.toggle('hidden'));
-            }
-        } catch (e) { console.error(e); }
-    }
+        if(menuBtn) {
+            menuBtn.onclick = (e) => {
+                e.stopPropagation();
+                drawer.classList.remove('translate-x-full');
+            };
+        }
+        if(closeBtn) {
+            closeBtn.onclick = () => {
+                drawer.classList.add('translate-x-full');
+            };
+        }
+        init(); // init() ಫಂಕ್ಷನ್ ಅನ್ನು ಇಲ್ಲಿಗೆ ಕರೆ ಮಾಡಿ
+    });
 
-    // ಮೆನು ಬಟನ್ ಓಪನ್/ಕ್ಲೋಸ್
-    document.getElementById('mobile-menu-btn').onclick = () => document.getElementById('mobile-drawer').classList.remove('translate-x-full');
-    document.getElementById('mobile-close-btn').onclick = () => document.getElementById('mobile-drawer').classList.add('translate-x-full');
-
-    init();
-                                                  </script>
-    
+    // ... (ಉಳಿದ init() ಫಂಕ್ಷನ್ ಮತ್ತು Firestore ಲಾಜಿಕ್) ...
+</script>
+                
 </body>
 </html>
