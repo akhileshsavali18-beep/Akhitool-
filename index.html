@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth overflow-x-hidden">
 <head>
+    <header class="fixed top-0 w-full bg-white z-40 h-16 flex items-center px-4 justify-between border-b">
+    <a href="/" class="flex items-center">
+        <!-- ಇಲ್ಲಿ h-12 ಅಥವಾ h-14 ಕೊಡಿ, ಇದು ಲೋಗೋ ಗಾತ್ರ ಹೆಚ್ಚಿಸುತ್ತದೆ -->
+        <img src="logo.png" alt="AkhiTool Logo" class="h-12 w-auto"> 
+    </a>
+    <button id="mobile-menu-btn" class="p-2 border rounded-lg z-50">☰</button>
+    </header>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>AkhiTool - Your Everyday Online Toolbox</title>
@@ -671,6 +679,25 @@
     document.getElementById('mobile-menu-btn').onclick = () => document.getElementById('mobile-drawer').classList.remove('translate-x-full');
     document.getElementById('mobile-close-btn').onclick = () => document.getElementById('mobile-drawer').classList.add('translate-x-full');
 
+    init();
+</script>
+<script type="module">
+    // ... (Firebase logic ಇಲ್ಲಿ ಇರಲಿ) ...
+
+    // ಮೆನು ಬಟನ್ ಕ್ಲಿಕ್ ಲಾಜಿಕ್ ಅನ್ನು ಸ್ಪಷ್ಟವಾಗಿ ಹೀಗೆ ಬರೆಯಿರಿ:
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const drawer = document.getElementById('mobile-drawer');
+    const closeBtn = document.getElementById('mobile-close-btn');
+
+    menuBtn.onclick = () => {
+        drawer.classList.remove('translate-x-full');
+    };
+    
+    closeBtn.onclick = () => {
+        drawer.classList.add('translate-x-full');
+    };
+
+    // ಉಳಿದ init() ಫಂಕ್ಷನ್ ಇಲ್ಲಿಯೇ ಇರಲಿ...
     init();
 </script>
     
