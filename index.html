@@ -52,107 +52,61 @@
             }
         }
     ‎    </script>
-‎    <!-- Inside the <head> tag, before the closing </head> -->
-‎<link rel="stylesheet" href="assets/css/navbar.css">
-‎</head>
-‎<body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-primary selection:text-white flex flex-col min-h-screen overflow-x-hidden">
+    <!-- Inside the <head> tag, before the closing </head> -->
+<link rel="stylesheet" href="assets/css/navbar.css">
+</head>
+<body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-primary selection:text-white flex flex-col min-h-screen overflow-x-hidden">
 
-         <!-- Navigation -->
-‎    <header class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-lg border-b border-gray-100 transition-all h-[64px]">
-‎        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-‎            <!-- Flex Container: Keeps Logo Left, Menu Right, Vertically Centered -->
-‎            <div class="flex justify-between items-center h-full w-full">
-‎                
-‎                <!-- Logo Wrapper: -ml-2 moves it closer to the left edge -->
+<!-- Navbar -->
+<header class="fixed top-0 w-full bg-white z-40 h-20 flex items-center px-4 justify-between border-b shadow-sm">
+    <a href="/" class="flex items-center">
+        <!-- ಲೋಗೋ ಗಾತ್ರ ಸರಿಪಡಿಸಲಾಗಿದೆ -->
+        <img src="logo.png" alt="AkhiTool Logo" class="h-16 w-auto"> 
+    </a>
+    <!-- ಮೆನು ಬಟನ್ -->
+    <!-- ಬದಲಾಯಿಸಿ -->
+<button id="mobile-menu-btn" onclick="document.getElementById('mobile-drawer').classList.remove('translate-x-full')" class="p-2 border rounded-lg bg-gray-100 z-[100] relative">☰</button>
+    
+</header>
+
+    
+                   <!-- Logo Wrapper: -ml-2 moves it closer to the left edge -->
 ‎                <a href="index.html" class="relative flex items-center shrink-0 h-full w-[110px] md:w-[130px] group -ml-2">
 ‎                    <!-- Size reduced to h-[90px]. top-1/2 and -translate-y-1/2 perfectly centers it vertically -->
 ‎                    <img src="logo.png" alt="AkhiTool Logo" class="absolute top-1/2 -translate-y-1/2 left-0 h-[90px] md:h-[110px] w-auto max-w-none transition-transform group-hover:scale-105 block">
 ‎                </a>
-‎                
-‎                <!-- Desktop Nav -->
-‎                <nav class="hidden lg:flex space-x-8 items-center">
-‎                    <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Home</a>
-‎                    <a href="index.html#popular" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Popular Tools</a>
-‎                    <a href="about.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">About</a>
-‎                    <a href="contact.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Contact</a>
-‎                </nav>
-‎
-‎                <!-- Mobile Hamburger Menu: Strictly on the Right side -->
-‎                <div class="lg:hidden flex items-center justify-end h-full shrink-0">
-‎                    <button id="mobile-menu-btn" aria-label="Toggle Menu" class="text-gray-600 hover:text-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary rounded-lg p-1 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors">
-‎                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-‎                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-‎                        </svg>
-‎                    </button>
-‎                </div>
-‎
-‎            </div>
-‎        </div>
-‎    </header>
-‎    
-       <!-- Mobile Navigation Drawer (Updated with Categories Dropdown - No Logo) -->
-‎    <div id="mobile-menu-overlay" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300 cursor-pointer"></div>
-‎    <div id="mobile-drawer" class="fixed inset-y-0 right-0 z-50 w-72 sm:w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col h-full">
+                <!-- Desktop Nav -->
+                <nav class="hidden lg:flex space-x-8 items-center">
+                    <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Home</a>
+                    <a href="index.html#popular" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Popular Tools</a>
+                    <a href="about.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">About</a>
+                    <a href="contact.html" class="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors py-2">Contact</a>
+                </nav>
+
+                <!-- Mobile Hamburger Menu: Strictly on the Right side -->
+                <div class="lg:hidden flex items-center justify-end h-full shrink-0">
+                    <button id="mobile-menu-btn" aria-label="Toggle Menu" class="text-gray-600 hover:text-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary rounded-lg p-1 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </header>
+<!-- Mobile Menu (Drawer) -->
+<div id="mobile-drawer" class="fixed inset-y-0 right-0 z-[60] w-72 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 overflow-y-auto">
+    <div class="p-4 border-b flex justify-between items-center">
+        <span class="font-bold">Menu</span>
+        <button id="mobile-close-btn" class="p-2 text-xl font-bold">✕</button>
+    </div>
+    <div id="mobile-menu-container" class="p-4">
+        <!-- ಮೆನು ಡೇಟಾ ಇಲ್ಲಿ ಲೋಡ್ ಆಗುತ್ತದೆ -->
+    </div>
+</div>
 ‎        
-‎        <!-- Header (Logo Removed, Close button aligned to right) -->
-‎        <div class="flex items-center justify-end p-4 border-b border-gray-100 shrink-0">
-‎            <button id="mobile-close-btn" class="text-gray-500 hover:text-brand-primary p-2 focus:outline-none rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-‎                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-‎            </button>
-‎        </div>
-‎        
-‎        <!-- Menu Items (Scrollable) -->
-‎        <div class="px-4 py-4 space-y-1 overflow-y-auto flex-grow pb-20">
-‎            <a href="/" class="block px-4 py-3 rounded-xl text-base font-semibold text-brand-primary bg-blue-50 transition-colors">Home</a>
-‎            
-‎            <!-- Categories Dropdown (Accordion) -->
-‎            <div class="pt-2 pb-1">
-‎                <button id="mobile-categories-btn" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:bg-gray-50 transition-colors focus:outline-none">
-‎                    <span class="flex items-center gap-3">
-‎                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-‎                        Categories
-‎                    </span>
-‎                    <svg id="mobile-categories-icon" class="w-5 h-5 text-gray-500 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-‎                </button>
-‎                        <!-- Expanded Category Links -->
-‎                <div id="mobile-categories-menu" class="hidden px-2 pt-2 pb-2 space-y-1 overflow-hidden">
-‎                    <a href="/categories/pdf-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-‎                        <svg class="w-4 h-4 text-brand-primary/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-‎                        PDF Tools
-‎                    </a>
-‎                    <a href="/categories/image-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-‎                        <svg class="w-4 h-4 text-brand-secondary/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-‎                        Image Tools
-‎                    </a>
-‎                    <a href="/categories/calculators.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-‎                        <svg class="w-4 h-4 text-green-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-‎                        Calculators
-‎                    </a>
-‎                    <a href="/categories/ai-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-‎                        <svg class="w-4 h-4 text-purple-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-AI Tools
-‎                    </a>
-‎                    <a href="/categories/dev-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-‎                        <svg class="w-4 h-4 text-orange-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-‎                        Developer Tools
-‎                    </a>
-‎                    <a href="/categories/seo-tools.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-blue-50/50 transition-colors">
-‎                        <svg class="w-4 h-4 text-red-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-‎                        SEO Tools
-‎                    </a>
-‎                </div>
-‎            </div>
-‎
-‎            <div class="border-t border-gray-100 my-2"></div>
-‎            
-‎            <!-- Company Links -->
-‎            <p class="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider">Company</p>
-‎            <a href="/about.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">About</a>
-‎            <a href="/contact.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Contact</a>
-‎            <a href="/privacy-policy.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Privacy Policy</a>
-‎            <a href="/terms-of-service.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Terms of Service</a>
-‎            <a href="/disclaimer.html" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-colors">Disclaimer</a>
-‎        </div>
+‎      
 
     <!-- Full-Screen Explore Tools Modal -->
     <div id="explore-modal" class="fixed inset-0 z-[60] bg-brand-bg hidden opacity-0 transition-opacity duration-300 flex-col h-screen overflow-hidden">
