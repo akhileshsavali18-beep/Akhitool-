@@ -58,7 +58,7 @@
 <body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-primary selection:text-white flex flex-col min-h-screen overflow-x-hidden">
 
 <!-- Navbar -->
-<header class="fixed top-0 w-full bg-white z-40 h-16 flex items-center px-4 justify-between border-b shadow-sm">
+<header class="fixed top-0 w-full bg-white z-40 h-20 flex items-center px-4 justify-between border-b shadow-sm">
     <a href="/" class="flex items-center">
         <!-- ಲೋಗೋ ಗಾತ್ರ ಸರಿಪಡಿಸಲಾಗಿದೆ -->
         <img src="logo.png" alt="AkhiTool Logo" class="h-16 w-auto"> 
@@ -410,43 +410,57 @@
         </div>
     </footer>
 <script type="module">
-    // ... Firebase imports ಹಾಗೆಯೇ ಇರಲಿ ...
-    
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
+        authDomain: "akhitool.firebaseapp.com",
+        projectId: "akhitool",
+        storageBucket: "akhitool.firebasestorage.app",
+        messagingSenderId: "892498311198",
+        appId: "1:892498311198:web:5f4824d7122ec3e8fc960f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
     async function init() {
-        const snap = await getDocs(collection(db, "tools"));
-        let menuData = {};
-        snap.forEach((doc) => {
-            const tool = doc.data();
-            const cat = tool.category || "General";
-            if(!menuData[cat]) menuData[cat] = [];
-            menuData[cat].push(tool);
-        });
+        try {
+            const snap = await getDocs(collection(db, "tools"));
+            let menuData = {};
+            snap.forEach((doc) => {
+                const tool = doc.data();
+                const cat = tool.category || "General";
+                if(!menuData[cat]) menuData[cat] = [];
+                menuData[cat].push(tool);
+            });
 
-        // ಸ್ಕ್ರೀನ್‌ಶಾಟ್‌ನಂತೆ ಮೆನು ಡಿಸೈನ್
-        const menuCont = document.getElementById("mobile-menu-container");
-        menuCont.innerHTML = Object.keys(menuData).map(cat => {
-            // ಕ್ಯಾಟಗರಿ ಐಕಾನ್ ಲಾಜಿಕ್
-            const icon = cat.toLowerCase().includes('image') ? '🖼️' : '🧮'; 
-            return `
-            <div class="border-b">
-                <button class="w-full flex justify-between items-center py-4 px-2 font-medium menu-cat-btn">
-                    <span class="flex items-center gap-3">${icon} ${cat}</span>
-                    <span class="text-sm">▲</span>
-                </button>
-                <div class="hidden bg-gray-50 px-4 py-2">
-                    ${menuData[cat].map(t => `<a href="${t.url}" class="block py-2 text-sm text-gray-600">${t.name}</a>`).join('')}
-                    <a href="/category/${cat.toLowerCase()}.html" class="block py-2 text-sm font-bold text-blue-600">View all ${cat} tools ></a>
-                </div>
-            </div>`;
-        }).join('');
+            console.log("Loaded Categories:", Object.keys(menuData)); // ಇದು Console ನಲ್ಲಿ ಚೆಕ್ ಮಾಡಿ
 
-        // Dropdown Click Event
-        document.querySelectorAll('.menu-cat-btn').forEach(btn => {
-            btn.onclick = () => btn.nextElementSibling.classList.toggle('hidden');
-        });
+            const menuCont = document.getElementById("mobile-menu-container");
+            if (menuCont) {
+                // ಇಲ್ಲಿ ಡೇಟಾ ಲೂಪ್ ಆಗಿ ಕಾಣಿಸುತ್ತದೆಯೇ ಎಂದು ನೋಡೋಣ
+                menuCont.innerHTML = Object.keys(menuData).map(cat => `
+                    <div class="border-b">
+                        <button class="w-full flex justify-between items-center py-4 px-4 font-medium menu-cat-btn">
+                            <span>${cat}</span>
+                            <span>▼</span>
+                        </button>
+                        <div class="hidden bg-gray-50 px-4 py-2 space-y-2">
+                            ${menuData[cat].map(t => `<a href="${t.url}" class="block py-1 text-sm text-gray-700">${t.name}</a>`).join('')}
+                        </div>
+                    </div>
+                `).join('');
+
+                document.querySelectorAll('.menu-cat-btn').forEach(btn => {
+                    btn.onclick = () => btn.nextElementSibling.classList.toggle('hidden');
+                });
+            }
+        } catch (e) { console.error("Firebase Error:", e); }
     }
 
-    // Drawer Logic
+    // ಬಟನ್ ಓಪನ್/ಕ್ಲೋಸ್ ಲಾಜಿಕ್
     const menuBtn = document.getElementById('mobile-menu-btn');
     const drawer = document.getElementById('mobile-drawer');
     const closeBtn = document.getElementById('mobile-close-btn');
@@ -455,7 +469,8 @@
     closeBtn.onclick = () => drawer.classList.add('translate-x-full');
 
     init();
-                </script>
+        </script>
+    
     
                 
 </body>
