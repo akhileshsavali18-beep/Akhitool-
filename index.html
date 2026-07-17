@@ -444,7 +444,7 @@
                 }).join('');
             }
 
-            // 2. Mobile Menu
+            // 2. Mobile Menu (Category + Company Dropdown)
             const menuCont = document.getElementById("mobile-menu-container");
             if(menuCont) {
                 menuCont.innerHTML = `
@@ -471,17 +471,15 @@
                     </div>
                 `;
 
-                // Event Listeners (ಬಟನ್ ಓಪನ್/ಕ್ಲೋಸ್)
+                // Event Listeners
                 document.getElementById('cat-main-btn').onclick = () => document.getElementById('cat-dropdown').classList.toggle('hidden');
                 document.getElementById('comp-main-btn').onclick = () => document.getElementById('comp-dropdown').classList.toggle('hidden');
-                document.querySelectorAll('.nested-cat > button').forEach(btn => {
-                    btn.onclick = () => btn.nextElementSibling.classList.toggle('hidden');
-                });
+                document.querySelectorAll('.nested-cat button').forEach(btn => btn.onclick = () => btn.nextElementSibling.classList.toggle('hidden'));
             }
-        } catch (e) { console.error("Error:", e); }
+        } catch (e) { console.error(e); }
     }
 
-// ಮೆನು ಬಟನ್ ಓಪನ್/ಕ್ಲೋಸ್
+    // ಮೆನು ಬಟನ್ ಓಪನ್/ಕ್ಲೋಸ್
     document.getElementById('mobile-menu-btn').onclick = () => document.getElementById('mobile-drawer').classList.remove('translate-x-full');
     document.getElementById('mobile-close-btn').onclick = () => document.getElementById('mobile-drawer').classList.add('translate-x-full');
 
