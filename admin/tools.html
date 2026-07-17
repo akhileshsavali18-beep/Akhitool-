@@ -129,7 +129,12 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <form id="add-tool-form" class="p-6 space-y-4">
+            <form id="add-tool-form" class="p-6 space-y-4"> <!-- Tool Code Textarea (ಇದನ್ನು ನಿಮ್ಮ ಫಾರ್ಮ್ ಒಳಗೆ ಸೇರಿಸಿ) -->
+<div class="mt-4">
+    <label class="block text-sm font-medium text-gray-700 mb-1">Tool Code (Paste HTML/JS here)</label>
+    <textarea id="tool-code" rows="6" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 font-mono text-sm p-3" placeholder="Paste your tool code here, name and description will auto-fill!"></textarea>
+</div>
+                      
                       <div><label class="block text-sm font-medium text-gray-700 mb-1">Tool Content (HTML/JS Code)</label>
     <textarea id="tool-content" rows="6" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-brand-primary/20 focus:border-brand-primary" placeholder="Peste your tool code here..."></textarea>
                       </div>
@@ -160,7 +165,8 @@
         </div>
     </div>
 
-<script type="module">
+
+      <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, deleteDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
@@ -176,25 +182,7 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // Mobile Menu Logic
-  const sidebarToggle = document.getElementById("sidebar-toggle");
-  const sidebar = document.getElementById("sidebar");
-  const sidebarOverlay = document.getElementById("sidebar-overlay");
-
-  if (sidebarToggle) {
-      sidebarToggle.addEventListener("click", () => {
-          sidebar.classList.remove("-translate-x-full");
-          sidebarOverlay.classList.remove("hidden");
-      });
-  }
-  if (sidebarOverlay) {
-      sidebarOverlay.addEventListener("click", () => {
-          sidebar.classList.add("-translate-x-full");
-          sidebarOverlay.classList.add("hidden");
-      });
-  }
-
-  // Modal Logic
+  // Modal & DOM Elements
   const modal = document.getElementById("tool-modal");
   const addBtn = document.getElementById("add-tool-btn");
   const closeBtn = document.getElementById("close-modal-btn");
@@ -202,9 +190,43 @@
   const form = document.getElementById("add-tool-form");
   const modalTitle = document.querySelector("#tool-modal h3");
   const saveBtn = document.getElementById("save-tool-btn");
+  
+  // Input Elements
+  const inputName = document.getElementById("tool-name");
+  const inputDesc = document.getElementById("tool-desc");
+  const inputCategory = document.getElementById("tool-category");
+  const inputUrl = document.getElementById("tool-url");
+  const inputCode = document.getElementById("tool-code");
 
   let currentEditId = null; 
   let toolsDataList = {}; 
+
+  // --- ಹೊಸ ಆಟೋ-ಫಿಲ್ ಮ್ಯಾಜಿಕ್ (AUTO EXTRACT FEATURE) ---
+  if (inputCode) {
+      inputCode.addEventListener("input", function() {
+          const pastedData = this.value;
+          if (!pastedData || currentEditId !== null) return; // ಹೊಸ ಟೂಲ್ ಆಡ್ ಮಾಡುವಾಗ ಮಾತ್ರ ಕೆಲಸ ಮಾಡುತ್ತದೆ
+
+          // 1. ಕೋಡ್‌ನಿಂದ ಟೈಟಲ್ ಹುಡುಕುವುದು (<title> ಅಥವಾ <h1> ಇಂದ)
+          let titleMatch = pastedData.match(/<title[^>]*>(.*?)<\/title>/i) || pastedData.match(/<h1[^>]*>(.*?)<\/h1>/i);
+          if (titleMatch && titleMatch[1]) {
+              const extractedName = titleMatch[1].trim();
+              if(inputName) inputName.value = extractedName;
+              
+              // 2. ಆಟೋಮ್ಯಾಟಿಕ್ ಆಗಿ ಲೈವ್ URL ಕ್ರಿಯೇಟ್ ಮಾಡುವುದು
+              const slug = extractedName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+              if(inputUrl) inputUrl.value = `https://akhileshsavali18-beep.github.io/Akhitool-/tool.html?id=${slug}`;
+          }
+
+          // 3. ಕೋಡ್‌ನಿಂದ ಡಿಸ್ಕ್ರಿಪ್ಷನ್ ಹುಡುಕುವುದು (Meta tag ಅಥವಾ ಮೊದಲ <p> ಇಂದ)
+          let descMatch = pastedData.match(/<meta[^>]*name=["']description["'][^>]*content=["'](.*?)["']/i) || pastedData.match(/<p[^>]*>(.*?)<\/p>/i);
+          if (descMatch && descMatch[1]) {
+              let cleanDesc = descMatch[1].replace(/<[^>]+>/g, '').trim(); // HTML ಟ್ಯಾಗ್‌ಗಳನ್ನು ತೆಗೆದುಹಾಕುವುದು
+              if(inputDesc) inputDesc.value = cleanDesc.substring(0, 150); // 150 ಅಕ್ಷರಗಳಿಗೆ ಸೀಮಿತ
+          }
+      });
+  }
+  // --------------------------------------------------
 
   if(addBtn) {
       addBtn.addEventListener("click", () => {
@@ -221,6 +243,7 @@
       if(form) form.reset(); 
       currentEditId = null;
   };
+  
   if(closeBtn) closeBtn.addEventListener("click", closeModal);
   if(cancelBtn) cancelBtn.addEventListener("click", closeModal);
 
@@ -250,25 +273,21 @@
               
               tr.innerHTML = `
                   <td class="px-6 py-4">
-                      <div class="font-medium text-gray-800">${tool.name}</div>
-                      <div class="text-xs text-gray-500 mt-1">${tool.description}</div>
+                      <div class="font-medium text-gray-800">${tool.name || 'Unnamed Tool'}</div>
+                      <div class="text-xs text-gray-500 mt-1">${tool.description || ''}</div>
                   </td>
                   <td class="px-6 py-4">
                       <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-brand-primary border border-blue-100">
-                          ${tool.category}
+                          ${tool.category || 'General'}
                       </span>
                   </td>
-                  <td class="px-6 py-4 text-gray-500 text-sm">${tool.url}</td>
+                  <td class="px-6 py-4 text-gray-500 text-sm truncate max-w-xs">${tool.url || ''}</td>
                   <td class="px-6 py-4 text-center">
                       <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-50 text-green-600">Active</span>
                   </td>
                   <td class="px-6 py-4 text-right">
-                      <button class="edit-btn text-blue-500 hover:text-blue-700 transition-colors p-1 mr-2" data-id="${id}" title="Edit">
-                          <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                      </button>
-                      <button class="delete-btn text-red-400 hover:text-red-600 transition-colors p-1" data-id="${id}" title="Delete">
-                          <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                      </button>
+                      <button class="edit-btn text-blue-500 hover:text-blue-700 transition-colors p-1 mr-2" data-id="${id}" title="Edit">✏️</button>
+                      <button class="delete-btn text-red-400 hover:text-red-600 transition-colors p-1" data-id="${id}" title="Delete">🗑️</button>
                   </td>
               `;
               tbody.appendChild(tr);
@@ -301,19 +320,15 @@
       if (editBtn) {
           const id = editBtn.getAttribute('data-id');
           const tool = toolsDataList[id];
-          
           currentEditId = id; 
           
-          document.getElementById("tool-name").value = tool.name;
-          document.getElementById("tool-desc").value = tool.description;
-          document.getElementById("tool-category").value = tool.category;
-          document.getElementById("tool-url").value = tool.url;
+          if(inputName) inputName.value = tool.name || "";
+          if(inputDesc) inputDesc.value = tool.description || "";
+          if(inputCategory) inputCategory.value = tool.category || "";
+          if(inputUrl) inputUrl.value = tool.url || "";
           
-          // ಎಡಿಟ್ ಮಾಡುವಾಗ ಕೋಡ್ ಅನ್ನು ಸಹ ಡೇಟಾಬೇಸ್‌ನಿಂದ ಫಾರ್ಮ್‌ಗೆ ತರಲು
-          const codeInput = document.getElementById("tool-code");
-          if(codeInput) {
-              codeInput.value = tool.content || "";
-          }
+          // ಎಡಿಟ್ ಮಾಡುವಾಗ ಕೋಡ್ ಅನ್ನು ಸಹ ಡೇಟಾಬೇಸ್‌ನಿಂದ ಫಾರ್ಮ್‌ಗೆ ತರಲು (ಇದರಿಂದಲೇ ಕೋಡ್ ಡಿಲೀಟ್ ಆಗುವುದು ತಪ್ಪುತ್ತದೆ!)
+          if(inputCode) inputCode.value = tool.content || "";
           
           modalTitle.innerText = "Edit Tool";
           saveBtn.innerText = "Update Tool";
@@ -326,16 +341,15 @@
           e.preventDefault();
           
           const toolData = {
-              name: document.getElementById("tool-name").value,
-              description: document.getElementById("tool-desc").value,
-              category: document.getElementById("tool-category").value,
-              url: document.getElementById("tool-url").value
+              name: inputName ? inputName.value : "",
+              description: inputDesc ? inputDesc.value : "",
+              category: inputCategory ? inputCategory.value : "",
+              url: inputUrl ? inputUrl.value : ""
           };
 
-          // ಸೇವ್ ಮಾಡುವಾಗ ಕೋಡ್ ಅನ್ನು ಸಹ ಡೇಟಾಬೇಸ್‌ಗೆ ಸೇವ್ ಮಾಡಲು!
-          const codeInput = document.getElementById("tool-code");
-          if(codeInput) {
-              toolData.content = codeInput.value;
+          // ಸೇವ್ ಮಾಡುವಾಗ ಕೋಡ್ ಅನ್ನು ಡೇಟಾಬೇಸ್‌ಗೆ ಭದ್ರವಾಗಿ ಸೇರಿಸುವುದು
+          if(inputCode) {
+              toolData.content = inputCode.value;
           }
 
           try {
@@ -360,7 +374,9 @@
           }
       });
   }
-</script>
+            </script>
+          
+  
           
 </body>
 </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </html>
