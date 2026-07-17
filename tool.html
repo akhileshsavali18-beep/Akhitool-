@@ -86,9 +86,9 @@
   </footer>
 
   <!-- Firebase Fetching Logic -->
-  <script type="module">
+    <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAqqwk3ar0ZJQO2ORON5hvlKzP7wHOFGp4",
@@ -103,7 +103,6 @@
     const db = getFirestore(app);
 
     async function loadDynamicTool() {
-        // URL ನಿಂದ ID ಯನ್ನು ತೆಗೆದುಕೊಳ್ಳುವುದು (ಉದಾಹರಣೆಗೆ: ?id=webp-to-jpg)
         const urlParams = new URLSearchParams(window.location.search);
         const toolId = urlParams.get('id');
 
@@ -113,38 +112,47 @@
         }
 
         try {
-            // ಡೇಟಾಬೇಸ್‌ನಿಂದ ಆ ಟೂಲ್‌ನ ಮಾಹಿತಿಯನ್ನು ತರುವುದು
-            const docRef = doc(db, "tools", toolId);
-            const docSnap = await getDoc(docRef);
+            // ಹೊಸ ಲಾಜಿಕ್: Random ID ಅಥವಾ URL ಎರಡರಲ್ಲೂ ಟೂಲ್ ಅನ್ನು ಹುಡುಕುವ ಸ್ಮಾರ್ಟ್ ಫೀಚರ್
+            const querySnapshot = await getDocs(collection(db, "tools"));
+            let tool = null;
+            
+            querySnapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                // ಡೇಟಾಬೇಸ್ ID ಮ್ಯಾಚ್ ಆದರೂ, ಅಥವಾ ನಾವು ಸೇವ್ ಮಾಡಿದ URL ನಲ್ಲಿ ಆ ಹೆಸರು ಇದ್ದರೂ ಟೂಲ್ ಅನ್ನು ಸೆಲೆಕ್ಟ್ ಮಾಡು
+                if (docSnap.id === toolId || (data.url && data.url.includes(toolId))) {
+                    tool = data;
+                }
+            });
 
-            if (docSnap.exists()) {
-                const tool = docSnap.data();
-
+            if (tool) {
                 // 1. Breadcrumbs, Title, ಮತ್ತು Meta ಮಾಹಿತಿಯನ್ನು ಅಪ್ಡೇಟ್ ಮಾಡುವುದು
                 document.getElementById('page-title').innerText = `${tool.name} | AkhiTool`;
-                document.getElementById('meta-desc').setAttribute("content", tool.description);
+                document.getElementById('meta-desc').setAttribute("content", tool.description || "Free online tools");
                 
                 document.getElementById('breadcrumb-category').innerText = tool.category || "Tools";
                 document.getElementById('breadcrumb-name').innerText = tool.name;
                 
                 document.getElementById('tool-title').innerText = tool.name;
-                document.getElementById('tool-desc').innerText = tool.description;
+                document.getElementById('tool-desc').innerText = tool.description || "";
 
                 // 2. ಟೂಲ್‌ನ ಅಸಲಿ ಕೋಡ್ ಅನ್ನು ಕಂಟೇನರ್ ಒಳಗೆ ಸೇರಿಸುವುದು
                 const container = document.getElementById('dynamic-tool-container');
-                container.innerHTML = tool.content;
+                container.innerHTML = tool.content || "<div class='text-red-500'>No content found for this tool!</div>";
                 
-                // 3. ಕೋಡ್‌ನಲ್ಲಿರುವ ಜಾವಾಸ್ಕ್ರಿಪ್ಟ್ ಸರಿಯಾಗಿ ರನ್ ಆಗಲು (ಇದೊಂದು ಬ್ರಿಲಿಯಂಟ್ ಟ್ರಿಕ್!)
+                // 3. ಕೋಡ್‌ನಲ್ಲಿರುವ ಜಾವಾಸ್ಕ್ರಿಪ್ಟ್ ಸರಿಯಾಗಿ ರನ್ ಆಗಲು!
                 const scripts = container.querySelectorAll('script');
                 scripts.forEach(oldScript => {
                     const newScript = document.createElement('script');
                     Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    if(oldScript.innerHTML) {
+                        newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    }
                     oldScript.parentNode.replaceChild(newScript, oldScript);
                 });
 
-                // ಫೇಕ್ FAQ ಯನ್ನು ತೋರಿಸು
-                document.getElementById('faq-section').classList.remove('hidden');
+                // FAQ ಯನ್ನು ತೋರಿಸು
+                const faqSection = document.getElementById('faq-section');
+                if(faqSection) faqSection.classList.remove('hidden');
 
             } else {
                 document.getElementById('dynamic-tool-container').innerHTML = '<div class="text-red-500 font-bold text-center">Sorry, Tool not found in database!</div>';
@@ -155,8 +163,8 @@
         }
     }
 
-    // ಪೇಜ್ ಲೋಡ್ ಆದ ತಕ್ಷಣ ರನ್ ಆಗಬೇಕು
     loadDynamicTool();
-  </script>
+      </script>
+  
 </body>
 </html>
